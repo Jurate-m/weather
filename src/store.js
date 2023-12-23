@@ -7,6 +7,7 @@ const store = createStore({
       longitude: null,
     };
   },
+
   getters: {
     getLatitude: (state) => state.latitude,
     getLongitude: (state) => state.longitude,
