@@ -1,0 +1,12 @@
+.layout--dark {
+  .card {
+    background-color: lighten($dark, 2%);
+  }
+}
+
+.card {
+  padding: 20px 30px;
+  background-color: lighten($light, 8%);
+
+  border-radius: 8px;
+}
