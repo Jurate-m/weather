@@ -1,11 +1,13 @@
 <template>
   <div :class="classes">
-    <slot></slot>
+    <div class="container">
+      <slot></slot>
+    </div>
   </div>
 </template>
 
 <script>
-import "../assets/sass/main.scss";
+import "../assets/scss/main.scss";
 
 export default {
   props: {
