@@ -8,11 +8,13 @@
 
 <script>
 import "../assets/scss/main.scss";
+import "../assets/scss/layouts/_layout.scss";
 
 export default {
   props: {
     dark: Boolean,
   },
+
   computed: {
     classes() {
       return {

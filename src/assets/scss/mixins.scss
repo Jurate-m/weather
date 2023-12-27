@@ -1,0 +1,11 @@
+$columns: 12;
+
+@mixin col-x {
+  @for $i from 1 through $columns {
+    .col-#{$i} {
+      width: calc((100% / $columns) * $i);
+    }
+  }
+}
+
+@include col-x;
