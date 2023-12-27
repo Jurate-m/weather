@@ -1,19 +1,18 @@
 <template>
+  <div>lan: {{ getLan }} lon: {{ getLon }}</div>
   <Layout dark>
-    <Card>
-      <div>lan: {{ getLan }} lon: {{ getLon }}</div>
-    </Card>
+    <CurrentWeather></CurrentWeather>
   </Layout>
 </template>
 
 <script>
 import Layout from "../layouts/base.vue";
-import Card from "../layouts/Card.vue";
+import CurrentWeather from "@/components/CurrentWeather.vue";
 
 export default {
   components: {
     Layout,
-    Card,
+    CurrentWeather,
   },
 
   computed: {
