@@ -68,11 +68,16 @@ h5 {
 
 h6,
 p,
-input,
 label,
 span {
   font-size: 1.6em;
   margin-bottom: 1.2em;
+}
+
+input,
+textarea,
+a {
+  font-size: 1.6em;
 }
 
 a {
@@ -82,4 +87,12 @@ a {
 ol,
 ul {
   list-style: none;
+}
+
+button,
+input {
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
 }

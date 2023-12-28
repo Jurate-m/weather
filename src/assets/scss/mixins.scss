@@ -1,4 +1,4 @@
-$columns: 12;
+$columns: 10;
 
 @mixin col-x {
   @for $i from 1 through $columns {
