@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import "../assets/scss/components/_card.scss";
+import "../assets/scss/layouts/_card.scss";
 
 export default {
   computed: {

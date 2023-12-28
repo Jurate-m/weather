@@ -1,18 +1,17 @@
 <template>
-  <div>lan: {{ getLan }} lon: {{ getLon }}</div>
   <Layout dark>
-    <CurrentWeather></CurrentWeather>
+    <Weather></Weather>
   </Layout>
 </template>
 
 <script>
 import Layout from "../layouts/base.vue";
-import CurrentWeather from "@/components/CurrentWeather.vue";
+import Weather from "@/components/Weather.vue";
 
 export default {
   components: {
     Layout,
-    CurrentWeather,
+    Weather,
   },
 
   computed: {
@@ -26,7 +25,7 @@ export default {
   },
 
   mounted() {
-    this.$store.dispatch("getPreciseClientLocation");
+    this.$store.dispatch("setClientLocation");
   },
 };
 </script>
