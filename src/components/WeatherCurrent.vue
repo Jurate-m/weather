@@ -16,7 +16,7 @@
 <script>
 import Card from "@/layouts/Card.vue";
 import Row from "@/layouts/Row.vue";
-import Col from "@/layouts/Col.vue";
+import Col from "@/layouts/Column.vue";
 
 export default {
   props: [],
