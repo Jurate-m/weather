@@ -1,17 +1,20 @@
 <template>
   <Card>
     <Row>
-      <Col class="col-5">
+      <Column class="col-5">
         <Search></Search>
-      </Col>
-      <Col class="col-5" justifyEnd>
+      </Column>
+      <Column class="col-5" justifyEnd>
         <h5>Vilnius</h5>
-      </Col>
+      </Column>
     </Row>
     <Row>
-      <Col class="col-4">
+      <Column class="col-4">
         <WeatherCurrent></WeatherCurrent>
-      </Col>
+      </Column>
+      <Column>
+        <WeatherHourly :data="days[1]"></WeatherHourly>
+      </Column>
     </Row>
   </Card>
 </template>
@@ -20,8 +23,9 @@
 import Search from "./Search.vue";
 import Card from "@/layouts/Card.vue";
 import Row from "@/layouts/Row.vue";
-import Col from "@/layouts/Col.vue";
+import Column from "@/layouts/Column.vue";
 import WeatherCurrent from "./WeatherCurrent.vue";
+import WeatherHourly from "./WeatherHourly.vue";
 
 export default {
   props: [],
@@ -30,12 +34,20 @@ export default {
     Card,
     Search,
     Row,
-    Col,
+    Column,
     WeatherCurrent,
+    WeatherHourly,
   },
 
   data() {
-    return {};
+    return {
+      days: null,
+    };
+  },
+
+  beforeMount() {
+    this.$store.dispatch("weather/getData");
+    this.days = this.$store.getters["weather/getDays"];
   },
 };
 </script>
