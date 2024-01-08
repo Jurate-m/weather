@@ -1,0 +1,28 @@
+.weather-hourly-single {
+  &__summary {
+    padding: 10px 20px;
+  }
+
+  &.active {
+    color: red;
+
+    .weather-hourly-single__details {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  &__details {
+    opacity: 0;
+    visibility: hidden;
+    padding: 20px 20px;
+    background-color: $dark-lighter;
+    transition: all 0.3s ease-in-out;
+
+    &-inner {
+      span {
+        display: block;
+      }
+    }
+  }
+}

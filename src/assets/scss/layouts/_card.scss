@@ -6,6 +6,6 @@
 
 .card {
   padding: 20px 30px;
-  background-color: lighten($light, 8%);
+  background-color: $light-lighter;
   border-radius: 8px;
 }
