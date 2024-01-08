@@ -1,4 +1,4 @@
-import data from "../../../data.json";
+import data from "../../../../hourly.json";
 
 export default {
   getData({ state, commit }) {

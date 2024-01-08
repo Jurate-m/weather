@@ -29,6 +29,7 @@ export default {
       .then((data) => {
         commit("setLatitude", data.latitude);
         commit("setLongitude", data.longitude);
+        commit("setPlaceId", data.city);
       })
       .catch((error) => console.error("Error:", error));
   },

@@ -1,7 +1,6 @@
 import weatherActions from "./actions.js";
 import weatherMutations from "./mutations.js";
-import weatherGetters from "./getters.js";
-import data from "../../../data.json";
+// import weatherGetters from "./getters.js";
 
 export default {
   namespaced: true,
@@ -17,5 +16,5 @@ export default {
 
   actions: weatherActions,
 
-  getters: weatherGetters,
+  // getters: weatherGetters,
 };

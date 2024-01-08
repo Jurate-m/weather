@@ -3,3 +3,5 @@ export default {
     return state.days;
   },
 };
+
+// Redundant - state is not changed
