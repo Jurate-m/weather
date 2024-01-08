@@ -1,6 +1,12 @@
 <template>
-  <li :key="hour.date" v-if="hour">
-    <div>
+  <div
+    :key="hour.date"
+    v-if="hour"
+    class="weather-hourly-single"
+    :class="classes"
+    @click="toggleDisplay()"
+  >
+    <div class="weather-hourly-single__summary">
       <p style="display: inline-block; padding-right: 10px">
         {{ hour.date.getUTCHours() }}
       </p>
@@ -20,23 +26,46 @@
         Wind: {{ hour.wind.dir }} {{ hour.wind.speed }}
       </p>
     </div>
-  </li>
+    <Transition>
+      <div class="weather-hourly-single__details" v-show="this.active">
+        <div class="weather-hourly-single__details-inner">
+          <span>Feels like: {{ hour.feels_like }}</span>
+          <span>wind: {{ hour.wind.dir }} {{ hour.wind.speed }}</span>
+          <span>Wind Gust: {{ hour.wind.gust }}</span>
+          <span>Cloud cover: {{ hour.cloud_cover }}</span>
+          <span>Visibility: {{ hour.visibility }}</span>
+          <span>UV index: {{ hour.uv_index }}</span>
+          <span>Probability of rain: {{ hour.probability.precipitation }}</span>
+        </div>
+      </div>
+    </Transition>
+  </div>
 </template>
 
 <script>
+import "../assets/scss/components/_weatherHourlySingle.scss";
+
 export default {
   props: ["hour"],
   data() {
     return {
-      show: false,
+      active: false,
     };
   },
 
   methods: {
-    toggleDisplay() {},
+    toggleDisplay() {
+      this.active = !this.active;
+    },
   },
 
-  computed: {},
+  computed: {
+    classes() {
+      return {
+        active: this.active,
+      };
+    },
+  },
 
   mounted() {},
 };
