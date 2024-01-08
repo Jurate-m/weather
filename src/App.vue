@@ -1,12 +1,18 @@
 <template>
-  <Home></Home>
+  <Layout dark>
+    <Nav></Nav>
+    <router-view></router-view>
+  </Layout>
 </template>
 
 <script>
-import Home from "./views/index.vue";
+import Layout from "./layouts/base.vue";
+import Nav from "./components/Nav.vue";
+
 export default {
   components: {
-    Home,
+    Layout,
+    Nav,
   },
 };
 </script>

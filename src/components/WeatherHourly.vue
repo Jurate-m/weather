@@ -1,5 +1,4 @@
 <template>
-  <!-- <pre>{{ data[0].date }}</pre> -->
   <div :class="classes" v-if="data">
     <h3>
       {{ weekdays[data[0].date.getDay()] }},

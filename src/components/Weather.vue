@@ -13,7 +13,7 @@
         <WeatherCurrent></WeatherCurrent>
       </Column>
       <Column>
-        <WeatherHourly :data="days[1]"></WeatherHourly>
+        <!-- <WeatherHourly :data="days[1]"></WeatherHourly> -->
       </Column>
     </Row>
   </Card>
@@ -45,9 +45,6 @@ export default {
     };
   },
 
-  beforeMount() {
-    this.$store.dispatch("weather/getData");
-    this.days = this.$store.getters["weather/getDays"];
-  },
+  beforeMount() {},
 };
 </script>

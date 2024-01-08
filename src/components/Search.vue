@@ -54,9 +54,7 @@ export default {
       return (this.active = false);
     },
 
-    getCurrentLocation() {
-      this.$store.dispatch("setClientLocation");
-    },
+    getCurrentLocation() {},
   },
 
   computed: {
@@ -67,9 +65,7 @@ export default {
       };
     },
 
-    locationEnabled() {
-      return this.$store.getters.checkIfLocationEnabled;
-    },
+    locationEnabled() {},
   },
 };
 </script>
