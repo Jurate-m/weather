@@ -1,17 +1,18 @@
 export default {
-  setLatitude(state, latitude) {
-    state.latitude = latitude;
+  setLatitude(state, payload) {
+    state.latitude = payload;
   },
 
-  setLongitude(state, longitude) {
-    state.longitude = longitude;
-  },
-
-  setPlaceId(state, id) {
-    state.place_id = id;
+  setLongitude(state, payload) {
+    state.longitude = payload;
   },
 
   enableLocation(state) {
     state.locationEnabled = true;
+  },
+
+  setLocationId(state, payload) {
+    state.locationId = payload.data.place_id;
+    sessionStorage.setItem("LocationId", payload.data.place_id);
   },
 };
