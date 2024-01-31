@@ -1,17 +1,18 @@
 import { createStore } from "vuex";
 
-import rootActions from "./actions.js";
-// import rootGetters from "./getters.js";
 import rootMutations from "./mutations.js";
-import locationModule from "./modules/location/index.js";
-import dailyModule from "./modules/weather/daily/index.js";
-import hourlyModule from "./modules/weather/hourly/index.js";
+import rootActions from "./actions.js";
+import currentModule from "./modules/current.js";
+import dailyModule from "./modules/daily.js";
+import hourlyModule from "./modules/hourly.js";
+import astroModule from "./modules/astro.js";
 
 const store = createStore({
   modules: {
-    location: locationModule,
+    current: currentModule,
     hourly: hourlyModule,
     daily: dailyModule,
+    astro: astroModule,
   },
 
   state() {
@@ -19,14 +20,13 @@ const store = createStore({
       latitude: null,
       longitude: null,
       locationEnabled: false,
+      locationId: null,
     };
   },
 
-  actions: rootActions,
-
-  // getters: rootGetters,
-
   mutations: rootMutations,
+
+  actions: rootActions,
 });
 
 export default store;
