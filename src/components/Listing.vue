@@ -1,17 +1,15 @@
 <template>
   <div :class="classes" v-if="data">
     <h3>
-      {{ weekdays[data[0].date.getDay()] }},
-      {{ data[0].date.toLocaleString("en-GB", { month: "long" }) }}
-      {{ data[0].date.getDate() }}
+      <slot name="header"> Test </slot>
     </h3>
     <ul>
       <div>
-        <WeatherHourlySingle
+        <ListingSingle
           v-for="item in data"
-          :hour="item"
+          :data="item"
           v-if="data"
-        ></WeatherHourlySingle>
+        ></ListingSingle>
         <br />
         <br />
         <br />
@@ -21,15 +19,14 @@
 </template>
 
 <script>
-import WeatherHourlySingle from "./WeatherHourlySingle.vue";
+import ListingSingle from "./ListingSingle.vue";
 
 export default {
-  components: { WeatherHourlySingle },
+  components: { ListingSingle },
   props: ["data"],
 
   data() {
     return {
-      day: null,
       weekdays: [
         "Sunday",
         "Monday",
@@ -49,13 +46,9 @@ export default {
   computed: {
     classes() {
       return {
-        "weather-hourly": true,
+        listing: true,
       };
     },
-  },
-
-  mounted() {
-    this.days = this.data;
   },
 };
 </script>

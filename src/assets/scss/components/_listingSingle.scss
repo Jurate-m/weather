@@ -1,4 +1,4 @@
-.weather-hourly-single {
+.listing-single {
   &__summary {
     padding: 10px 20px;
   }
@@ -6,7 +6,7 @@
   &.active {
     color: red;
 
-    .weather-hourly-single__details {
+    .listing-single__details {
       opacity: 1;
       visibility: visible;
     }
