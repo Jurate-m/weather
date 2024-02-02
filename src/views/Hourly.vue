@@ -35,7 +35,7 @@ export default {
         }
       }
 
-      this.hourlyWeather = sessionStorage.getItem("HourlyWeather");
+      this.hourlyWeather = JSON.parse(sessionStorage.getItem("HourlyWeather"));
     },
   },
 

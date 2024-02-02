@@ -1,27 +1,28 @@
 <template>
-  <div>
-    <h1>Current Weather</h1>
-
-    <!-- Display current weather information directly in the template -->
-    <p>{{ currentWeather }}</p>
-
-    <!-- Placeholder or loading message when current weather is not available -->
-    <p v-if="!currentWeather">Loading current weather...</p>
-  </div>
-  <!-- <CurrentWeather :locationId="locationId"></CurrentWeather> -->
+  <Card>
+    <div>
+      <!-- Display current weather information directly in the template -->
+      <h5>{{ location }}</h5>
+    </div>
+    <CurrentWeather :data="currentWeather"></CurrentWeather>
+  </Card>
 </template>
 
 <script>
+import Card from "@/layouts/Card.vue";
 import CurrentWeather from "@/components/CurrentWeather.vue";
 
 export default {
   data() {
     return {
       currentWeather: null,
+      location: null,
     };
   },
+
   components: {
-    // CurrentWeather,
+    Card,
+    CurrentWeather,
   },
 
   methods: {
@@ -37,7 +38,27 @@ export default {
         }
       }
 
-      this.currentWeather = sessionStorage.getItem("CurrentWeather");
+      this.location = this.modifyLocationString(
+        sessionStorage.getItem("LocationId")
+      );
+      this.currentWeather = JSON.parse(
+        sessionStorage.getItem("CurrentWeather")
+      );
+    },
+
+    modifyLocationString(location) {
+      // check for a better way of doing this
+      let string = location.replace(/[^a-zA-Z ]/g, " ");
+      if (string.split(" ").length > 1) {
+        string
+          .split(" ")
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(" ");
+      } else {
+        string = string.charAt(0).toUpperCase() + string.slice(1);
+      }
+
+      return string;
     },
   },
 

@@ -27,7 +27,7 @@ export default {
         }
       }
 
-      this.dailyWeather = sessionStorage.getItem("DailyWeather");
+      this.dailyWeather = JSON.parse(sessionStorage.getItem("DailyWeather"));
     },
   },
 
