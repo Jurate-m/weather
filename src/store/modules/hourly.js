@@ -44,7 +44,7 @@ export default {
 
       await apiRequest(
         "hourly",
-        { place_id: place_id },
+        { place_id: place_id, units: "metric" },
         commit,
         "separateDays"
       );

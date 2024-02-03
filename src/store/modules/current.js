@@ -28,7 +28,7 @@ export default {
 
       await apiRequest(
         "current",
-        { place_id: place_id },
+        { place_id: place_id, units: "metric" },
         commit,
         "assignCurrentWeather"
       );

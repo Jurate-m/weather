@@ -28,7 +28,7 @@ export default {
 
       await apiRequest(
         "daily",
-        { place_id: place_id },
+        { place_id: place_id, units: "metric" },
         commit,
         "assignDailyWeather"
       );
