@@ -11,8 +11,11 @@ export default {
 
   mutations: {
     setAstroData(state, payload) {
-      state.astroData = payload.astro.data;
-      localStorage.setItem("AstroData", JSON.stringify(payload.astro.data));
+      state.astroData = payload.data.astro.data;
+      sessionStorage.setItem(
+        "AstroData",
+        JSON.stringify(payload.data.astro.data)
+      );
     },
   },
 
@@ -23,12 +26,7 @@ export default {
 
       if (!place_id) return;
 
-      await apiRequest(
-        "astro",
-        { place_id: rootState.locationId },
-        commit,
-        "setAstroData"
-      );
+      await apiRequest("astro", { place_id: place_id }, commit, "setAstroData");
     },
   },
 };
