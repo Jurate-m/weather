@@ -60,7 +60,6 @@ export default {
 
     try {
       await dispatch("getLocationId");
-      console.log("locationID");
     } catch (error) {
       console.log(error);
     }
