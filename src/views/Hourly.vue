@@ -1,17 +1,63 @@
 <template>
-  {{ hourlyWeather }}
-  <p v-if="!hourlyWeather">Loading hourly weather...</p>
+  <h1>Hourly</h1>
 
-  <!-- <div v-if="days">
-    <h1>{{ hourlyData }}</h1>
-    <div v-for="day in days">
-      <Listing :data="days"></Listing>
-    </div>
-  </div> -->
+  <!-- <h5>
+    <pre>{{ hourlyWeather }}</pre>
+  </h5> -->
+
+  <div v-if="hourlyWeather">
+    <Listing v-for="item in hourlyWeather">
+      <template #header>{{ formatDate(new Date(item[0].date)) }} </template>
+      <ListingSingle
+        v-for="single in item"
+        :data="single"
+        :date="String(new Date(single.date).getHours()).padStart(2, '0')"
+        :icon="single.icon"
+        :temperature="`${single.temperature}°`"
+        :humidity="single.humidity"
+        :windDir="single.wind.dir"
+        :windSpeed="single.wind.speed"
+        :details="[
+          {
+            image: '.',
+            title: 'Feels like',
+            description: `${single.feels_like}°C`,
+          },
+          {
+            image: '.',
+            title: 'Wind',
+            description: `${single.wind.dir} ${single.wind.speed}m/s`,
+          },
+          {
+            image: '.',
+            title: 'Humidity',
+            description: `${single.humidity}%`,
+          },
+          {
+            image: '.',
+            title: 'Cloud Cover',
+            description: `${single.cloud_cover}%`,
+          },
+          {
+            image: `${single.precipitation.total == 'rain' ? './' : './'}`,
+            title: 'Precipitation',
+            description: `${single.precipitation.total}%`,
+          },
+        ]"
+      >
+      </ListingSingle>
+    </Listing>
+  </div>
+  <div else>
+    <Loader />
+  </div>
 </template>
 
 <script>
-import Listing from "../components/Listing.vue";
+import Loader from "@/components/Loader.vue";
+import Listing from "@/components/Listing.vue";
+import ListingSingle from "@/components/ListingSingle.vue";
+import { formatDate } from "@/utils.js";
 
 export default {
   data() {
@@ -20,7 +66,7 @@ export default {
     };
   },
 
-  // components: { Listing },
+  components: { Loader, Listing, ListingSingle },
 
   methods: {
     async fetchData() {
@@ -36,6 +82,14 @@ export default {
       }
 
       this.hourlyWeather = JSON.parse(sessionStorage.getItem("HourlyWeather"));
+    },
+
+    formatDate(date) {
+      return formatDate(date, {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+      });
     },
   },
 
