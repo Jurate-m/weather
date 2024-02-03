@@ -1,6 +1,8 @@
 .row {
   display: flex;
   flex-wrap: wrap;
-  margin: 0 -20px;
-  justify-content: space-between;
+
+  &.space-between {
+    justify-content: space-between;
+  }
 }
