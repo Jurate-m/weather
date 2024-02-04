@@ -5,6 +5,7 @@ export default {
 
   state() {
     return {
+      lastHourlyApiTimeStmp: null,
       hourlyWeather: [],
     };
   },
@@ -33,6 +34,11 @@ export default {
         JSON.stringify(state.hourlyWeather)
       );
     },
+
+    setHourlyTimeStamp(state, payload) {
+      state.lastCurrentApiTimeStmp = payload;
+      sessionStorage.setItem("lastHourlyApiTimeStmp", payload);
+    },
   },
 
   actions: {
@@ -48,6 +54,8 @@ export default {
         commit,
         "separateDays"
       );
+
+      commit("setHourlyTimeStamp", new Date());
     },
   },
 };

@@ -1,5 +1,5 @@
 <template>
-  <Card>
+  <Card class="py-20 px-30">
     <div>
       <!-- Display current weather information directly in the template -->
       <h5>{{ location }}</h5>
@@ -54,6 +54,21 @@ export default {
       );
       this.astroData = JSON.parse(sessionStorage.getItem("AstroData"));
     },
+  },
+
+  beforeMount() {
+    if (sessionStorage.getItem("lastCurrentApiTimeStmp")) {
+      let sessionTime = new Date(
+        sessionStorage.getItem("lastCurrentApiTimeStmp")
+      );
+      let current = new Date();
+      if (
+        sessionTime.getHours() != current.getHours() ||
+        sessionTime.getDate() != current.getDate()
+      ) {
+        sessionStorage.removeItem("CurrentWeather");
+      }
+    }
   },
 
   created() {

@@ -5,6 +5,7 @@ export default {
 
   state() {
     return {
+      lastCurrentApiTimeStmp: null,
       currentWeather: null,
     };
   },
@@ -16,6 +17,11 @@ export default {
         "CurrentWeather",
         JSON.stringify(payload.data.current)
       );
+    },
+
+    setCurrentTimeStamp(state, payload) {
+      state.lastCurrentApiTimeStmp = payload;
+      sessionStorage.setItem("lastCurrentApiTimeStmp", payload);
     },
   },
 
@@ -32,6 +38,8 @@ export default {
         commit,
         "assignCurrentWeather"
       );
+
+      commit("setCurrentTimeStamp", new Date());
     },
   },
 };

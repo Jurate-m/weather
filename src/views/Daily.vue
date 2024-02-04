@@ -97,6 +97,21 @@ export default {
     },
   },
 
+  beforeMount() {
+    if (sessionStorage.getItem("lastDailyApiTimeStmp")) {
+      let sessionTime = new Date(
+        sessionStorage.getItem("lastDailyApiTimeStmp")
+      );
+      let current = new Date();
+      if (
+        sessionTime.getHours() != current.getHours() ||
+        sessionTime.getDate() != current.getDate()
+      ) {
+        sessionStorage.removeItem("DailyWeather");
+      }
+    }
+  },
+
   created() {
     this.fetchData();
   },

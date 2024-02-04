@@ -5,6 +5,7 @@ export default {
 
   state() {
     return {
+      lastDailyApiTimeStmp: null,
       dailyWeather: [],
     };
   },
@@ -16,6 +17,11 @@ export default {
         "DailyWeather",
         JSON.stringify(payload.data.daily.data)
       );
+    },
+
+    setDailyTimeStamp(state, payload) {
+      state.lastCurrentApiTimeStmp = payload;
+      sessionStorage.setItem("lastDailyApiTimeStmp", payload);
     },
   },
 
@@ -32,6 +38,8 @@ export default {
         commit,
         "assignDailyWeather"
       );
+
+      commit("setDailyTimeStamp", new Date());
     },
   },
 };
