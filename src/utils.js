@@ -13,7 +13,7 @@ export function modifyString(string) {
   return modifiedString;
 }
 
-export function formatDate(date, options) {
+export function formatDateTime(date, options) {
   const formatOptions = new Intl.DateTimeFormat("en-GB", options);
   return formatOptions.format(date);
 }
