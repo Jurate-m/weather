@@ -7,9 +7,9 @@ import Daily from "./views/Daily.vue";
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { path: "/", component: Home },
-    { path: "/hourly", component: Hourly },
-    { path: "/daily", component: Daily },
+    { path: "/", name: "Home", component: Home },
+    { path: "/hourly", name: "Hourly", component: Hourly },
+    { path: "/daily", name: "Daily", component: Daily },
   ],
 });
 
