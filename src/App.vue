@@ -1,17 +1,22 @@
 <template>
-  <Layout dark>
-    <Nav></Nav>
+  <header>
+    <Container>
+      <Nav></Nav>
+    </Container>
+  </header>
+  <Container>
     <router-view></router-view>
-  </Layout>
+  </Container>
 </template>
 
 <script>
-import Layout from "./layouts/base.vue";
-import Nav from "./components/Nav.vue";
+import Container from "@/layouts/Container.vue";
+import Nav from "@/components/Nav.vue";
+import "@/assets/scss/components/_header.scss";
 
 export default {
   components: {
-    Layout,
+    Container,
     Nav,
   },
 };
