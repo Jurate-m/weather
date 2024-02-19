@@ -1,0 +1,26 @@
+.weather-summary-card {
+  display: flex;
+  padding: 20px;
+  align-items: center;
+  justify-content: space-between;
+
+  &__item {
+    display: flex;
+    align-items: center;
+
+    p {
+      margin-bottom: 0;
+    }
+
+    img {
+      height: 50px;
+      width: 50px;
+      object-fit: contain;
+    }
+
+    &.hum,
+    &.wind {
+      display: none;
+    }
+  }
+}
