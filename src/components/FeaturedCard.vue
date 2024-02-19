@@ -18,14 +18,14 @@
           />
         </div>
         <h4 style="text-align: center">{{ data.summary }}</h4>
-        <h3 style="text-align: center">{{ Math.round(data.temperature) }}°</h3>
+        <h3 style="text-align: center">{{ Math.round(data.temperature) }}°C</h3>
       </Column>
       <Column>
-        <div class="current-weather__details">
+        <div class="featured-card__details">
           <ul>
             <li>
               <p>Feels like:</p>
-              <p>{{ Math.round(data.feels_like) }}°</p>
+              <p>{{ Math.round(data.feels_like) }}°C</p>
             </li>
             <li>
               <p>Humidity:</p>
