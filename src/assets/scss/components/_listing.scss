@@ -1,0 +1,51 @@
+.listing {
+  display: flex;
+  flex-wrap: wrap;
+  padding-top: 40px;
+  margin: 0 -10px;
+
+  &.listing--full-w {
+    display: block;
+
+    .listing-single {
+      width: 100%;
+      margin-bottom: 20px;
+
+      & button {
+        text-align: initial;
+        height: 100%;
+        padding: 0;
+      }
+    }
+  }
+
+  .listing-single {
+    width: calc(100% / 2);
+    display: block;
+
+    &.listing-single--featured {
+      width: 100%;
+
+      &.active {
+        position: static;
+      }
+    }
+
+    &__inner {
+      height: 100%;
+
+      & > button {
+        text-align: center;
+        box-shadow: 1px 1px 4px -1px $black;
+        padding: 20px;
+        display: block;
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+
+    @media only screen and (min-width: 768px) {
+      width: calc(100% / 2);
+    }
+  }
+}

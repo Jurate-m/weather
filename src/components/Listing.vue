@@ -5,12 +5,12 @@
       v-for="(item, index) in data"
       :key="index"
     >
-      <slot name="featured" :item="item"></slot>
+      <slot name="featured" :item="item" :index="index"></slot>
       <div v-if="!featured" class="listing-single__inner">
         <button @click="setActive(index)" type="button">
-          <slot name="button" :item="item"></slot>
+          <slot name="button" :item="item" :index="index"></slot>
         </button>
-        <slot name="details" :item="item"></slot>
+        <slot name="details" :item="item" :index="index"></slot>
       </div>
     </li>
   </ul>
