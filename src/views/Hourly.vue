@@ -1,72 +1,82 @@
 <template>
-  <h1>Hourly</h1>
-
-  <!-- <h5>
-    <pre>{{ hourlyWeather }}</pre>
-  </h5> -->
-
   <div v-if="hourlyWeather">
-    <Listing v-for="item in hourlyWeather">
-      <template #header>{{ formatDate(new Date(item[0].date)) }} </template>
-      <ListingSingle
-        v-for="single in item"
-        :data="single"
-        :date="String(new Date(single.date).getHours()).padStart(2, '0')"
-        :icon="single.icon"
-        :temperature="`${single.temperature}°`"
-        :humidity="single.humidity"
-        :windDir="single.wind.dir"
-        :windSpeed="single.wind.speed"
-        :details="[
-          {
-            image: '.',
-            title: 'Feels like',
-            description: `${single.feels_like}°C`,
-          },
-          {
-            image: '.',
-            title: 'Wind',
-            description: `${single.wind.dir} ${single.wind.speed}m/s`,
-          },
-          {
-            image: '.',
-            title: 'Humidity',
-            description: `${single.humidity}%`,
-          },
-          {
-            image: '.',
-            title: 'Cloud Cover',
-            description: `${single.cloud_cover}%`,
-          },
-          {
-            image: `${single.precipitation.total == 'rain' ? './' : './'}`,
-            title: 'Precipitation',
-            description: `${single.precipitation.total}%`,
-          },
-        ]"
-      >
-      </ListingSingle>
-    </Listing>
-  </div>
-  <div v-else>
-    <Loader />
+    <div v-for="(day, dayIndex) in hourlyWeather" class="py-30" :key="dayIndex">
+      {{
+        formatDate(new Date(day[0].date), {
+          weekday: "long",
+          day: "numeric",
+          month: "long",
+        })
+      }}
+      <ul class="listing listing--full-w">
+        <li
+          v-for="(item, itemIndex) in day"
+          :class="{
+            'listing-single': true,
+            active: activeIndex[dayIndex] === itemIndex,
+          }"
+          :key="itemIndex"
+        >
+          <button @click="setActive(dayIndex, itemIndex)">
+            <WeatherSummaryCard
+              :date="formatTime(new Date(item.date))"
+              :icon="item.icon"
+              :temperature="item.temperature"
+              :humidity="item.humidity"
+              :windDir="item.wind.dir"
+              :windSpeed="item.wind.speed"
+            ></WeatherSummaryCard>
+          </button>
+          <WeatherDetailsCard
+            :details="[
+              {
+                image: '.',
+                title: 'Feels like',
+                description: `${item.feels_like}°C`,
+              },
+              {
+                image: '.',
+                title: 'Wind',
+                description: `${item.wind.dir} ${item.wind.speed}m/s`,
+              },
+              {
+                image: '.',
+                title: 'Humidity',
+                description: `${item.humidity}%`,
+              },
+              {
+                image: '.',
+                title: 'Cloud Cover',
+                description: `${item.cloud_cover}%`,
+              },
+              {
+                image: `${item.precipitation.total == 'rain' ? './' : './'}`,
+                title: 'Precipitation',
+                description: `${item.precipitation.total}%`,
+              },
+            ]"
+          ></WeatherDetailsCard>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
-
 <script>
-import Loader from "@/components/Loader.vue";
 import Listing from "@/components/Listing.vue";
-import ListingSingle from "@/components/ListingSingle.vue";
-import { formatDate } from "@/utils.js";
+import WeatherDetailsCard from "@/components/WeatherDetailsCard.vue";
+import WeatherSummaryCard from "@/components/WeatherSummaryCard.vue";
+import { formatDateTime } from "@/utils";
 
 export default {
   data() {
     return {
       hourlyWeather: null,
+      activeIndex: {},
+      dataLength: 3,
     };
   },
 
-  components: { Loader, Listing, ListingSingle },
+  components: { Listing, WeatherDetailsCard, WeatherSummaryCard },
 
   methods: {
     async fetchData() {
@@ -81,32 +91,45 @@ export default {
         }
       }
 
-      this.hourlyWeather = JSON.parse(sessionStorage.getItem("HourlyWeather"));
+      const hourlyWeather = JSON.parse(sessionStorage.getItem("HourlyWeather"));
+
+      this.assignDailyWeather(hourlyWeather);
     },
 
-    formatDate(date) {
-      return formatDate(date, {
-        weekday: "long",
-        day: "numeric",
-        month: "long",
+    formatDate(date, options) {
+      return formatDateTime(date, options);
+    },
+
+    formatTime(time) {
+      return formatDateTime(time, {
+        hour: "numeric",
+        minute: "numeric",
       });
     },
+
+    assignDailyWeather(data) {
+      this.hourlyWeather = data.slice(0, this.dataLength);
+    },
+
+    setActive(dayIndex, hourIndex) {
+      this.activeIndex[dayIndex] = hourIndex;
+    },
   },
 
-  beforeMount() {
-    if (sessionStorage.getItem("lastHourlyApiTimeStmp")) {
-      let sessionTime = new Date(
-        sessionStorage.getItem("lastHourlyApiTimeStmp")
-      );
-      let current = new Date();
-      if (
-        sessionTime.getHours() != current.getHours() ||
-        sessionTime.getDate() != current.getDate()
-      ) {
-        sessionStorage.removeItem("HourlyWeather");
-      }
-    }
-  },
+  // beforeMount() {
+  //   if (sessionStorage.getItem("lastHourlyApiTimeStmp")) {
+  //     let sessionTime = new Date(
+  //       sessionStorage.getItem("lastHourlyApiTimeStmp")
+  //     );
+  //     let current = new Date();
+  //     if (
+  //       sessionTime.getHours() != current.getHours() ||
+  //       sessionTime.getDate() != current.getDate()
+  //     ) {
+  //       sessionStorage.removeItem("HourlyWeather");
+  //     }
+  //   }
+  // },
 
   created() {
     this.fetchData();

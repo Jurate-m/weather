@@ -1,16 +1,12 @@
 <template>
-  <Listing
-    v-if="weather"
-    class="home"
-    featured
-    :data="weather"
-    :activeIndex="activeIndex"
-  >
-    <template #featured="{ item }"
-      ><FeaturedCard :data="item"></FeaturedCard></template
-  ></Listing>
+  <Listing v-if="weather" featured :data="weather" :activeIndex="activeIndex">
+    <template #featured="{ item, index }">
+      <FeaturedCard :data="item" v-show="index === activeIndex"></FeaturedCard>
+    </template>
+  </Listing>
 
   <Listing
+    v-if="weather"
     :data="weather"
     :activeIndex="activeIndex"
     @set-active="handleSetActive"
@@ -21,22 +17,10 @@
   </Listing>
 </template>
 
-<style>
-ul.home:first-child > li {
-  display: none;
-}
-ul.home:first-child > li.active {
-  display: block;
-}
-</style>
-
 <script>
-import FeaturedList from "@/components/FeaturedList.vue";
 import FeaturedCard from "@/components/FeaturedCard.vue";
 import FeaturedListCard from "@/components/FeaturedListCard.vue";
 import Listing from "@/components/Listing.vue";
-import WeatherCard from "@/components/WeatherCard.vue";
-import Card from "@/layouts/Card.vue";
 import { modifyString } from "@/utils.js";
 
 export default {
@@ -46,16 +30,14 @@ export default {
       location: null,
       astroData: null,
       activeIndex: 0,
+      index: null,
       dataLength: 6,
     };
   },
 
   components: {
-    Card,
-    WeatherCard,
     FeaturedCard,
     Listing,
-    FeaturedList,
     FeaturedListCard,
   },
 

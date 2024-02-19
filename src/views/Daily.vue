@@ -1,72 +1,83 @@
 <template>
-  <h1>Daily</h1>
   <div v-if="dailyWeather">
-    <div v-if="dailyWeather">
-      <Listing v-for="single in dailyWeather">
-        <ListingSingle
-          :data="single"
-          :date="formatDate(new Date(single.day))"
-          :icon="single.icon"
-          :temperature="`${single.temperature_min}° / ${single.temperature_max}°`"
-          :humidity="single.humidity"
-          :windDir="single.wind.dir"
-          :windSpeed="single.wind.speed"
+    <Listing
+      :data="dailyWeather"
+      :activeIndex="activeIndex"
+      @set-active="setActive"
+      extended
+    >
+      <template #button="{ item }"
+        ><WeatherSummaryCard
+          :date="formatDateTime(new Date(item.day))"
+          :icon="item.icon"
+          :temperature="item.temperature"
+          :humidity="item.humidity"
+          :windDir="item.wind.dir"
+          :windSpeed="item.wind.speed"
+        ></WeatherSummaryCard
+      ></template>
+      <template #details="{ item, index }">
+        <!-- <Transition name="slide-down"> -->
+        <WeatherDetailsCard
+          v-show="index === activeIndex"
+          :summary="item.summary"
           :details="[
             {
               image: '.',
               title: 'Feels like',
-              description: `${single.feels_like}°C`,
+              description: `${item.feels_like}°C`,
             },
             {
               image: '.',
               title: 'Wind',
-              description: `${single.wind.dir} ${single.wind.speed}m/s`,
+              description: `${item.wind.dir} ${item.wind.speed}m/s`,
             },
             {
               image: '.',
               title: 'Humidity',
-              description: `${single.humidity}%`,
+              description: `${item.humidity}%`,
             },
             {
               image: '.',
               title: 'Cloud Cover',
-              description: `${single.cloud_cover}%`,
+              description: `${item.cloud_cover}%`,
             },
             {
-              image: `${single.precipitation.total == 'rain' ? './' : './'}`,
+              image: `${item.precipitation.total == 'rain' ? './' : './'}`,
               title: 'Precipitation',
-              description: `${single.precipitation.total}%`,
+              description: `${item.precipitation.total}%`,
             },
           ]"
         >
-          <template #summary>{{ single.summary }}</template>
-          <template #details> </template>
-        </ListingSingle>
-      </Listing>
-    </div>
-  </div>
-  <div v-else>
-    <Loader />
+          ></WeatherDetailsCard
+        >
+        <!-- </Transition> -->
+      </template>
+    </Listing>
   </div>
 </template>
 
 <script>
-import Loader from "@/components/Loader.vue";
+import WeatherDetailsCard from "@/components/WeatherDetailsCard.vue";
+import WeatherSummaryCard from "@/components/WeatherSummaryCard.vue";
 import Listing from "@/components/Listing.vue";
-import ListingSingle from "@/components/ListingSingle.vue";
-import Row from "@/layouts/Row.vue";
-import Column from "@/layouts/Column.vue";
-import { formatDate } from "@/utils.js";
+import { formatDateTime } from "@/utils";
 
 export default {
   data() {
     return {
       dailyWeather: null,
       astroData: null,
+      details: null,
+      activeIndex: 0,
     };
   },
 
-  components: { Loader, Listing, ListingSingle, Row, Column },
+  components: {
+    Listing,
+    WeatherSummaryCard,
+    WeatherDetailsCard,
+  },
 
   methods: {
     async fetchData() {
@@ -89,28 +100,32 @@ export default {
       this.astroData = JSON.parse(sessionStorage.getItem("AstroData"));
     },
 
-    formatDate(date) {
-      return formatDate(date, {
+    formatDateTime(date) {
+      return formatDateTime(date, {
         weekday: "short",
         day: "numeric",
       });
     },
+
+    setActive(index) {
+      this.activeIndex = index;
+    },
   },
 
-  beforeMount() {
-    if (sessionStorage.getItem("lastDailyApiTimeStmp")) {
-      let sessionTime = new Date(
-        sessionStorage.getItem("lastDailyApiTimeStmp")
-      );
-      let current = new Date();
-      if (
-        sessionTime.getHours() != current.getHours() ||
-        sessionTime.getDate() != current.getDate()
-      ) {
-        sessionStorage.removeItem("DailyWeather");
-      }
-    }
-  },
+  // beforeMount() {
+  //   if (sessionStorage.getItem("lastDailyApiTimeStmp")) {
+  //     let sessionTime = new Date(
+  //       sessionStorage.getItem("lastDailyApiTimeStmp")
+  //     );
+  //     let current = new Date();
+  //     if (
+  //       sessionTime.getHours() != current.getHours() ||
+  //       sessionTime.getDate() != current.getDate()
+  //     ) {
+  //       sessionStorage.removeItem("DailyWeather");
+  //     }
+  //   }
+  // },
 
   created() {
     this.fetchData();
