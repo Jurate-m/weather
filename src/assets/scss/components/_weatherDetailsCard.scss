@@ -1,0 +1,27 @@
+.weather-details-card {
+  padding: 40px 20px 30px;
+
+  p {
+    margin: 0;
+  }
+
+  &__summary {
+    padding-bottom: 40px;
+  }
+
+  &__items {
+    .item {
+      width: 100%;
+
+      &__inner {
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      &:not(:last-child) {
+        border-bottom: 1px solid $dark-lighter;
+      }
+    }
+  }
+}
