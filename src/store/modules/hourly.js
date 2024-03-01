@@ -5,6 +5,7 @@ export default {
 
   state() {
     return {
+      place_id: null,
       lastHourlyApiTimeStmp: null,
       hourlyWeather: [],
     };
@@ -16,7 +17,7 @@ export default {
       let day = [];
       let loopIndex = 0;
 
-      payload.data.hourly.data.map((item) => {
+      payload.map((item) => {
         if (dateIndex == new Date(item.date).getDate()) {
           day.push(item);
         } else {
@@ -42,18 +43,29 @@ export default {
   },
 
   actions: {
-    async getHourlyWeather({ rootState, commit }) {
-      const place_id =
-        rootState.locationId || sessionStorage.getItem("LocationId");
+    async getHourlyWeather({ rootState, state, commit, dispatch }) {
+      if (
+        !rootState.location.locationId ||
+        !sessionStorage.getItem("LocationId")
+      ) {
+        try {
+          await dispatch("location/loadLocation", "", { root: true });
+        } catch (error) {
+          console.log(error);
+        }
+      }
 
-      if (!place_id) return;
+      state.place_id =
+        rootState.location.locationId || sessionStorage.getItem("LocationId");
 
-      await apiRequest(
-        "hourly",
-        { place_id: place_id, units: "metric" },
-        commit,
-        "separateDays"
-      );
+      if (!state.place_id) return;
+
+      const hourly = await apiRequest("hourly", {
+        place_id: state.place_id,
+        units: "metric",
+      });
+
+      commit("separateDays", hourly.data.hourly.data);
 
       commit("setHourlyTimeStamp", new Date());
     },

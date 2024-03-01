@@ -5,6 +5,7 @@ export default {
 
   state() {
     return {
+      place_id: null,
       lastDailyApiTimeStmp: null,
       dailyWeather: [],
     };
@@ -12,11 +13,8 @@ export default {
 
   mutations: {
     assignDailyWeather(state, payload) {
-      state.dailyWeather = payload.data.daily.data;
-      sessionStorage.setItem(
-        "DailyWeather",
-        JSON.stringify(payload.data.daily.data)
-      );
+      state.dailyWeather = payload;
+      sessionStorage.setItem("DailyWeather", JSON.stringify(payload));
     },
 
     setDailyTimeStamp(state, payload) {
@@ -26,18 +24,29 @@ export default {
   },
 
   actions: {
-    async getDailyWeather({ commit, rootState }) {
-      const place_id =
-        rootState.locationId || sessionStorage.getItem("LocationId");
+    async getDailyWeather({ rootState, state, dispatch, commit }) {
+      if (
+        !rootState.location.locationId ||
+        !sessionStorage.getItem("LocationId")
+      ) {
+        try {
+          await dispatch("location/loadLocation", "", { root: true });
+        } catch (error) {
+          console.log(error);
+        }
+      }
 
-      if (!place_id) return;
+      state.place_id =
+        rootState.location.locationId || sessionStorage.getItem("LocationId");
 
-      await apiRequest(
-        "daily",
-        { place_id: place_id, units: "metric" },
-        commit,
-        "assignDailyWeather"
-      );
+      if (!state.place_id) return;
+
+      const daily_weather = await apiRequest("daily", {
+        place_id: state.place_id,
+        units: "metric",
+      });
+
+      commit("assignDailyWeather", daily_weather.data.daily.data);
 
       commit("setDailyTimeStamp", new Date());
     },
