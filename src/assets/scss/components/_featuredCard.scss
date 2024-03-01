@@ -1,18 +1,11 @@
 .featured-card {
   padding: 40px 20px;
-  border: 1px solid lighten($dark, 5%);
-
-  .row {
-    display: block;
-
-    .col.col-6 {
-      width: 100%;
-    }
-  }
+  // border: 1px solid $accent-colour;
+  // border-radius: 8px;
 
   img {
-    height: 100px;
-    width: 100px;
+    height: 80px;
+    width: 80px;
     object-fit: contain;
   }
 
@@ -28,7 +21,7 @@
         justify-content: space-between;
 
         &:not(:last-child) {
-          border-bottom: 1px solid $dark-lighter;
+          border-bottom: 1px solid $accent-colour;
         }
 
         p {
@@ -43,6 +36,17 @@
           }
         }
       }
+    }
+  }
+
+  @media only screen and (min-width: 600px) {
+    display: flex;
+
+    .featured-card__col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
   }
 }
