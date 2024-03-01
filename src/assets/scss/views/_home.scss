@@ -1,0 +1,22 @@
+.home {
+  .listing {
+    .listing-single {
+      position: relative;
+      width: calc((100% / 2) - 5px);
+    }
+
+    &:last-child {
+      gap: 10px;
+
+      .listing-single {
+        @media only screen and (min-width: 600px) {
+          width: calc((100% - 30px) / 4);
+        }
+
+        @media only screen and (min-width: 768px) {
+          width: calc((100% - 70px) / 8);
+        }
+      }
+    }
+  }
+}
