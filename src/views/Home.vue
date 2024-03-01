@@ -1,68 +1,108 @@
-<template>
-  <Listing v-if="weather" featured :data="weather" :activeIndex="activeIndex">
-    <template #featured="{ item, index }">
-      <FeaturedCard :data="item" v-show="index === activeIndex"></FeaturedCard>
-    </template>
-  </Listing>
+<!-- Side note :
+  1. get astro data
+  2. compare time
+  3. if past sunrise, but not sunset yet -light bg
+  4. else - dark bg
+-->
 
-  <Listing
-    v-if="weather"
-    :data="weather"
-    :activeIndex="activeIndex"
-    @set-active="handleSetActive"
-  >
-    <template #button="{ item }"
-      ><FeaturedListCard :data="item"></FeaturedListCard
-    ></template>
-  </Listing>
+<template>
+  <div v-if="weather" class="home">
+    <h1 v-if="location" class="mb-20">{{ location }}, <br />Current Weather</h1>
+    <div class="home__lists">
+      <Listing>
+        <ListingSingle
+          v-for="(item, index) in weather"
+          featured
+          v-show="index === activeIndex"
+          :key="new Date()"
+        >
+          <template #featured>
+            <FeaturedCard :data="item"></FeaturedCard>
+          </template>
+        </ListingSingle>
+      </Listing>
+      <Listing>
+        <ListingSingle
+          v-for="(item, index) in weather"
+          customEvent
+          @set-active="setActive(index)"
+          :class="{ active: index === activeIndex }"
+        >
+          <template #button
+            ><FeaturedListCard :data="item"></FeaturedListCard></template
+        ></ListingSingle>
+      </Listing>
+    </div>
+  </div>
 </template>
 
 <script>
+import "@/assets/scss/views/_home.scss";
 import FeaturedCard from "@/components/FeaturedCard.vue";
 import FeaturedListCard from "@/components/FeaturedListCard.vue";
 import Listing from "@/components/Listing.vue";
-import { modifyString } from "@/utils.js";
+import ListingSingle from "@/components/ListingSingle.vue";
 
 export default {
-  data() {
-    return {
-      weather: null,
-      location: null,
-      astroData: null,
-      activeIndex: 0,
-      index: null,
-      dataLength: 6,
-    };
-  },
-
   components: {
     FeaturedCard,
     Listing,
+    ListingSingle,
     FeaturedListCard,
   },
 
-  methods: {
-    async fetchData() {
-      if (
-        !sessionStorage.getItem("HourlyWeather") ||
-        !sessionStorage.getItem("AstroData")
-      ) {
-        try {
-          if (!sessionStorage.getItem("LocationId")) {
-            await this.$store.dispatch("loadLocationId");
-          }
+  data() {
+    return {
+      weather: null,
+      // astroData: null,
+      activeIndex: 0,
+      dataLength: 8,
+      location: sessionStorage.getItem("LocationName"),
+    };
+  },
 
-          await this.$store.dispatch("hourly/getHourlyWeather");
-          await this.$store.dispatch("astro/getAstroData");
-        } catch (error) {
-          console.log(error);
-        }
+  watch: {
+    locationId() {
+      this.assignData();
+    },
+
+    locationName() {
+      this.location = sessionStorage.getItem("LocationName");
+    },
+  },
+
+  computed: {
+    locationId() {
+      return this.$store.state.location.locationId;
+    },
+
+    locationName() {
+      return this.$store.state.location.locationName;
+    },
+
+    routeStuff() {
+      console.log(this.$route);
+    },
+  },
+
+  methods: {
+    fetchData() {
+      return this.$store.dispatch("hourly/getHourlyWeather");
+    },
+
+    async assignData() {
+      if (sessionStorage.getItem("HourlyWeather")) {
+        sessionStorage.removeItem("HourlyWeather");
       }
 
-      this.location = modifyString(sessionStorage.getItem("LocationId"));
-      const weather = JSON.parse(sessionStorage.getItem("HourlyWeather"));
+      try {
+        await this.fetchData();
+      } catch (error) {
+        console.error(error);
+      }
+
+      let weather = JSON.parse(sessionStorage.getItem("HourlyWeather"));
       this.assignWeather(weather);
-      this.astroData = JSON.parse(sessionStorage.getItem("AstroData"));
     },
 
     assignWeather(data) {
@@ -76,7 +116,7 @@ export default {
       this.weather = data[0].slice(0, this.dataLength);
     },
 
-    handleSetActive(index) {
+    setActive(index) {
       this.activeIndex = index;
     },
   },
@@ -97,7 +137,7 @@ export default {
   // },
 
   created() {
-    this.fetchData();
+    this.assignData();
   },
 };
 </script>

@@ -1,58 +1,53 @@
 <template>
   <div v-if="dailyWeather">
-    <Listing
-      :data="dailyWeather"
-      :activeIndex="activeIndex"
-      @set-active="setActive"
-      extended
-    >
-      <template #button="{ item }"
-        ><WeatherSummaryCard
-          :date="formatDateTime(new Date(item.day))"
-          :icon="item.icon"
-          :temperature="item.temperature"
-          :humidity="item.humidity"
-          :windDir="item.wind.dir"
-          :windSpeed="item.wind.speed"
-        ></WeatherSummaryCard
-      ></template>
-      <template #details="{ item, index }">
-        <!-- <Transition name="slide-down"> -->
-        <WeatherDetailsCard
-          v-show="index === activeIndex"
-          :summary="item.summary"
-          :details="[
-            {
-              image: '.',
-              title: 'Feels like',
-              description: `${item.feels_like}°C`,
-            },
-            {
-              image: '.',
-              title: 'Wind',
-              description: `${item.wind.dir} ${item.wind.speed}m/s`,
-            },
-            {
-              image: '.',
-              title: 'Humidity',
-              description: `${item.humidity}%`,
-            },
-            {
-              image: '.',
-              title: 'Cloud Cover',
-              description: `${item.cloud_cover}%`,
-            },
-            {
-              image: `${item.precipitation.total == 'rain' ? './' : './'}`,
-              title: 'Precipitation',
-              description: `${item.precipitation.total}%`,
-            },
-          ]"
-        >
-          ></WeatherDetailsCard
-        >
-        <!-- </Transition> -->
-      </template>
+    <h1 class="mb-60">{{ location }}, <br />Daily Weather</h1>
+
+    <Listing full_width class="mb-30">
+      <ListingSingle v-for="item in dailyWeather">
+        <template #button
+          ><WeatherSummaryCard
+            :date="formatDateTime(new Date(item.day))"
+            :icon="item.icon"
+            :temperature="item.temperature"
+            :humidity="item.humidity"
+            :windDir="item.wind.dir"
+            :windSpeed="item.wind.speed"
+          ></WeatherSummaryCard
+        ></template>
+        <template #details>
+          <WeatherDetailsCard
+            class="listing-single__details"
+            :summary="item.summary"
+            :details="[
+              {
+                image: '.',
+                title: 'Feels like',
+                description: `${item.feels_like}°C`,
+              },
+              {
+                image: '.',
+                title: 'Wind',
+                description: `${item.wind.dir} ${item.wind.speed}m/s`,
+              },
+              {
+                image: '.',
+                title: 'Humidity',
+                description: `${item.humidity}%`,
+              },
+              {
+                image: '.',
+                title: 'Cloud Cover',
+                description: `${item.cloud_cover}%`,
+              },
+              {
+                image: `${item.precipitation.total == 'rain' ? './' : './'}`,
+                title: 'Precipitation',
+                description: `${item.precipitation.total}%`,
+              },
+            ]"
+          ></WeatherDetailsCard>
+        </template>
+      </ListingSingle>
     </Listing>
   </div>
 </template>
@@ -61,43 +56,63 @@
 import WeatherDetailsCard from "@/components/WeatherDetailsCard.vue";
 import WeatherSummaryCard from "@/components/WeatherSummaryCard.vue";
 import Listing from "@/components/Listing.vue";
+import ListingSingle from "@/components/ListingSingle.vue";
 import { formatDateTime } from "@/utils";
 
 export default {
+  components: {
+    Listing,
+    ListingSingle,
+    WeatherSummaryCard,
+    WeatherDetailsCard,
+  },
+
   data() {
     return {
       dailyWeather: null,
       astroData: null,
       details: null,
-      activeIndex: 0,
+      location: sessionStorage.getItem("LocationName"),
     };
   },
 
-  components: {
-    Listing,
-    WeatherSummaryCard,
-    WeatherDetailsCard,
+  watch: {
+    locationId() {
+      this.assignData();
+    },
+
+    locationName() {
+      this.location = sessionStorage.getItem("LocationName");
+    },
+  },
+
+  computed: {
+    locationId() {
+      return this.$store.state.location.locationId;
+    },
+
+    locationName() {
+      return this.$store.state.location.locationName;
+    },
   },
 
   methods: {
-    async fetchData() {
-      if (
-        !sessionStorage.getItem("DailyWeather") ||
-        !sessionStorage.getItem("AstroData")
-      ) {
-        try {
-          if (!sessionStorage.getItem("LocationId")) {
-            await this.$store.dispatch("loadLocationId");
-          }
-          await this.$store.dispatch("daily/getDailyWeather");
-          await this.$store.dispatch("astro/getAstroData");
-        } catch (error) {
-          console.log(error);
-        }
+    fetchData() {
+      return this.$store.dispatch("daily/getDailyWeather");
+    },
+
+    async assignData() {
+      if (sessionStorage.getItem("DailyWeather")) {
+        sessionStorage.removeItem("DailyWeather");
+      }
+
+      try {
+        await this.fetchData();
+      } catch (error) {
+        console.error(error);
       }
 
       this.dailyWeather = JSON.parse(sessionStorage.getItem("DailyWeather"));
-      this.astroData = JSON.parse(sessionStorage.getItem("AstroData"));
     },
 
     formatDateTime(date) {
@@ -105,10 +120,6 @@ export default {
         weekday: "short",
         day: "numeric",
       });
-    },
-
-    setActive(index) {
-      this.activeIndex = index;
     },
   },
 
@@ -128,7 +139,7 @@ export default {
   // },
 
   created() {
-    this.fetchData();
+    this.assignData();
   },
 };
 </script>
