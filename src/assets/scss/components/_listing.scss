@@ -1,11 +1,14 @@
 .listing {
   display: flex;
   flex-wrap: wrap;
-  padding-top: 40px;
-  margin: 0 -10px;
+  align-content: flex-start;
 
   &.listing--full-w {
     display: block;
+
+    @media only screen and (min-width: 768px) {
+      width: 100%;
+    }
 
     .listing-single {
       width: 100%;
@@ -20,32 +23,32 @@
   }
 
   .listing-single {
-    width: calc(100% / 2);
     display: block;
 
     &.listing-single--featured {
       width: 100%;
+    }
 
-      &.active {
-        position: static;
+    &.active {
+      .listing-single__inner {
+        & > button {
+          border-color: $accent-colour;
+        }
       }
     }
 
     &__inner {
-      height: 100%;
-
       & > button {
         text-align: center;
-        box-shadow: 1px 1px 4px -1px $black;
+        box-shadow: 1px 1px 3px -2px #000;
+        border: 1px solid darken($dark-2, 2%);
+        // border-radius: 8px;
         padding: 20px;
         display: block;
         width: 100%;
         max-width: 100%;
+        // background-color: darken($dark-2, 2%);
       }
-    }
-
-    @media only screen and (min-width: 768px) {
-      width: calc(100% / 2);
     }
   }
 }
