@@ -1,5 +1,5 @@
 <template>
-  <Card>
+  <div>
     <div class="weather-summary-card">
       <div class="weather-summary-card__item">
         <p>{{ date }}</p>
@@ -22,12 +22,11 @@
         <p>{{ windDir }} {{ windSpeed }}m/s</p>
       </div>
     </div>
-  </Card>
+  </div>
 </template>
 
 <script>
 import "@/assets/scss/components/_weatherSummaryCard.scss";
-import Card from "@/layouts/Card.vue";
 
 export default {
   props: {
@@ -55,10 +54,6 @@ export default {
       type: Number,
       required: true,
     },
-  },
-
-  components: {
-    Card,
   },
 
   computed: {
