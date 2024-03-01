@@ -1,85 +1,66 @@
-.layout--dark {
-  .search {
-    &__trigger,
-    &__dropdown {
-      img {
-        filter: invert(1);
-      }
-    }
+.search {
+  width: 20px;
+  max-width: 200px;
 
-    &__trigger {
-      form {
-        border-color: $light;
+  transition: all 0.5s ease;
+
+  &--active {
+    width: 60%;
+
+    .search__trigger {
+      input[type="text"] {
+        opacity: 1;
+        width: 100%;
+        max-width: 100%;
       }
     }
   }
-}
-
-.search {
-  width: 280px;
-  position: relative;
 
   &__trigger {
-    background-color: transparent;
-    border: none;
-    box-shadow: none;
+    position: relative;
+  }
 
-    form {
-      display: flex;
-      padding: 15px 20px 15px 20px;
-      border-bottom: 1px solid $dark;
-      border-bottom-left-radius: 25px;
-      transition: border-radius 0.3s;
+  input[type="text"] {
+    opacity: 0;
+    width: 0;
 
-      button {
-        display: block;
-        margin-right: 15px;
-      }
+    padding: 0 0 0 20px;
+    transition: all 0.5s ease;
+  }
 
-      input {
-        width: 100%;
-        margin: 0;
-      }
+  &__inner {
+    display: flex;
+  }
+
+  button[type="submit"] {
+    img {
+      height: 20px;
+      width: 20px;
     }
   }
 
   &__dropdown {
     position: absolute;
-    top: 100%;
-    opacity: 1;
-    padding: 20px 20px;
     width: 100%;
-    background-color: $dark-lighter;
+    background-color: $dark-2;
 
-    &.v-enter-active,
-    &.v-leave-active {
-      transition: opacity 0.3s ease;
-    }
+    &-item {
+      padding: 10px;
 
-    &.v-enter-from,
-    &.v-leave-to {
-      opacity: 0;
-    }
-
-    button {
-      display: flex;
-      align-items: flex-end;
-
-      p {
-        margin: 0;
-      }
-
-      img {
-        display: block;
-        margin-right: 15px;
+      &:not(:last-child) {
+        border-bottom: 1px solid black;
       }
     }
   }
 
-  &.search--active {
-    form {
-      background-color: $dark-lighter;
-      border-radius: 0;
-    }
+  input[type="radio"] {
+    position: fixed;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 0;
   }
 }
