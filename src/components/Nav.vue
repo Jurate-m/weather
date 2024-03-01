@@ -5,13 +5,13 @@
       <span></span>
       <span></span>
     </button>
-    <Transition>
-      <ul class="nav-list" v-show="this.active">
-        <li v-for="route in routes" :key="route.name">
-          <router-link :to="route.path">{{ route.name }}</router-link>
-        </li>
-      </ul>
-    </Transition>
+    <ul class="nav-list">
+      <li v-for="route in routes" :key="route.name">
+        <router-link :to="route.path" @click="hide()">{{
+          route.name
+        }}</router-link>
+      </li>
+    </ul>
   </nav>
 </template>
 
