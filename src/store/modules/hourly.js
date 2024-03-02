@@ -13,16 +13,16 @@ export default {
 
   mutations: {
     separateDays(state, payload) {
-      let dateIndex = new Date().getDate();
+      let dateIndex = new Date().getUTCDate();
       let day = [];
       let loopIndex = 0;
 
       payload.map((item) => {
-        if (dateIndex == new Date(item.date).getDate()) {
+        if (dateIndex == new Date(item.date).getUTCDate()) {
           day.push(item);
         } else {
           day = [];
-          dateIndex = new Date(item.date).getDate();
+          dateIndex = new Date(item.date).getUTCDate();
           loopIndex += 1;
           day.push(item);
         }
@@ -64,6 +64,8 @@ export default {
         place_id: state.place_id,
         units: "metric",
       });
+
+      console.log("triggered hourlu get");
 
       commit("separateDays", hourly.data.hourly.data);
 
