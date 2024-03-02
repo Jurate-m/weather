@@ -1,10 +1,3 @@
-<!-- Side note :
-  1. get astro data
-  2. compare time
-  3. if past sunrise, but not sunset yet -light bg
-  4. else - dark bg
--->
-
 <template>
   <div v-if="weather" class="home">
     <h1 v-if="location" class="mb-20">{{ location }}, <br />Current Weather</h1>
@@ -63,6 +56,10 @@ export default {
 
   watch: {
     locationId() {
+      if (sessionStorage.getItem("HourlyWeather")) {
+        sessionStorage.removeItem("HourlyWeather");
+      }
+
       this.assignData();
     },
 
@@ -91,10 +88,6 @@ export default {
     },
 
     async assignData() {
-      if (sessionStorage.getItem("HourlyWeather")) {
-        sessionStorage.removeItem("HourlyWeather");
-      }
-
       try {
         await this.fetchData();
       } catch (error) {
@@ -137,7 +130,12 @@ export default {
   // },
 
   created() {
-    this.assignData();
+    if (sessionStorage.getItem("HourlyWeather")) {
+      let weather = JSON.parse(sessionStorage.getItem("HourlyWeather"));
+      this.assignWeather(weather);
+    } else {
+      this.assignData();
+    }
   },
 };
 </script>

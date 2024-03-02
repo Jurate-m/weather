@@ -78,6 +78,10 @@ export default {
 
   watch: {
     locationId() {
+      if (sessionStorage.getItem("DailyWeather")) {
+        sessionStorage.removeItem("DailyWeather");
+      }
+
       this.assignData();
     },
 
@@ -102,10 +106,6 @@ export default {
     },
 
     async assignData() {
-      if (sessionStorage.getItem("DailyWeather")) {
-        sessionStorage.removeItem("DailyWeather");
-      }
-
       try {
         await this.fetchData();
       } catch (error) {
@@ -139,7 +139,11 @@ export default {
   // },
 
   created() {
-    this.assignData();
+    if (sessionStorage.getItem("DailyWeather")) {
+      this.dailyWeather = JSON.parse(sessionStorage.getItem("DailyWeather"));
+    } else {
+      this.assignData();
+    }
   },
 };
 </script>
