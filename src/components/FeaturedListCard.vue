@@ -1,13 +1,17 @@
 <template>
   <div class="featured-list-card">
-    <span>{{
-      formatTime(new Date(data.date), {
-        hour: "numeric",
-        minute: "numeric",
-      })
-    }}</span>
-    <div><img :src="`/src/assets/icons/weather/${data.icon}.svg`" /></div>
-    <span>{{ Math.round(data.temperature) }}°C</span>
+    <p class="mb-10">
+      {{
+        formatTime(new Date(data.date), {
+          hour: "numeric",
+          minute: "numeric",
+        })
+      }}
+    </p>
+    <div class="mb-10">
+      <img :src="`/src/assets/icons/weather/${data.icon}.svg`" />
+    </div>
+    <p>{{ Math.round(data.temperature) }}°C</p>
   </div>
 </template>
 
