@@ -8,6 +8,10 @@
     display: flex;
     align-items: center;
 
+    @media only screen and (min-width: 768px) {
+      flex: 1;
+    }
+
     p {
       margin-bottom: 0;
     }
@@ -21,6 +25,26 @@
     &.hum,
     &.wind {
       display: none;
+
+      @media only screen and (min-width: 768px) {
+        display: flex;
+      }
+    }
+
+    &.hum img,
+    &.wind img {
+      height: 20px;
+    }
+
+    &.hum img {
+      width: 20px;
+    }
+
+    &.wind {
+      justify-content: flex-end;
+      p {
+        text-wrap: nowrap;
+      }
     }
   }
 }

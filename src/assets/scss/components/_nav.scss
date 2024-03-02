@@ -2,7 +2,6 @@
   &.active {
     .nav-burger {
       span {
-        // background-color: $light;
         background-color: $dark;
 
         &:first-child {
@@ -21,6 +20,7 @@
 
     .nav-list {
       left: 0;
+      visibility: visible;
     }
   }
 
@@ -60,6 +60,7 @@
     position: absolute;
     top: 0;
     left: -100%;
+    visibility: hidden;
     width: 80%;
     height: 100vh;
     padding: 80px 20px 60px;
@@ -70,6 +71,7 @@
     @media only screen and (min-width: 764px) {
       display: flex;
       position: static;
+      visibility: visible;
       height: auto;
       margin: 0 -10px;
       padding: 0;
