@@ -1,6 +1,6 @@
 <template>
   <div :class="classes" v-click-out="hide">
-    <div class="search__trigger" @click="show()">
+    <div class="search__trigger" @click="show()" tabindex="0">
       <form @submit.prevent="sendData()">
         <div class="search__inner">
           <!-- Have simple button and then transition to a submit when form is active -->
@@ -9,26 +9,32 @@
           </button>
           <input
             type="text"
+            title="Search for location"
             placeholder="Location"
             v-model="locationInput"
             @keyup="renderLocationList()"
           />
         </div>
-        <div class="search__dropdown" v-if="locationArr" v-show="active">
-          <div
-            v-for="item in locationArr"
-            tabindex="0"
-            class="search__dropdown-item"
-          >
-            <input
-              type="radio"
-              :id="item.place_id"
-              :value="item"
-              v-model="selectedLocation"
-              @change="sendData()"
-            />
-            <label :for="item.place_id">{{ item.name }}</label>
-          </div>
+        <div
+          class="search__dropdown"
+          :class="dropdownClass"
+          v-show="active && locationArr"
+        >
+          <fieldset>
+            <legend>Locations</legend>
+            <div v-for="item in locationArr" class="search__dropdown-item">
+              <input
+                type="radio"
+                :id="item.place_id"
+                :value="item"
+                v-model="selectedLocation"
+                @change.prevent="sendData()"
+                :aria-label="item.name"
+              />
+
+              <label :for="item.place_id">{{ item.name }}</label>
+            </div>
+          </fieldset>
         </div>
       </form>
     </div>
@@ -67,7 +73,10 @@ export default {
     },
 
     hide() {
-      return (this.active = false);
+      this.active = false;
+      this.locationInput = null;
+      this.locationArr = null;
+      this.active = false;
     },
 
     getLocationList() {
@@ -121,9 +130,8 @@ export default {
 
         this.$store.dispatch("location/setUserLocationId", this.place_id);
         this.$store.dispatch("location/setUserLocationName", this.place_name);
-        this.locationInput = null;
-        this.locationArr = null;
-        this.active = false;
+
+        this.hide();
       }
     },
   },
@@ -133,6 +141,12 @@ export default {
       return {
         search: true,
         "search--active": this.active,
+      };
+    },
+
+    dropdownClass() {
+      return {
+        active: this.active && this.locationArr,
       };
     },
 
