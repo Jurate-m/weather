@@ -32,22 +32,21 @@
     &.active {
       .listing-single__inner {
         & > button {
-          border-color: $accent-colour;
+          background-color: rgba($dark-2, 0.3);
         }
       }
     }
 
     &__inner {
       & > button {
+        background-color: rgba($dark-2, 0.1);
         text-align: center;
         box-shadow: 1px 1px 3px -2px #000;
-        border: 1px solid darken($dark-2, 2%);
-        // border-radius: 8px;
+        border: 1px solid darken($dark, 2%);
         padding: 20px;
         display: block;
         width: 100%;
         max-width: 100%;
-        // background-color: darken($dark-2, 2%);
       }
     }
   }

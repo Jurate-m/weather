@@ -1,7 +1,5 @@
 .featured-card {
   padding: 40px 20px;
-  // border: 1px solid $accent-colour;
-  // border-radius: 8px;
 
   img {
     height: 80px;
@@ -21,7 +19,7 @@
         justify-content: space-between;
 
         &:not(:last-child) {
-          border-bottom: 1px solid $accent-colour;
+          border-bottom: 1px solid $light-2;
         }
 
         p {
