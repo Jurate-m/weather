@@ -18,7 +18,6 @@
       </div>
       <div class="weather-summary-card__item wind">
         <img src="/src/assets/icons/wind.svg" />
-        <img src="/src/assets/icons/arrow.svg" />
         <p>{{ windDir }} {{ windSpeed }}m/s</p>
       </div>
     </div>
