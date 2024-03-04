@@ -1,13 +1,17 @@
-$columns: 12;
+$spacing: 0, 5, 10, 15, 20, 30, 60;
 
-@mixin col-x {
-  @for $i from 1 through $columns {
-    .col-#{$i} {
-      // width: calc((100% / $columns) * $i);
-      max-width: 100%;
-      flex-basis: calc((100% / $columns) * $i);
+@mixin spacing($className, $property, $direction) {
+  @each $space in $spacing {
+    .#{$className}-#{$space} {
+      @each $dir in $direction {
+        #{$property}-#{$dir}: #{$space}px;
+      }
     }
   }
 }
 
-@include col-x;
+@mixin mb-x {
+  @include spacing("mb", "margin", "bottom");
+}
+
+@include mb-x;
