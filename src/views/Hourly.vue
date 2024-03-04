@@ -1,7 +1,6 @@
 <template>
   <div v-if="hourlyWeather">
     <h1 class="mb-60">{{ location }}, <br />Hourly Weather</h1>
-
     <div v-for="day in hourlyWeather">
       <h2 class="mb-30">
         {{
@@ -18,10 +17,11 @@
             ><WeatherSummaryCard
               :date="formatTime(new Date(item.date))"
               :icon="item.icon"
+              :weather_summary="item.weather"
               :temperature="item.temperature"
               :humidity="item.humidity"
-              :windDir="item.wind.dir"
-              :windSpeed="item.wind.speed"
+              :wind_dir="item.wind.dir"
+              :wind_speed="item.wind.speed"
             ></WeatherSummaryCard
           ></template>
           <template #details>
@@ -30,7 +30,7 @@
                 {
                   image: 'termometer',
                   title: 'Feels like',
-                  description: `${item.feels_like}°C`,
+                  description: `${Math.round(item.feels_like)}°C`,
                 },
                 {
                   image: 'wind',
@@ -59,12 +59,17 @@
       </Listing>
     </div>
   </div>
+  <div v-else>
+    <Loader light></Loader>
+  </div>
 </template>
+
 <script>
 import Listing from "@/components/Listing.vue";
 import ListingSingle from "@/components/ListingSingle.vue";
 import WeatherDetailsCard from "@/components/WeatherDetailsCard.vue";
 import WeatherSummaryCard from "@/components/WeatherSummaryCard.vue";
+import Loader from "@/components/Loader.vue";
 import { formatDateTime } from "@/utils";
 
 export default {
@@ -73,6 +78,7 @@ export default {
     ListingSingle,
     WeatherDetailsCard,
     WeatherSummaryCard,
+    Loader,
   },
 
   data() {
@@ -85,10 +91,8 @@ export default {
 
   watch: {
     locationId() {
-      if (sessionStorage.getItem("HourlyWeather")) {
-        sessionStorage.removeItem("HourlyWeather");
-      }
-
+      sessionStorage.removeItem("DailyWeather");
+      sessionStorage.removeItem("HourlyWeather");
       this.assignData();
     },
 

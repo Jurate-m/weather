@@ -27,6 +27,9 @@
       </Listing>
     </div>
   </div>
+  <div v-else>
+    <Loader light></Loader>
+  </div>
 </template>
 
 <script>
@@ -35,6 +38,7 @@ import FeaturedCard from "@/components/FeaturedCard.vue";
 import FeaturedListCard from "@/components/FeaturedListCard.vue";
 import Listing from "@/components/Listing.vue";
 import ListingSingle from "@/components/ListingSingle.vue";
+import Loader from "@/components/Loader.vue";
 
 export default {
   components: {
@@ -42,12 +46,12 @@ export default {
     Listing,
     ListingSingle,
     FeaturedListCard,
+    Loader,
   },
 
   data() {
     return {
       weather: null,
-      // astroData: null,
       activeIndex: 0,
       dataLength: 8,
       location: sessionStorage.getItem("LocationName"),
@@ -56,10 +60,8 @@ export default {
 
   watch: {
     locationId() {
-      if (sessionStorage.getItem("HourlyWeather")) {
-        sessionStorage.removeItem("HourlyWeather");
-      }
-
+      sessionStorage.removeItem("DailyWeather");
+      sessionStorage.removeItem("HourlyWeather");
       this.assignData();
     },
 
@@ -75,10 +77,6 @@ export default {
 
     locationName() {
       return this.$store.state.location.locationName;
-    },
-
-    routeStuff() {
-      console.log(this.$route);
     },
   },
 
@@ -130,6 +128,8 @@ export default {
   // },
 
   created() {
+    console.log("created");
+    this.weather = null;
     if (sessionStorage.getItem("HourlyWeather")) {
       let weather = JSON.parse(sessionStorage.getItem("HourlyWeather"));
       this.assignWeather(weather);
