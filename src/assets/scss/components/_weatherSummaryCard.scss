@@ -10,6 +10,7 @@
 
     @media only screen and (min-width: 768px) {
       flex: 1;
+      flex-basis: 20%;
     }
 
     p {
@@ -34,6 +35,7 @@
     &.hum img,
     &.wind img {
       height: 20px;
+      width: 30px;
     }
 
     &.hum img {
@@ -41,7 +43,8 @@
     }
 
     &.wind {
-      justify-content: flex-end;
+      flex-basis: 150px;
+      justify-content: space-between;
       p {
         text-wrap: nowrap;
       }
