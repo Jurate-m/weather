@@ -1,9 +1,14 @@
 <template>
-  <nav :class="parentClass" v-click-out="hide">
-    <button class="nav-burger" @click="toggleDisplay" type="button">
-      <span></span>
-      <span></span>
-      <span></span>
+  <nav :class="parentClass" v-click-out="hide" role="navigation">
+    <button
+      class="nav-burger"
+      @click="toggleDisplay"
+      type="button"
+      :aria-label="active ? 'Close menu' : 'Open menu'"
+    >
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
     </button>
     <ul class="nav-list">
       <li v-for="route in routes" :key="route.name">

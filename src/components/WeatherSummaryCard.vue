@@ -6,19 +6,22 @@
       </div>
 
       <div class="weather-summary-card__item icon">
-        <img :src="`/src/assets/icons/weather/${icon}.svg`" />
+        <img
+          :src="`/src/assets/icons/weather/${icon}.svg`"
+          :alt="'Weather summary - ' + weather_summary"
+        />
       </div>
       <div class="weather-summary-card__item temp">
         <p>{{ Math.round(temperature) }}°C</p>
       </div>
 
       <div class="weather-summary-card__item hum">
-        <img src="/src/assets/icons/drop.svg" />
+        <img src="/src/assets/icons/drop.svg" aria-hidden="true" alt="null" />
         <p>{{ humidity }}%</p>
       </div>
       <div class="weather-summary-card__item wind">
-        <img src="/src/assets/icons/wind.svg" />
-        <p>{{ windDir }} {{ windSpeed }}m/s</p>
+        <img src="/src/assets/icons/wind.svg" aria-hidden="true" alt="null" />
+        <p>{{ wind_dir }} {{ wind_speed }}m/s</p>
       </div>
     </div>
   </div>
@@ -37,6 +40,10 @@ export default {
       type: Number,
       required: true,
     },
+    weather_summary: {
+      type: String,
+      required: true,
+    },
     temperature: {
       type: Number,
       required: true,
@@ -45,11 +52,11 @@ export default {
       type: Number,
       required: true,
     },
-    windDir: {
+    wind_dir: {
       type: String,
       required: true,
     },
-    windSpeed: {
+    wind_speed: {
       type: Number,
       required: true,
     },

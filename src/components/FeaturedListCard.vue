@@ -9,7 +9,10 @@
       }}
     </p>
     <div class="mb-10">
-      <img :src="`/src/assets/icons/weather/${data.icon}.svg`" />
+      <img
+        :src="`/src/assets/icons/weather/${data.icon}.svg`"
+        :alt="'Weather icon - ' + data.summary"
+      />
     </div>
     <p>{{ Math.round(data.temperature) }}°C</p>
   </div>

@@ -3,9 +3,11 @@
     <div class="search__trigger" @click="show()" tabindex="0">
       <form @submit.prevent="sendData()">
         <div class="search__inner">
-          <!-- Have simple button and then transition to a submit when form is active -->
-          <button type="submit">
-            <img src="@/assets/icons/search.svg" />
+          <button
+            :type="active ? 'submit' : 'button'"
+            :aria-label="active ? 'Open Search' : 'Submit'"
+          >
+            <img src="@/assets/icons/search.svg" alt="search icon" />
           </button>
           <input
             type="text"
@@ -18,7 +20,7 @@
         <div
           class="search__dropdown"
           :class="dropdownClass"
-          v-show="active && locationArr"
+          v-show="active != false && locationArr"
         >
           <fieldset>
             <legend>Locations</legend>

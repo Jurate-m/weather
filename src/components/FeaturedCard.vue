@@ -14,6 +14,7 @@
         <img
           style="display: block; margin: 0 auto"
           :src="`/src/assets/icons/weather/${data.icon}.svg`"
+          :alt="'Weather icon - ' + data.summary"
         />
       </div>
       <div class="mb-30">
