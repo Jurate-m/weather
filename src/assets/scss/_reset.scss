@@ -95,3 +95,8 @@ input {
   border-radius: 0;
   box-shadow: none;
 }
+
+button,
+input[type="radio"] {
+  cursor: pointer;
+}
