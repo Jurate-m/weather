@@ -8,7 +8,6 @@ export default {
     return {
       latitude: null,
       longitude: null,
-      // locationEnabled: false,
       locationName: null,
       locationId: null,
     };
@@ -21,10 +20,6 @@ export default {
 
     setLongitude(state, payload) {
       state.longitude = payload;
-    },
-
-    enableLocation(state) {
-      // state.locationEnabled = true;
     },
 
     setLocationId(state, payload) {
@@ -47,12 +42,11 @@ export default {
       }
     },
 
-    getCurrentPosition({ dispatch, commit }) {
+    getCurrentPosition({ commit }) {
       return new Promise((resolve, reject) => {
         if ("geolocation" in navigator) {
           navigator.geolocation.getCurrentPosition(
             (position) => {
-              // commit("enableLocation");
               commit("setLatitude", position.coords.latitude);
               commit("setLongitude", position.coords.longitude);
 
@@ -92,16 +86,15 @@ export default {
     },
 
     async loadLocation({ state, dispatch }) {
-      console.log("loactionId triggered");
       try {
         await dispatch("getUserLocation");
       } catch (error) {
-        // Error, 429
-        // try {
-        //   await dispatch("getUserLocationIp");
-        // } catch (error) {
-        //   console.error(error);
-        // }
+        Error, 429;
+        try {
+          await dispatch("getUserLocationIp");
+        } catch (error) {
+          console.error(error);
+        }
         console.error(error);
       }
 

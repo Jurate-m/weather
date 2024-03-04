@@ -51,7 +51,7 @@ export default {
         try {
           await dispatch("location/loadLocation", "", { root: true });
         } catch (error) {
-          console.log(error);
+          console.error(error);
         }
       }
 
@@ -64,8 +64,6 @@ export default {
         place_id: state.place_id,
         units: "metric",
       });
-
-      console.log("triggered hourlu get");
 
       commit("separateDays", hourly.data.hourly.data);
 

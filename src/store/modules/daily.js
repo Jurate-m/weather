@@ -32,7 +32,7 @@ export default {
         try {
           await dispatch("location/loadLocation", "", { root: true });
         } catch (error) {
-          console.log(error);
+          console.error(error);
         }
       }
 
