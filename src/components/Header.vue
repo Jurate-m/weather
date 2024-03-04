@@ -31,7 +31,6 @@ export default {
 
   created() {
     window.addEventListener("scroll", this.setActive);
-    console.log(this.$route);
   },
 
   methods: {
@@ -39,9 +38,5 @@ export default {
       this.isActive = window.scrollY > 0;
     },
   },
-
-  // beforeUnmount() {
-  //   window.removeEventListener("scroll", this.setActive);
-  // },
 };
 </script>
