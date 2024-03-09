@@ -76,13 +76,33 @@ export default {
       const lon = state.longitude || sessionStorage.getItem("Longitude");
       if (!lat || !lon) return;
 
-      const nearest_place = await apiRequest("nearest_place", {
-        lat: lat,
-        lon: lon,
-      });
+      // const nearest_place = await apiRequest("nearest_place", {
+      //   lat: lat,
+      //   lon: lon,
+      // });
 
-      commit("setLocationId", nearest_place.data.place_id);
-      commit("setLocationName", nearest_place.data.name);
+      try {
+        const params = new URLSearchParams({
+          endpoint: "nearest_place",
+          lat: lat,
+          lon: lon,
+        });
+
+        const resp = await fetch(
+          `/.netlify/functions/weather?${params.toString()}`
+        );
+
+        const data = await resp.json();
+
+        console.log(data);
+        commit("setLocationId", data.place_id);
+        commit("setLocationName", data.name);
+      } catch (error) {
+        console.error(error);
+      }
+
+      // commit("setLocationId", nearest_place.data.place_id);
+      // commit("setLocationName", nearest_place.data.name);
     },
 
     async loadLocation({ state, dispatch }) {

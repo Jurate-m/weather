@@ -41,14 +41,36 @@ export default {
 
       if (!state.place_id) return;
 
-      const daily_weather = await apiRequest("daily", {
-        place_id: state.place_id,
-        units: "metric",
-      });
+      // const daily_weather = await apiRequest("daily", {
+      //   place_id: state.place_id,
+      //   units: "metric",
+      // });
 
-      commit("assignDailyWeather", daily_weather.data.daily.data);
+      try {
+        const params = new URLSearchParams({
+          endpoint: "daily",
+          place_id: state.place_id,
+          units: "metric",
+        });
 
-      commit("setDailyTimeStamp", new Date());
+        const resp = await fetch(
+          `/.netlify/functions/weather?${params.toString()}`
+        );
+
+        const data = await resp.json();
+
+        console.log(data);
+
+        commit("assignDailyWeather", data.daily.data);
+
+        commit("setDailyTimeStamp", new Date());
+      } catch (error) {
+        console.error(error);
+      }
+
+      // commit("assignDailyWeather", daily_weather.data.daily.data);
+
+      // commit("setDailyTimeStamp", new Date());
     },
   },
 };

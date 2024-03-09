@@ -60,14 +60,35 @@ export default {
 
       if (!state.place_id) return;
 
-      const hourly = await apiRequest("hourly", {
-        place_id: state.place_id,
-        units: "metric",
-      });
+      // const hourly = await apiRequest("hourly", {
+      //   place_id: state.place_id,
+      //   units: "metric",
+      // });
 
-      commit("separateDays", hourly.data.hourly.data);
+      try {
+        const params = new URLSearchParams({
+          endpoint: "hourly",
+          place_id: state.place_id,
+          units: "metric",
+        });
 
-      commit("setHourlyTimeStamp", new Date());
+        const resp = await fetch(
+          `/.netlify/functions/weather?${params.toString()}`
+        );
+
+        const data = await resp.json();
+
+        console.log(data);
+        commit("separateDays", data.hourly.data);
+
+        commit("setHourlyTimeStamp", new Date());
+      } catch (error) {
+        console.error(error);
+      }
+
+      // commit("separateDays", hourly.data.hourly.data);
+
+      // commit("setHourlyTimeStamp", new Date());
     },
   },
 };
