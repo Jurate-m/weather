@@ -7,7 +7,7 @@
             :type="active ? 'submit' : 'button'"
             :aria-label="active ? 'Open Search' : 'Submit'"
           >
-            <img src="@/assets/icons/search.svg" alt="search icon" />
+            <img src="/assets/icons/search.svg" alt="search icon" />
           </button>
           <input
             type="text"

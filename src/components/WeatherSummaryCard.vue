@@ -7,7 +7,7 @@
 
       <div class="weather-summary-card__item icon">
         <img
-          :src="`/src/assets/icons/weather/${icon}.svg`"
+          :src="`/assets/icons/weather/${icon}.svg`"
           :alt="'Weather summary - ' + weather_summary"
         />
       </div>
@@ -16,11 +16,11 @@
       </div>
 
       <div class="weather-summary-card__item hum">
-        <img src="/src/assets/icons/drop.svg" aria-hidden="true" alt="null" />
+        <img src="/assets/icons/drop.svg" aria-hidden="true" alt="null" />
         <p>{{ humidity }}%</p>
       </div>
       <div class="weather-summary-card__item wind">
-        <img src="/src/assets/icons/wind.svg" aria-hidden="true" alt="null" />
+        <img src="/assets/icons/wind.svg" aria-hidden="true" alt="null" />
         <p>{{ wind_dir }} {{ wind_speed }}m/s</p>
       </div>
     </div>
