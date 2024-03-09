@@ -59,10 +59,7 @@ export default {
 
         const data = await resp.json();
 
-        console.log(data);
-
         commit("assignDailyWeather", data.daily.data);
-
         commit("setDailyTimeStamp", new Date());
       } catch (error) {
         console.error(error);

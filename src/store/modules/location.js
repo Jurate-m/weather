@@ -94,7 +94,6 @@ export default {
 
         const data = await resp.json();
 
-        console.log(data);
         commit("setLocationId", data.place_id);
         commit("setLocationName", data.name);
       } catch (error) {

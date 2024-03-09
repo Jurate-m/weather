@@ -1,8 +1,6 @@
 import axios from "axios";
 
 export const handler = async (event, context) => {
-  console.log({ event }, { context });
-
   const parameters = event.queryStringParameters;
   const endpoint = parameters.endpoint;
   delete parameters.endpoint;

@@ -78,9 +78,7 @@ export default {
 
         const data = await resp.json();
 
-        console.log(data);
         commit("separateDays", data.hourly.data);
-
         commit("setHourlyTimeStamp", new Date());
       } catch (error) {
         console.error(error);
