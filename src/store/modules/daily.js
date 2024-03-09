@@ -1,5 +1,3 @@
-import apiRequest from "../utils/apiUtils.js";
-
 export default {
   namespaced: true,
 
@@ -41,11 +39,6 @@ export default {
 
       if (!state.place_id) return;
 
-      // const daily_weather = await apiRequest("daily", {
-      //   place_id: state.place_id,
-      //   units: "metric",
-      // });
-
       try {
         const params = new URLSearchParams({
           endpoint: "daily",
@@ -64,10 +57,6 @@ export default {
       } catch (error) {
         console.error(error);
       }
-
-      // commit("assignDailyWeather", daily_weather.data.daily.data);
-
-      // commit("setDailyTimeStamp", new Date());
     },
   },
 };

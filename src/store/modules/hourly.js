@@ -1,5 +1,3 @@
-import apiRequest from "../utils/apiUtils.js";
-
 export default {
   namespaced: true,
 
@@ -60,11 +58,6 @@ export default {
 
       if (!state.place_id) return;
 
-      // const hourly = await apiRequest("hourly", {
-      //   place_id: state.place_id,
-      //   units: "metric",
-      // });
-
       try {
         const params = new URLSearchParams({
           endpoint: "hourly",
@@ -83,10 +76,6 @@ export default {
       } catch (error) {
         console.error(error);
       }
-
-      // commit("separateDays", hourly.data.hourly.data);
-
-      // commit("setHourlyTimeStamp", new Date());
     },
   },
 };

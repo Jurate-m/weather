@@ -40,20 +40,10 @@
         </div>
       </form>
     </div>
-    <!-- <div class="search__dropdown" v-show="this.active">
-      <button
-        v-if="!locationEnabled"
-        @click="getCurrentLocation()"
-        type="button"
-      >
-        <p>Use current location</p>
-      </button>
-    </div> -->
   </div>
 </template>
 
 <script>
-import axios from "axios";
 import "@/assets/scss/components/_search.scss";
 
 export default {
@@ -81,36 +71,34 @@ export default {
       this.active = false;
     },
 
-    getLocationList() {
+    async getLocationList() {
       this.locationArr = [];
       if (this.locationInput) {
-        axios
-          .get(
-            "https://ai-weather-by-meteosource.p.rapidapi.com/find_places_prefix",
-            {
-              params: {
-                text: this.locationInput.toString(),
-                language: "en",
-              },
-              headers: {
-                "X-RapidAPI-Key": import.meta.env.VITE_RAPIDAPI_KEY,
-                "X-RapidAPI-Host": import.meta.env.VITE_RAPIDAPI_HOST,
-              },
-            }
-          )
-          .then((result) => {
-            result.data.forEach((item) => {
-              this.locationArr.push({
-                name: item.name,
-                admin_area: item.adm_area1,
-                place_id: item.place_id,
-              });
+        try {
+          const params = new URLSearchParams({
+            endpoint: "find_places_prefix",
+            text: this.locationInput.toString(),
+            language: "en",
+          });
+
+          const resp = await fetch(
+            `/.netlify/functions/weather?${params.toString()}`
+          );
+
+          const data = await resp.json();
+
+          data.forEach((item) => {
+            this.locationArr.push({
+              name: item.name,
+              admin_area: item.adm_area1,
+              place_id: item.place_id,
             });
-          })
-          .catch((error) => console.error(error));
+          });
+        } catch (error) {
+          console.error(error);
+        }
       }
     },
-    // Sort this out^^^
 
     renderLocationList() {
       if (this.timer) {
@@ -151,8 +139,6 @@ export default {
         active: this.active && this.locationArr,
       };
     },
-
-    locationEnabled() {},
   },
 };
 </script>

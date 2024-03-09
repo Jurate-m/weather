@@ -1,4 +1,3 @@
-import apiRequest from "../utils/apiUtils.js";
 import axios from "axios";
 
 export default {
@@ -76,11 +75,6 @@ export default {
       const lon = state.longitude || sessionStorage.getItem("Longitude");
       if (!lat || !lon) return;
 
-      // const nearest_place = await apiRequest("nearest_place", {
-      //   lat: lat,
-      //   lon: lon,
-      // });
-
       try {
         const params = new URLSearchParams({
           endpoint: "nearest_place",
@@ -99,9 +93,6 @@ export default {
       } catch (error) {
         console.error(error);
       }
-
-      // commit("setLocationId", nearest_place.data.place_id);
-      // commit("setLocationName", nearest_place.data.name);
     },
 
     async loadLocation({ state, dispatch }) {
