@@ -12,8 +12,8 @@ export const handler = async (event, context) => {
     url: `https://ai-weather-by-meteosource.p.rapidapi.com/${endpoint}`,
     params: parameters,
     headers: {
-      "X-RapidAPI-Key": process.env.VITE_RAPIDAPI_KEY,
-      "X-RapidAPI-Host": process.env.VITE_RAPIDAPI_HOST,
+      "X-RapidAPI-Key": process.env.RAPIDAPI_KEY,
+      "X-RapidAPI-Host": process.env.RAPIDAPI_HOST,
     },
   };
 
