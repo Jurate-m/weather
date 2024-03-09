@@ -112,24 +112,22 @@ export default {
     },
   },
 
-  // beforeMount() {
-  //   if (sessionStorage.getItem("lastHourlyApiTimeStmp")) {
-  //     let sessionTime = new Date(
-  //       sessionStorage.getItem("lastHourlyApiTimeStmp")
-  //     );
-  //     let current = new Date();
-  //     if (
-  //       sessionTime.getHours() != current.getHours() ||
-  //       sessionTime.getDate() != current.getDate()
-  //     ) {
-  //       sessionStorage.removeItem("HourlyWeather");
-  //     }
-  //   }
-  // },
+  beforeMount() {
+    if (sessionStorage.getItem("lastHourlyApiTimeStmp")) {
+      let sessionTime = new Date(
+        sessionStorage.getItem("lastHourlyApiTimeStmp")
+      );
+      let current = new Date();
+      if (
+        sessionTime.getHours() != current.getHours() ||
+        sessionTime.getDate() != current.getDate()
+      ) {
+        sessionStorage.removeItem("HourlyWeather");
+      }
+    }
+  },
 
   created() {
-    console.log("created");
-    this.weather = null;
     if (sessionStorage.getItem("HourlyWeather")) {
       let weather = JSON.parse(sessionStorage.getItem("HourlyWeather"));
       this.assignWeather(weather);

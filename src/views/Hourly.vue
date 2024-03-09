@@ -138,30 +138,30 @@ export default {
       });
     },
 
-    assignDailyWeather(data) {
+    assignHourlyWeather(data) {
       this.hourlyWeather = data.slice(0, this.dataLength);
     },
   },
 
-  // beforeMount() {
-  //   if (sessionStorage.getItem("lastHourlyApiTimeStmp")) {
-  //     let sessionTime = new Date(
-  //       sessionStorage.getItem("lastHourlyApiTimeStmp")
-  //     );
-  //     let current = new Date();
-  //     if (
-  //       sessionTime.getHours() != current.getHours() ||
-  //       sessionTime.getDate() != current.getDate()
-  //     ) {
-  //       sessionStorage.removeItem("HourlyWeather");
-  //     }
-  //   }
-  // },
+  beforeMount() {
+    if (sessionStorage.getItem("lastHourlyApiTimeStmp")) {
+      let sessionTime = new Date(
+        sessionStorage.getItem("lastHourlyApiTimeStmp")
+      );
+      let current = new Date();
+      if (
+        sessionTime.getHours() != current.getHours() ||
+        sessionTime.getDate() != current.getDate()
+      ) {
+        sessionStorage.removeItem("HourlyWeather");
+      }
+    }
+  },
 
   created() {
     if (sessionStorage.getItem("HourlyWeather")) {
       let hourlyWeather = JSON.parse(sessionStorage.getItem("HourlyWeather"));
-      this.assignDailyWeather(hourlyWeather);
+      this.assignHourlyWeather(hourlyWeather);
     } else {
       this.assignData();
     }
