@@ -13,6 +13,9 @@ const router = createRouter({
     { path: "/daily", name: "Daily weather", component: Daily },
     { path: "/:catchAll(.*)", component: notFound },
   ],
+  scrollBehavior() {
+    return { top: 0, left: 0 };
+  },
 });
 
 export default router;
