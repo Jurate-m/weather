@@ -11,7 +11,7 @@ const router = createRouter({
     { path: "/", name: "Home", component: Home },
     { path: "/hourly", name: "Hourly", component: Hourly },
     { path: "/daily", name: "Daily", component: Daily },
-    { path: "/:notFound", component: notFound },
+    { path: "/:catchAll(.*)", component: notFound },
   ],
 });
 
