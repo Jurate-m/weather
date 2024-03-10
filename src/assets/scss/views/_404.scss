@@ -1,0 +1,16 @@
+.not-found {
+  padding: 100px 0;
+
+  a {
+    display: inline-block;
+    padding: 15px 30px;
+    border-radius: 12px;
+    border: 1px solid $light;
+    font-weight: 600;
+
+    &:hover {
+      background-color: $light;
+      color: $dark;
+    }
+  }
+}
