@@ -3,22 +3,27 @@
     <h1 v-if="location" class="mb-20">{{ location }}, <br />Current Weather</h1>
     <div class="home__lists">
       <Listing>
-        <ListingSingle
-          v-for="(item, index) in weather"
-          featured
-          v-show="index === activeIndex"
-          :key="new Date()"
-        >
-          <template #featured>
-            <FeaturedCard :data="item"></FeaturedCard>
-          </template>
-        </ListingSingle>
+        <TransitionGroup name="fade-in">
+          <ListingSingle
+            v-for="(item, index) in weather"
+            featured
+            v-show="index === activeIndex"
+            :key="new Date()"
+          >
+            <template #featured>
+              <FeaturedCard :data="item"></FeaturedCard>
+            </template>
+          </ListingSingle>
+        </TransitionGroup>
       </Listing>
       <Listing>
         <ListingSingle
           v-for="(item, index) in weather"
           customEvent
-          @set-active="setActive(index)"
+          @set-active="
+            setActive(index);
+            scrollToTop();
+          "
           :class="{ active: index === activeIndex }"
         >
           <template #button
@@ -109,6 +114,10 @@ export default {
 
     setActive(index) {
       this.activeIndex = index;
+    },
+
+    scrollToTop() {
+      window.scrollTo({ top: 0, behavior: "smooth" });
     },
   },
 
