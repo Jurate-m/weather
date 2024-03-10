@@ -4,10 +4,20 @@
       Oh no!<br /><br />
       The page You were looking for does not exist!
     </h1>
-    <router-link :to="{ name: 'Home' }">Get back to Home</router-link>
+
+    <SingleLink
+      routeName="Current weather"
+      text="Get back to Current weather"
+    ></SingleLink>
   </div>
 </template>
 
 <script>
 import "@/assets/scss/views/_404.scss";
+
+import SingleLink from "@/components/SingleLink.vue";
+
+export default {
+  components: { SingleLink },
+};
 </script>

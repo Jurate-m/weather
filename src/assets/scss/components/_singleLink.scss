@@ -1,0 +1,17 @@
+.single-link {
+  &--right {
+    text-align: right;
+  }
+
+  a {
+    display: inline-block;
+    padding: 15px 30px;
+    border-bottom: 1px solid $light;
+    font-weight: 600;
+
+    &:hover {
+      background-color: $light;
+      color: $dark;
+    }
+  }
+}

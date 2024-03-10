@@ -16,6 +16,12 @@
           </ListingSingle>
         </TransitionGroup>
       </Listing>
+      <SingleLink
+        class="mb-30"
+        routeName="Hourly weather"
+        text="View Hourly weather"
+        alignRight
+      ></SingleLink>
       <Listing>
         <ListingSingle
           v-for="(item, index) in weather"
@@ -43,6 +49,7 @@ import FeaturedCard from "@/components/FeaturedCard.vue";
 import FeaturedListCard from "@/components/FeaturedListCard.vue";
 import Listing from "@/components/Listing.vue";
 import ListingSingle from "@/components/ListingSingle.vue";
+import SingleLink from "@/components/SingleLink.vue";
 import Loader from "@/components/Loader.vue";
 
 export default {
@@ -51,6 +58,7 @@ export default {
     Listing,
     ListingSingle,
     FeaturedListCard,
+    SingleLink,
     Loader,
   },
 
