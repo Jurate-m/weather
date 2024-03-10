@@ -26,7 +26,7 @@ import "@/assets/scss/components/_nav.scss";
 export default {
   data() {
     return {
-      routes: this.$router.options.routes,
+      routes: [],
       active: false,
     };
   },
@@ -48,6 +48,14 @@ export default {
     hide() {
       this.active = false;
     },
+  },
+
+  created() {
+    for (let i = 0; i < this.$router.options.routes.length; i++) {
+      if (this.$router.options.routes[i].name) {
+        this.routes.push(this.$router.options.routes[i]);
+      }
+    }
   },
 };
 </script>
