@@ -1,6 +1,6 @@
 <template>
   <div :class="classes" v-click-out="hide">
-    <div class="search__trigger" @click="show()" tabindex="0">
+    <div class="search__trigger" @click="show()">
       <form @submit.prevent="sendData()">
         <div class="search__inner">
           <button

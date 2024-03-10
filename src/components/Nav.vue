@@ -12,7 +12,7 @@
     </button>
     <ul class="nav-list">
       <li v-for="route in routes" :key="route.name">
-        <router-link :to="route.path" @click="hide()">{{
+        <router-link v-if="route.name" :to="route.path" @click="hide()">{{
           route.name
         }}</router-link>
       </li>
