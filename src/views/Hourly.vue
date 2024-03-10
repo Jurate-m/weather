@@ -124,7 +124,7 @@ export default {
       }
 
       let hourlyWeather = JSON.parse(sessionStorage.getItem("HourlyWeather"));
-      this.assignDailyWeather(hourlyWeather);
+      this.assignHourlyWeather(hourlyWeather);
     },
 
     formatDate(date, options) {
