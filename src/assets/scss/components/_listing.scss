@@ -32,7 +32,7 @@
     &.active {
       .listing-single__inner {
         & > button {
-          background-color: rgba($dark-2, 0.3);
+          background-color: rgba($dark-2, 0.4);
         }
       }
     }
@@ -47,6 +47,10 @@
         display: block;
         width: 100%;
         max-width: 100%;
+
+        &:hover {
+          background-color: rgba($dark-2, 0.2);
+        }
       }
     }
   }
