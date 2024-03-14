@@ -90,13 +90,19 @@
         }
       }
 
+      a {
+        &:hover {
+          border-bottom: 1px solid $light;
+        }
+
+        @media only screen and (min-width: 764px) {
+          padding: 5px 10px;
+        }
+      }
+
       @media only screen and (min-width: 764px) {
         padding: 0 10px;
         color: $light;
-
-        a {
-          padding: 5px 10px;
-        }
       }
     }
   }
