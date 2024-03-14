@@ -21,6 +21,7 @@
         <img src="/assets/icons/wind.svg" aria-hidden="true" alt="null" />
         <p>{{ wind_dir }} {{ wind_speed }}m/s</p>
       </div>
+      <div class="weather-summary-card__item arrow"></div>
     </div>
   </div>
 </template>

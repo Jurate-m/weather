@@ -49,5 +49,20 @@
         text-wrap: nowrap;
       }
     }
+
+    &.arrow {
+      flex-basis: 50px;
+      position: relative;
+      justify-content: flex-end;
+      align-items: center;
+
+      &::before {
+        content: url("/assets/icons/arrow.svg");
+        position: relative;
+        display: block;
+        width: 20px;
+        margin-left: auto;
+      }
+    }
   }
 }
