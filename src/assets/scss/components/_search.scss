@@ -62,6 +62,18 @@
     }
   }
 
+  &__error {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    padding: 10px;
+    color: #cc0000;
+    background-color: $light;
+    font-weight: 500;
+    font-size: 14px;
+  }
+
   input[type="radio"] {
     position: fixed;
     opacity: 0;
