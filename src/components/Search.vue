@@ -15,9 +15,15 @@
             placeholder="Location"
             v-model="locationInput"
             @keyup="renderLocationList()"
+            aria-errormessage="err"
           />
         </div>
+        <p v-if="error" id="err" class="search__error">
+          Please use only alphabetical or numerical values in Location search.
+        </p>
+
         <div
+          v-else
           class="search__dropdown"
           :class="dropdownClass"
           v-show="active != false && locationArr"
@@ -56,6 +62,7 @@ export default {
       timer: null,
       place_id: null,
       place_name: null,
+      error: false,
     };
   },
 
@@ -69,11 +76,20 @@ export default {
       this.locationInput = null;
       this.locationArr = null;
       this.active = false;
+      this.error = false;
     },
 
     async getLocationList() {
-      this.locationArr = [];
       if (this.locationInput) {
+        this.locationArr = [];
+        const regex = /[-’/`~!#*$@_%+=.,^&(){}[\]|;:”<>?\\]/g;
+
+        if (regex.test(this.locationInput)) {
+          return (this.error = true);
+        }
+
+        this.error = false;
+
         try {
           const params = new URLSearchParams({
             endpoint: "find_places_prefix",
@@ -97,6 +113,9 @@ export default {
         } catch (error) {
           console.error(error);
         }
+      } else {
+        this.locationArr = null;
+        this.error = false;
       }
     },
 
@@ -106,11 +125,11 @@ export default {
         this.timer = null;
       }
 
-      this.timer = setTimeout(this.getLocationList, 1500);
+      this.timer = setTimeout(this.getLocationList, 1000);
     },
 
     sendData() {
-      if (this.locationInput && this.locationArr) {
+      if (this.locationInput && this.locationArr && !this.error) {
         this.place_id = this.selectedLocation
           ? this.selectedLocation.place_id
           : this.locationArr[0].place_id;
