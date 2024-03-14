@@ -1,6 +1,4 @@
 .nav {
-  width: 100%;
-
   &.active {
     .nav-burger {
       span {
@@ -112,5 +110,9 @@
       color: $dark;
       text-decoration: none;
     }
+  }
+
+  @media only screen and (min-width: 764px) {
+    width: 100%;
   }
 }
