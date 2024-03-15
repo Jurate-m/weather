@@ -4,7 +4,6 @@
       <div class="weather-summary-card__item">
         <p>{{ date }}</p>
       </div>
-
       <div class="weather-summary-card__item icon">
         <img
           :src="`/assets/icons/weather/${icon}.svg`"
@@ -14,7 +13,6 @@
       <div class="weather-summary-card__item temp">
         <p>{{ Math.round(temperature) }}°C</p>
       </div>
-
       <div class="weather-summary-card__item hum">
         <img src="/assets/icons/drop.svg" aria-hidden="true" alt="null" />
         <p>{{ humidity }}%</p>
@@ -23,6 +21,7 @@
         <img src="/assets/icons/wind.svg" aria-hidden="true" alt="null" />
         <p>{{ wind_dir }} {{ wind_speed }}m/s</p>
       </div>
+      <div class="weather-summary-card__item arrow"></div>
     </div>
   </div>
 </template>
@@ -59,14 +58,6 @@ export default {
     wind_speed: {
       type: Number,
       required: true,
-    },
-  },
-
-  computed: {
-    classes() {
-      return {
-        "listing-single": true,
-      };
     },
   },
 };

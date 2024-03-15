@@ -32,7 +32,14 @@
     &.active {
       .listing-single__inner {
         & > button {
-          background-color: rgba($dark-2, 0.3);
+          background-color: rgba($dark-2, 0.4);
+
+          //come back to his for a better approach
+          .weather-summary-card__item.arrow {
+            &:before {
+              transform: rotate(180deg);
+            }
+          }
         }
       }
     }
@@ -47,6 +54,10 @@
         display: block;
         width: 100%;
         max-width: 100%;
+
+        &:hover {
+          background-color: rgba($dark-2, 0.2);
+        }
       }
     }
   }
