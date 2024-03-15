@@ -62,6 +62,14 @@ function assignWeather(data) {
   weather.value = data[0].slice(0, dataLength);
 }
 
+function setActive(index) {
+  activeIndex.value = index;
+}
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
 const { location } = useDataHandling(
   "HourlyWeather",
   "hourly/getHourlyWeather",
