@@ -44,14 +44,12 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from "vue";
-import { useStore } from "vuex";
+import { ref } from "vue";
+import useDataHandling from "@/composables/dataHandling.js";
 
-const store = useStore();
 const weather = ref(null);
 const activeIndex = ref(0);
 const dataLength = 8;
-const location = ref(sessionStorage.getItem("LocationName") || null);
 
 function assignWeather(data) {
   const remainingArray = dataLength - data[0].length;
@@ -64,46 +62,11 @@ function assignWeather(data) {
   weather.value = data[0].slice(0, dataLength);
 }
 
-function fetchData() {
-  return store.dispatch("hourly/getHourlyWeather");
-}
-
-async function assignData() {
-  try {
-    await fetchData();
-  } catch (error) {
-    console.error(error);
-  }
-
-  let weather = JSON.parse(sessionStorage.getItem("HourlyWeather"));
-  assignWeather(weather);
-}
-
-function setActive(index) {
-  activeIndex.value = index;
-}
-
-function scrollToTop() {
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
-const locationId = computed(() => {
-  return store.state.location.locationId;
-});
-
-const locationName = computed(() => {
-  return store.state.location.locationName;
-});
-
-watch(locationId, () => {
-  sessionStorage.removeItem("DailyWeather");
-  sessionStorage.removeItem("HourlyWeather");
-  assignData();
-});
-
-watch(locationName, () => {
-  location.value = sessionStorage.getItem("LocationName");
-});
+const { location } = useDataHandling(
+  "HourlyWeather",
+  "hourly/getHourlyWeather",
+  assignWeather
+);
 
 // beforeMount() {
 //   if (sessionStorage.getItem("lastHourlyApiTimeStmp")) {
@@ -119,13 +82,6 @@ watch(locationName, () => {
 //     }
 //   }
 // },
-
-if (sessionStorage.getItem("HourlyWeather")) {
-  let weather = JSON.parse(sessionStorage.getItem("HourlyWeather"));
-  assignWeather(weather);
-} else {
-  assignData();
-}
 </script>
 
 <script>
@@ -146,96 +102,5 @@ export default {
     SingleLink,
     Loader,
   },
-
-  // data() {
-  //   return {
-  //     weather: null,
-  //     activeIndex: 0,
-  //     dataLength: 8,
-  //     location: sessionStorage.getItem("LocationName"),
-  //   };
-  // },
-
-  // watch: {
-  //   locationId() {
-  //     sessionStorage.removeItem("DailyWeather");
-  //     sessionStorage.removeItem("HourlyWeather");
-  //     this.assignData();
-  //   },
-
-  //   locationName() {
-  //     this.location = sessionStorage.getItem("LocationName");
-  //   },
-  // },
-
-  // computed: {
-  //   locationId() {
-  //     return this.$store.state.location.locationId;
-  //   },
-
-  //   locationName() {
-  //     return this.$store.state.location.locationName;
-  //   },
-  // },
-
-  // methods: {
-  //   fetchData() {
-  //     return this.$store.dispatch("hourly/getHourlyWeather");
-  //   },
-
-  //   async assignData() {
-  //     try {
-  //       await this.fetchData();
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-
-  //     let weather = JSON.parse(sessionStorage.getItem("HourlyWeather"));
-  //     this.assignWeather(weather);
-  //   },
-
-  //   assignWeather(data) {
-  //     const remainingArray = this.dataLength - data[0].length;
-
-  //     if (remainingArray > 0) {
-  //       this.weather = data[0].concat(data[1].slice(0, remainingArray));
-  //       return;
-  //     }
-
-  //     this.weather = data[0].slice(0, this.dataLength);
-  //   },
-
-  //   setActive(index) {
-  //     this.activeIndex = index;
-  //   },
-
-  //   scrollToTop() {
-  //     window.scrollTo({ top: 0, behavior: "smooth" });
-  //   },
-  // },
-
-  // beforeMount() {
-  //   if (sessionStorage.getItem("lastHourlyApiTimeStmp")) {
-  //     let sessionTime = new Date(
-  //       sessionStorage.getItem("lastHourlyApiTimeStmp")
-  //     );
-  //     let current = new Date();
-  //     if (
-  //       sessionTime.getHours() != current.getHours() ||
-  //       sessionTime.getDate() != current.getDate()
-  //     ) {
-  //       sessionStorage.removeItem("HourlyWeather");
-  //     }
-  //   }
-  // },
-
-  // created() {
-  //   if (sessionStorage.getItem("HourlyWeather")) {
-  //     let weather = JSON.parse(sessionStorage.getItem("HourlyWeather"));
-  //     this.assignWeather(weather);
-  //   } else {
-  //     this.assignData();
-  //   }
-  // },
 };
 </script>

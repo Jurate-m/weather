@@ -1,15 +1,20 @@
 import { ref, computed, watch } from "vue";
 import { useStore } from "vuex";
 
-// pass in sessionStorage name for weather
-
-export default function useDataHandling(sessionStorageName) {
+export default function useDataHandling(
+  sessionStorageName,
+  storeAction,
+  assignDataHandler = null
+) {
   const store = useStore();
 
   const weather = ref(null);
   const location = ref(sessionStorage.getItem("LocationName") || null);
 
-  // pass in an arg if additional function is used
+  function fetchData() {
+    return store.dispatch(storeAction);
+  }
+
   async function assignData() {
     try {
       await fetchData();
@@ -17,8 +22,8 @@ export default function useDataHandling(sessionStorageName) {
       console.error(error);
     }
 
-    // let weather = JSON.parse(sessionStorage.getItem(sessionStorageName));
-    // assignWeather(weather); not used on all components
+    weather.value = JSON.parse(sessionStorage.getItem(sessionStorageName));
+    if (assignDataHandler) assignDataHandler(weather.value);
   }
 
   const locationId = computed(() => {
@@ -40,9 +45,11 @@ export default function useDataHandling(sessionStorageName) {
   });
 
   if (sessionStorage.getItem(sessionStorageName)) {
-    let weather = JSON.parse(sessionStorage.getItem(sessionStorageName));
-    assignWeather(weather);
+    weather.value = JSON.parse(sessionStorage.getItem(sessionStorageName));
+    if (assignDataHandler) assignDataHandler(weather.value);
   } else {
     assignData();
   }
+
+  return { weather, location };
 }

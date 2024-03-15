@@ -66,30 +66,12 @@
 
 <script setup>
 import { formatDateTime } from "@/utils";
+import useDataHandling from "@/composables/dataHandling.js";
 
-import { ref, computed, watch } from "vue";
-import { useStore } from "vuex";
-
-const store = useStore();
+import { ref } from "vue";
 
 const weather = ref(null);
 const dataLength = 3;
-const location = ref(sessionStorage.getItem("LocationName") || null);
-
-function fetchData() {
-  return store.dispatch("hourly/getHourlyWeather");
-}
-
-async function assignData() {
-  try {
-    await fetchData();
-  } catch (error) {
-    console.error(error);
-  }
-
-  let hourlyWeather = JSON.parse(sessionStorage.getItem("HourlyWeather"));
-  assignHourlyWeather(hourlyWeather);
-}
 
 function formatDate(date, options) {
   return formatDateTime(date, options);
@@ -106,23 +88,11 @@ function assignHourlyWeather(data) {
   weather.value = data.slice(0, dataLength);
 }
 
-const locationId = computed(() => {
-  return store.state.location.locationId;
-});
-
-const locationName = computed(() => {
-  return store.state.location.locationName;
-});
-
-watch(locationId, () => {
-  sessionStorage.removeItem("DailyWeather");
-  sessionStorage.removeItem("HourlyWeather");
-  assignData();
-});
-
-watch(locationName, () => {
-  location.value = sessionStorage.getItem("LocationName");
-});
+const { location } = useDataHandling(
+  "HourlyWeather",
+  "hourly/getHourlyWeather",
+  assignHourlyWeather
+);
 
 //   beforeMount() {
 //     if (sessionStorage.getItem("lastHourlyApiTimeStmp")) {
@@ -138,13 +108,6 @@ watch(locationName, () => {
 //       }
 //     }
 //   },
-
-if (sessionStorage.getItem("HourlyWeather")) {
-  let hourlyWeather = JSON.parse(sessionStorage.getItem("HourlyWeather"));
-  assignHourlyWeather(hourlyWeather);
-} else {
-  assignData();
-}
 </script>
 
 <script>
@@ -153,7 +116,6 @@ import ListingSingle from "@/components/ListingSingle.vue";
 import WeatherDetailsCard from "@/components/WeatherDetailsCard.vue";
 import WeatherSummaryCard from "@/components/WeatherSummaryCard.vue";
 import Loader from "@/components/Loader.vue";
-// import { formatDateTime } from "@/utils";
 
 export default {
   components: {
@@ -163,91 +125,5 @@ export default {
     WeatherSummaryCard,
     Loader,
   },
-
-  // data() {
-  //   return {
-  //     hourlyWeather: null,
-  //     dataLength: 3,
-  //     location: sessionStorage.getItem("LocationName"),
-  //   };
-  // },
-
-  // watch: {
-  //   locationId() {
-  //     sessionStorage.removeItem("DailyWeather");
-  //     sessionStorage.removeItem("HourlyWeather");
-  //     this.assignData();
-  //   },
-
-  //   locationName() {
-  //     this.location = sessionStorage.getItem("LocationName");
-  //   },
-  // },
-
-  // computed: {
-  //   locationId() {
-  //     return this.$store.state.location.locationId;
-  //   },
-
-  //   locationName() {
-  //     return this.$store.state.location.locationName;
-  //   },
-  // },
-
-  // methods: {
-  //   fetchData() {
-  //     return this.$store.dispatch("hourly/getHourlyWeather");
-  //   },
-
-  //   async assignData() {
-  //     try {
-  //       await this.fetchData();
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-
-  //     let hourlyWeather = JSON.parse(sessionStorage.getItem("HourlyWeather"));
-  //     this.assignHourlyWeather(hourlyWeather);
-  //   },
-
-  //   formatDate(date, options) {
-  //     return formatDateTime(date, options);
-  //   },
-
-  //   formatTime(time) {
-  //     return formatDateTime(time, {
-  //       hour: "numeric",
-  //       minute: "numeric",
-  //     });
-  //   },
-
-  //   assignHourlyWeather(data) {
-  //     this.hourlyWeather = data.slice(0, this.dataLength);
-  //   },
-  // },
-
-  // beforeMount() {
-  //   if (sessionStorage.getItem("lastHourlyApiTimeStmp")) {
-  //     let sessionTime = new Date(
-  //       sessionStorage.getItem("lastHourlyApiTimeStmp")
-  //     );
-  //     let current = new Date();
-  //     if (
-  //       sessionTime.getHours() != current.getHours() ||
-  //       sessionTime.getDate() != current.getDate()
-  //     ) {
-  //       sessionStorage.removeItem("HourlyWeather");
-  //     }
-  //   }
-  // },
-
-  // created() {
-  //   if (sessionStorage.getItem("HourlyWeather")) {
-  //     let hourlyWeather = JSON.parse(sessionStorage.getItem("HourlyWeather"));
-  //     this.assignHourlyWeather(hourlyWeather);
-  //   } else {
-  //     this.assignData();
-  //   }
-  // },
 };
 </script>

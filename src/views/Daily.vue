@@ -58,28 +58,12 @@
 
 <script setup>
 import { formatDateTime } from "@/utils";
+import useDataHandling from "@/composables/dataHandling.js";
 
-import { ref, computed, watch } from "vue";
-import { useStore } from "vuex";
-
-const store = useStore();
-
-const weather = ref(null);
-const location = ref(sessionStorage.getItem("LocationName") || null);
-
-function fetchData() {
-  return store.dispatch("daily/getDailyWeather");
-}
-
-async function assignData() {
-  try {
-    await fetchData();
-  } catch (error) {
-    console.error(error);
-  }
-
-  weather.value = JSON.parse(sessionStorage.getItem("DailyWeather"));
-}
+const { weather, location } = useDataHandling(
+  "DailyWeather",
+  "daily/getDailyWeather"
+);
 
 function formatTime(date) {
   return formatDateTime(date, {
@@ -87,24 +71,6 @@ function formatTime(date) {
     day: "numeric",
   });
 }
-
-const locationId = computed(() => {
-  return store.state.location.locationId;
-});
-
-const locationName = computed(() => {
-  return store.state.location.locationName;
-});
-
-watch(locationId, () => {
-  sessionStorage.removeItem("DailyWeather");
-  sessionStorage.removeItem("HourlyWeather");
-  assignData();
-});
-
-watch(locationName, () => {
-  location.value = sessionStorage.getItem("LocationName");
-});
 
 // beforeMount() {
 //   if (sessionStorage.getItem("lastDailyApiTimeStmp")) {
@@ -120,12 +86,6 @@ watch(locationName, () => {
 //     }
 //   }
 // },
-
-if (sessionStorage.getItem("DailyWeather")) {
-  weather.value = JSON.parse(sessionStorage.getItem("DailyWeather"));
-} else {
-  assignData();
-}
 </script>
 
 <script>
@@ -134,7 +94,6 @@ import WeatherSummaryCard from "@/components/WeatherSummaryCard.vue";
 import Listing from "@/components/Listing.vue";
 import ListingSingle from "@/components/ListingSingle.vue";
 import Loader from "@/components/Loader.vue";
-// import { formatDateTime } from "@/utils";
 
 export default {
   components: {
@@ -144,81 +103,5 @@ export default {
     WeatherDetailsCard,
     Loader,
   },
-
-  // data() {
-  //   return {
-  //     dailyWeather: null,
-  //     details: null,
-  //     location: sessionStorage.getItem("LocationName"),
-  //   };
-  // },
-
-  // watch: {
-  //   locationId() {
-  //     sessionStorage.removeItem("DailyWeather");
-  //     sessionStorage.removeItem("HourlyWeather");
-  //     this.assignData();
-  //   },
-
-  //   locationName() {
-  //     this.location = sessionStorage.getItem("LocationName");
-  //   },
-  // },
-
-  // computed: {
-  //   locationId() {
-  //     return this.$store.state.location.locationId;
-  //   },
-
-  //   locationName() {
-  //     return this.$store.state.location.locationName;
-  //   },
-  // },
-
-  // methods: {
-  //   fetchData() {
-  //     return this.$store.dispatch("daily/getDailyWeather");
-  //   },
-
-  //   async assignData() {
-  //     try {
-  //       await this.fetchData();
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-
-  //     this.dailyWeather = JSON.parse(sessionStorage.getItem("DailyWeather"));
-  //   },
-
-  //   formatDateTime(date) {
-  //     return formatDateTime(date, {
-  //       weekday: "short",
-  //       day: "numeric",
-  //     });
-  //   },
-  // },
-
-  // beforeMount() {
-  //   if (sessionStorage.getItem("lastDailyApiTimeStmp")) {
-  //     let sessionTime = new Date(
-  //       sessionStorage.getItem("lastDailyApiTimeStmp")
-  //     );
-  //     let current = new Date();
-  //     if (
-  //       sessionTime.getHours() != current.getHours() ||
-  //       sessionTime.getDate() != current.getDate()
-  //     ) {
-  //       sessionStorage.removeItem("DailyWeather");
-  //     }
-  //   }
-  // },
-
-  // created() {
-  //   if (sessionStorage.getItem("DailyWeather")) {
-  //     this.dailyWeather = JSON.parse(sessionStorage.getItem("DailyWeather"));
-  //   } else {
-  //     this.assignData();
-  //   }
-  // },
 };
 </script>
