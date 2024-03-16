@@ -62,6 +62,7 @@ import useDataHandling from "@/composables/dataHandling.js";
 
 const { weather, location } = useDataHandling(
   "DailyWeather",
+  "lastDailyApiTimeStmp",
   "daily/getDailyWeather"
 );
 
@@ -71,21 +72,6 @@ function formatTime(date) {
     day: "numeric",
   });
 }
-
-// beforeMount() {
-//   if (sessionStorage.getItem("lastDailyApiTimeStmp")) {
-//     let sessionTime = new Date(
-//       sessionStorage.getItem("lastDailyApiTimeStmp")
-//     );
-//     let current = new Date();
-//     if (
-//       sessionTime.getHours() != current.getHours() ||
-//       sessionTime.getDate() != current.getDate()
-//     ) {
-//       sessionStorage.removeItem("DailyWeather");
-//     }
-//   }
-// },
 </script>
 
 <script>

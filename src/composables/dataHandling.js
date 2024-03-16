@@ -1,8 +1,9 @@
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, onBeforeMount } from "vue";
 import { useStore } from "vuex";
 
 export default function useDataHandling(
   sessionStorageName,
+  timeStampName,
   storeAction,
   assignDataHandler = null
 ) {
@@ -50,6 +51,19 @@ export default function useDataHandling(
   } else {
     assignData();
   }
+
+  onBeforeMount(() => {
+    if (sessionStorage.getItem(timeStampName)) {
+      let sessionTime = new Date(sessionStorage.getItem(timeStampName));
+      let current = new Date();
+      if (
+        sessionTime.getHours() != current.getHours() ||
+        sessionTime.getDate() != current.getDate()
+      ) {
+        sessionStorage.removeItem(sessionStorageName);
+      }
+    }
+  });
 
   return { weather, location };
 }

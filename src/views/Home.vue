@@ -72,24 +72,10 @@ function scrollToTop() {
 
 const { location } = useDataHandling(
   "HourlyWeather",
+  "lastHourlyApiTimeStmp",
   "hourly/getHourlyWeather",
   assignWeather
 );
-
-// beforeMount() {
-//   if (sessionStorage.getItem("lastHourlyApiTimeStmp")) {
-//     let sessionTime = new Date(
-//       sessionStorage.getItem("lastHourlyApiTimeStmp")
-//     );
-//     let current = new Date();
-//     if (
-//       sessionTime.getHours() != current.getHours() ||
-//       sessionTime.getDate() != current.getDate()
-//     ) {
-//       sessionStorage.removeItem("HourlyWeather");
-//     }
-//   }
-// },
 </script>
 
 <script>
