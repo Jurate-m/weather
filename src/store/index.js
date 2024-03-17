@@ -1,6 +1,6 @@
 import { createStore } from "vuex";
 
-import locationModule from "./modules/location.js";
+import locationModule from "./modules/location/index.js";
 import dailyModule from "./modules/daily.js";
 import hourlyModule from "./modules/hourly.js";
 
