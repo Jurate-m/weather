@@ -21,14 +21,22 @@
         <p v-if="error" id="err" class="search__error">
           Please use only alphabetical or numerical values in Location search.
         </p>
-
         <div
           v-else
           class="search__dropdown"
           :class="dropdownClass"
-          v-show="active != false && locationArr"
+          v-show="active"
         >
-          <fieldset>
+          <div class="searh__dropdown-location">
+            <button
+              v-if="!locationEnabled"
+              @click.prevent="getCurrentLocation"
+              type="button"
+            >
+              Use Current Location
+            </button>
+          </div>
+          <fieldset v-show="locationArr">
             <legend>Locations</legend>
             <div v-for="item in locationArr" class="search__dropdown-item">
               <input
@@ -47,12 +55,20 @@
       </form>
     </div>
   </div>
+  <Teleport to="body"
+    ><Popup v-if="errorPopup" :message="errorPopup" @popupAction="close"></Popup
+  ></Teleport>
 </template>
 
 <script>
 import "@/assets/scss/components/_search.scss";
+import Popup from "@/components/Popup.vue";
 
 export default {
+  components: {
+    Popup,
+  },
+
   data() {
     return {
       active: false,
@@ -63,6 +79,8 @@ export default {
       place_id: null,
       place_name: null,
       error: false,
+      errorPopup: null,
+      locationEnabled: false,
     };
   },
 
@@ -77,6 +95,32 @@ export default {
       this.locationArr = null;
       this.active = false;
       this.error = false;
+    },
+
+    close() {
+      this.errorPopup = null;
+    },
+
+    getCurrentLocation() {
+      this.$store
+        .dispatch("location/getCurrentPosition")
+        .then(null)
+        .catch((error) => {
+          switch (error.code) {
+            case 1:
+              this.errorPopup =
+                "Please enable location permission to retrieve data for current location.";
+              break;
+            case 2:
+              this.errorPopup = "Location information is unavailable.";
+              break;
+            case 3:
+              this.errorPopup = "The request to get user location timed out.";
+              break;
+            default:
+              this.errorPopup = "Unknown error occured.";
+          }
+        });
     },
 
     async getLocationList() {
@@ -158,6 +202,12 @@ export default {
         active: this.active && this.locationArr,
       };
     },
+  },
+
+  mounted() {
+    navigator.permissions.query({ name: "geolocation" }).then((result) => {
+      if (result.state === "granted") this.locationEnabled = true;
+    });
   },
 };
 </script>

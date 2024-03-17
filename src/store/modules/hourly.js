@@ -47,7 +47,7 @@ export default {
         !sessionStorage.getItem("LocationId")
       ) {
         try {
-          await dispatch("location/loadLocation", "", { root: true });
+          await dispatch("location/getUserLocation", "", { root: true });
         } catch (error) {
           console.error(error);
         }
