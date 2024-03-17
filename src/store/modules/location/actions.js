@@ -52,8 +52,6 @@ export default {
     const lat = state.latitude || sessionStorage.getItem("lat") || null;
     const lon = state.longitude || sessionStorage.getItem("lon") || null;
 
-    console.log(`line ${lat}, ${lon}`);
-
     // if not lat or lon - exit
     if (!lat || !lon) return;
 
@@ -63,8 +61,6 @@ export default {
       lat: lat,
       lon: lon,
     });
-
-    console.log(`line ${params}`);
 
     try {
       const response = await axios.get(
