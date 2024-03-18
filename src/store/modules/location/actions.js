@@ -26,13 +26,17 @@ export default {
       .catch((error) => console.error(error));
   },
 
-  async getUserLocation({ state, dispatch, commit }) {
+  async checkLocationPermissionStatus({ commit }) {
     // check location permission status
     const locationPermissionQuery = await navigator.permissions.query({
       name: "geolocation",
     });
 
     commit("setLocationPermissionStatus", locationPermissionQuery.state);
+  },
+
+  async getUserLocation({ state, dispatch }) {
+    await dispatch("checkLocationPermissionStatus");
 
     if (state.locationPermissionStatus != "granted") {
       // if user denied location permissions - get estimated location using ip
