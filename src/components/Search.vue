@@ -54,14 +54,12 @@
         </div>
       </form>
     </div>
-    <Teleport to="body">
-      <Popup
-        v-if="activePopup"
-        :message="currentLocationError"
-        @popupAction="closePopup()"
-      ></Popup>
-    </Teleport>
-    <div></div>
+    <Popup
+      v-show="activePopup && !!currentLocationError"
+      :message="currentLocationError"
+      @popupAction="closePopup()"
+    >
+    </Popup>
   </div>
 </template>
 
@@ -192,7 +190,7 @@ watch(trimmedInput, (newValue, oldValue) => {
 
 // Current location START ----------------------------------
 const currentLocationPermission = ref(false);
-const activePopup = ref(false);
+const activePopup = ref(true);
 
 function geolocationStateHandler(state) {
   currentLocationPermission.value = state === "granted";
@@ -213,14 +211,18 @@ const currentLocationError = computed(() => {
   return store.state.location.error;
 });
 
-function useCurrentLocation() {
-  store.dispatch("location/getCurrentUserLocation");
-
-  activePopup.value = !!currentLocationError.value;
+async function useCurrentLocation() {
+  await store.dispatch("location/getCurrentUserLocation").catch(() => {
+    activePopup.value = true;
+  });
 }
 
 function closePopup() {
-  activePopup.value = false;
+  if (activePopup.value) {
+    activePopup.value = false;
+  } else {
+    return;
+  }
 }
 
 // Current location END ----------------------------------

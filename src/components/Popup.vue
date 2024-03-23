@@ -1,6 +1,6 @@
 <template>
   <div class="popup">
-    <div class="popup__card">
+    <div class="popup__card" v-click-out="popupAction">
       <p class="mb-20">{{ message }}</p>
       <button @click="popupAction">Close</button>
     </div>
@@ -12,12 +12,7 @@ import "@/assets/scss/components/_popup.scss";
 
 export default {
   emits: ["popupAction"],
-  props: {
-    message: {
-      type: String,
-      required: true,
-    },
-  },
+  props: ["message"],
 
   methods: {
     popupAction() {

@@ -3,16 +3,20 @@ import axios from "axios";
 export default {
   getCurrentUserLocation({ commit }) {
     if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          commit("setLatitude", position.coords.latitude);
-          commit("setLongitude", position.coords.longitude);
-        },
-        (error) => {
-          commit("setError", error.code);
-        },
-        { enableHighAccuracy: true }
-      );
+      return new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            commit("setLatitude", position.coords.latitude);
+            commit("setLongitude", position.coords.longitude);
+            resolve();
+          },
+          (error) => {
+            commit("setError", error.code);
+            reject(error);
+          },
+          { enableHighAccuracy: true }
+        );
+      });
     }
   },
 
