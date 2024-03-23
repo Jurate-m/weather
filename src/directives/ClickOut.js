@@ -2,7 +2,7 @@ export default {
   beforeMount: (el, binding) => {
     el.handler = (e) => {
       if (!(el === e.target || el.contains(e.target))) {
-        return binding.value();
+        return binding.value(e);
       }
     };
 
