@@ -11,6 +11,7 @@ export default {
       locationName: null,
       locationId: null,
       locationPermissionStatus: null,
+      error: null,
     };
   },
 
