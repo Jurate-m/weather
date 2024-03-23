@@ -9,7 +9,7 @@ export default {
           commit("setLongitude", position.coords.longitude);
         },
         (error) => {
-          console.error(error);
+          commit("setError", error.code);
         },
         { enableHighAccuracy: true }
       );
@@ -26,28 +26,17 @@ export default {
       .catch((error) => console.error(error));
   },
 
-  async getUserLocation({ state, dispatch, commit }) {
-    // check location permission status
-    const locationPermissionQuery = await navigator.permissions.query({
-      name: "geolocation",
-    });
+  async getUserLocation({ state, dispatch }) {
+    await dispatch("getIpUserLocation");
 
-    commit("setLocationPermissionStatus", locationPermissionQuery.state);
+    // if there is not lat and lon due to an ip API error - exit the action
+    if (!state.latitude || !state.longitude) return;
 
-    if (state.locationPermissionStatus != "granted") {
-      // if user denied location permissions - get estimated location using ip
-      await dispatch("getIpUserLocation");
-    } else {
-      // dispatches geolocation action if:
-      // 1. user didn't grant the location permission yet - triggers the popup and retrieves location information
-      // 2. permisson is granted - retrieves location information
-      dispatch("getCurrentUserLocation");
-    }
-
+    // ^ else - dispacth setLocation action
     await dispatch("setLocation");
   },
 
-  async setLocation({ state, commit }) {
+  async setLocation({ state, dispatch }) {
     // retrieve lat and lon either from store or session storage if set
     const lat = state.latitude || sessionStorage.getItem("lat") || null;
     const lon = state.longitude || sessionStorage.getItem("lon") || null;
@@ -62,15 +51,22 @@ export default {
       lon: lon,
     });
 
-    try {
-      const response = await axios.get(
-        `/.netlify/functions/weather?${params.toString()}`
-      );
+    await axios
+      .get(`/.netlify/functions/weather?${params.toString()}`)
+      .then((response) => {
+        dispatch("assignLocationId", response.data.place_id);
+        dispatch("assignLocationName", response.data.name);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  },
 
-      commit("setLocationId", response.data.place_id);
-      commit("setLocationName", response.data.name);
-    } catch (error) {
-      console.error(error);
-    }
+  assignLocationId({ commit }, data) {
+    commit("setLocationId", data);
+  },
+
+  assignLocationName({ commit }, data) {
+    commit("setLocationName", data);
   },
 };
