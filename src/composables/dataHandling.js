@@ -10,7 +10,7 @@ export default function useDataHandling(
   const store = useStore();
 
   const weather = ref(null);
-  const location = ref(sessionStorage.getItem("LocationName") || null);
+  const location = ref(sessionStorage.getItem("locationName") || null);
 
   function fetchData() {
     return store.dispatch(storeAction);
@@ -36,13 +36,13 @@ export default function useDataHandling(
   });
 
   watch(locationId, () => {
-    sessionStorage.removeItem("DailyWeather");
-    sessionStorage.removeItem("HourlyWeather");
+    sessionStorage.removeItem("dailyWeather");
+    sessionStorage.removeItem("hourlyWeather");
     assignData();
   });
 
   watch(locationName, () => {
-    location.value = sessionStorage.getItem("LocationName");
+    location.value = sessionStorage.getItem("locationName");
   });
 
   if (sessionStorage.getItem(sessionStorageName)) {

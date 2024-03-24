@@ -89,7 +89,7 @@ function assignHourlyWeather(data) {
 }
 
 const { location } = useDataHandling(
-  "HourlyWeather",
+  "hourlyWeather",
   "lastHourlyApiTimeStmp",
   "hourly/getHourlyWeather",
   assignHourlyWeather

@@ -29,7 +29,7 @@ export default {
       });
 
       sessionStorage.setItem(
-        "HourlyWeather",
+        "hourlyWeather",
         JSON.stringify(state.hourlyWeather)
       );
     },
@@ -44,7 +44,7 @@ export default {
     async getHourlyWeather({ rootState, state, commit, dispatch }) {
       if (
         !rootState.location.locationId ||
-        !sessionStorage.getItem("LocationId")
+        !sessionStorage.getItem("locationId")
       ) {
         try {
           await dispatch("location/getUserLocation", "", { root: true });
@@ -54,7 +54,7 @@ export default {
       }
 
       state.place_id =
-        rootState.location.locationId || sessionStorage.getItem("LocationId");
+        rootState.location.locationId || sessionStorage.getItem("locationId");
 
       if (!state.place_id) return;
 
