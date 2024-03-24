@@ -228,7 +228,7 @@ function closePopup() {
 // Current location END ----------------------------------
 
 function clear() {
-  selectedLocation.value = {};
+  selectedLocation.value = null;
   locationArr.value = [];
   locationInput.value = null;
   active.value = false;
@@ -249,14 +249,14 @@ function sendData() {
     locationArr.value.length
   ) {
     // define location ID
-    const place_id = selectedLocation.value
+    let place_id = selectedLocation.value
       ? selectedLocation.value.place_id
-      : locationArr[0].value.place_id;
+      : locationArr.value[0].place_id;
 
     // define location name
-    const place_name = selectedLocation.value
+    let place_name = selectedLocation.value
       ? selectedLocation.value.name
-      : locationArr[0].value.name;
+      : locationArr.value[0].name;
 
     if (place_id && place_name) {
       store.dispatch("location/assignLocationId", place_id);
