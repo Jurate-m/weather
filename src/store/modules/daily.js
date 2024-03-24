@@ -12,7 +12,7 @@ export default {
   mutations: {
     assignDailyWeather(state, payload) {
       state.dailyWeather = payload;
-      sessionStorage.setItem("DailyWeather", JSON.stringify(payload));
+      sessionStorage.setItem("dailyWeather", JSON.stringify(payload));
     },
 
     setDailyTimeStamp(state, payload) {
@@ -25,7 +25,7 @@ export default {
     async getDailyWeather({ rootState, state, dispatch, commit }) {
       if (
         !rootState.location.locationId ||
-        !sessionStorage.getItem("LocationId")
+        !sessionStorage.getItem("locationId")
       ) {
         try {
           await dispatch("location/getUserLocation", "", { root: true });
@@ -35,7 +35,7 @@ export default {
       }
 
       state.place_id =
-        rootState.location.locationId || sessionStorage.getItem("LocationId");
+        rootState.location.locationId || sessionStorage.getItem("locationId");
 
       if (!state.place_id) return;
 

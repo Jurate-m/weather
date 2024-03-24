@@ -71,7 +71,7 @@ function scrollToTop() {
 }
 
 const { location } = useDataHandling(
-  "HourlyWeather",
+  "hourlyWeather",
   "lastHourlyApiTimeStmp",
   "hourly/getHourlyWeather",
   assignWeather

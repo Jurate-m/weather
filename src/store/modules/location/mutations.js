@@ -1,9 +1,4 @@
 export default {
-  setLocationPermissionStatus(state, payload) {
-    state.locationPermissionStatus;
-    sessionStorage.setItem("locationPermissionStatus", payload);
-  },
-
   setLatitude(state, payload) {
     state.latitude = payload;
     sessionStorage.setItem("lat", payload);
@@ -16,7 +11,7 @@ export default {
 
   setLocationId(state, payload) {
     state.locationId = payload;
-    sessionStorage.setItem("LocationId", payload);
+    sessionStorage.setItem("locationId", payload);
   },
 
   setLocationName(state, payload) {

@@ -61,7 +61,7 @@ import { formatDateTime } from "@/utils";
 import useDataHandling from "@/composables/dataHandling.js";
 
 const { weather, location } = useDataHandling(
-  "DailyWeather",
+  "dailyWeather",
   "lastDailyApiTimeStmp",
   "daily/getDailyWeather"
 );

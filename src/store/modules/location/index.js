@@ -10,7 +10,6 @@ export default {
       longitude: null,
       locationName: null,
       locationId: null,
-      locationPermissionStatus: null,
       error: null,
     };
   },
