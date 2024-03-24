@@ -212,9 +212,11 @@ const currentLocationError = computed(() => {
 });
 
 async function useCurrentLocation() {
-  await store.dispatch("location/getCurrentUserLocation").catch(() => {
-    activePopup.value = true;
-  });
+  await store
+    .dispatch("location/getUserLocation", "getCurrentUserPosition")
+    .catch(() => {
+      activePopup.value = true;
+    });
 }
 
 function closePopup() {
