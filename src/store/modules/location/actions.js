@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export default {
-  getCurrentUserLocation({ commit }) {
+  getCurrentUserPosition({ commit }) {
     if ("geolocation" in navigator) {
       return new Promise((resolve, reject) => {
         navigator.geolocation.getCurrentPosition(
@@ -30,14 +30,12 @@ export default {
       .catch((error) => console.error(error));
   },
 
-  async getUserLocation({ state, dispatch }) {
-    await dispatch("getIpUserLocation");
+  assignLocationId({ commit }, data) {
+    commit("setLocationId", data);
+  },
 
-    // if there is not lat and lon due to an ip API error - exit the action
-    if (!state.latitude || !state.longitude) return;
-
-    // ^ else - dispacth setLocation action
-    await dispatch("setLocation");
+  assignLocationName({ commit }, data) {
+    commit("setLocationName", data);
   },
 
   async setLocation({ state, dispatch }) {
@@ -66,11 +64,14 @@ export default {
       });
   },
 
-  assignLocationId({ commit }, data) {
-    commit("setLocationId", data);
-  },
+  async getUserLocation({ state, dispatch }, actionName) {
+    // await dispatching provided action name
+    await dispatch(actionName);
 
-  assignLocationName({ commit }, data) {
-    commit("setLocationName", data);
+    // if there is not lat and lon due to an ip API error - exit the action
+    if (!state.latitude || !state.longitude) return;
+
+    // ^ else - dispacth setLocation action
+    await dispatch("setLocation");
   },
 };
