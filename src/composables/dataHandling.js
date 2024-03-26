@@ -10,9 +10,8 @@ export default function useDataHandling(
 ) {
   const store = useStore();
   const weather = ref(null);
-  const location = ref(sessionStorage.getItem("location") || null);
 
-  const assignData = async () => {
+  async function assignData() {
     try {
       await store.dispatch(storeAction, storeArgs);
     } catch (error) {
@@ -22,14 +21,18 @@ export default function useDataHandling(
     weather.value = JSON.parse(sessionStorage.getItem(sessionStorageName));
 
     if (assignDataHandler) assignDataHandler(weather.value);
-  };
+  }
 
   const locationId = computed(() => {
-    return store.state.location.locationId;
+    return (
+      store.state.location.locationId || sessionStorage.getItem("location")
+    );
   });
 
-  const locationName = computed(() => {
-    return store.state.location.locationName;
+  const location = computed(() => {
+    return (
+      store.state.location.locationName || sessionStorage.getItem("location")
+    );
   });
 
   watch(locationId, (newVal, oldVal) => {
@@ -37,10 +40,6 @@ export default function useDataHandling(
     sessionStorage.removeItem("hourly");
 
     if (oldVal !== null) assignData();
-  });
-
-  watch(locationName, () => {
-    location.value = sessionStorage.getItem("location");
   });
 
   if (sessionStorage.getItem(sessionStorageName)) {

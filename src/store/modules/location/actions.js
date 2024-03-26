@@ -1,27 +1,27 @@
 import axios from "axios";
 
 export default {
-  getCurrentUserPosition({ commit }) {
-    if ("geolocation" in navigator) {
-      return new Promise((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            commit("setLatitude", position.coords.latitude);
-            commit("setLongitude", position.coords.longitude);
-            resolve();
-          },
-          (error) => {
-            commit("setError", error.code);
-            reject(error);
-          },
-          { enableHighAccuracy: true }
-        );
-      });
-    }
-  },
+  // getCurrentUserPosition({ commit }) {
+  //   if ("geolocation" in navigator) {
+  //     return new Promise((resolve, reject) => {
+  //       navigator.geolocation.getCurrentPosition(
+  //         (position) => {
+  //           commit("setLatitude", position.coords.latitude);
+  //           commit("setLongitude", position.coords.longitude);
+  //           resolve();
+  //         },
+  //         (error) => {
+  //           commit("setError", error.code);
+  //           reject(error);
+  //         },
+  //         { enableHighAccuracy: true }
+  //       );
+  //     });
+  //   }
+  // },
 
-  getIpUserLocation({ commit }) {
-    return axios
+  async getIpUserLocation({ commit }) {
+    return await axios
       .get("https://ipapi.co/json")
       .then((response) => {
         commit("setLatitude", response.data.latitude);

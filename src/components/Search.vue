@@ -27,15 +27,8 @@
         <p v-if="inputError" id="err" class="search__error">
           Please use only alphabetical or numerical values in Location search.
         </p>
-        <div
-          v-else
-          class="search__dropdown"
-          v-show="active && (locationArr.length || !currentLocationPermission)"
-        >
-          <div
-            v-if="!currentLocationPermission"
-            class="search__current-location"
-          >
+        <div v-else class="search__dropdown" v-show="active">
+          <div class="search__current-location">
             <button @click.prevent="useCurrentLocation()">
               Use current location
             </button>
@@ -54,12 +47,12 @@
         </div>
       </form>
     </div>
-    <Popup
+    <!-- <Popup
       v-show="activePopup && !!currentLocationError"
       :message="currentLocationError"
       @popupAction="closePopup()"
     >
-    </Popup>
+    </Popup> -->
   </div>
 </template>
 
@@ -189,43 +182,45 @@ watch(trimmedInput, (newValue, oldValue) => {
 // Location Input validation END----------------------------
 
 // Current location START ----------------------------------
-const currentLocationPermission = ref(false);
-const activePopup = ref(true);
+// const currentLocationPermission = ref(false);
+// const activePopup = ref(true);
 
-function geolocationStateHandler(state) {
-  currentLocationPermission.value = state === "granted";
-}
+// function geolocationStateHandler(state) {
+//   currentLocationPermission.value = state === "granted";
+// }
 
 // Event listener for permissions change
-navigator.permissions
-  .query({ name: "geolocation" })
-  .then((permissionStatus) => {
-    geolocationStateHandler(permissionStatus.state);
+// navigator.permissions
+//   .query({ name: "geolocation" })
+//   .then((permissionStatus) => {
+//     geolocationStateHandler(permissionStatus.state);
 
-    permissionStatus.onchange = () => {
-      geolocationStateHandler(permissionStatus.state);
-    };
-  });
+//     permissionStatus.onchange = () => {
+//       console.log(permissionStatus.state);
+//       geolocationStateHandler(permissionStatus.state);
+//     };
+//   });
 
-const currentLocationError = computed(() => {
-  return store.state.location.error;
-});
+// const currentLocationError = computed(() => {
+//   return store.state.location.error;
+// });
 
 async function useCurrentLocation() {
   await store
-    .dispatch("location/getUserLocation", "getCurrentUserPosition")
+    .dispatch("location/getUserLocation", "getIpUserLocation")
     .catch(() => {
-      activePopup.value = true;
+      // activePopup.value = true;
+      console.error(error);
     });
 }
 
-function closePopup() {
-  if (activePopup.value) {
-    activePopup.value = false;
-  } else {
-    return;
-  }
-}
+// function closePopup() {
+//   if (activePopup.value) {
+//     activePopup.value = false;
+//   } else {
+//     return;
+//   }
+// }
 
 // Current location END ----------------------------------
 
