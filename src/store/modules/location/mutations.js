@@ -22,7 +22,8 @@ export default {
   setError(state, payload) {
     switch (payload) {
       case 1:
-        state.error = "Please enable location permission.";
+        state.error =
+          "Please enable location permission to view weater for your current location.";
         break;
       case 2:
         state.error = "Location information is unavailable.";
