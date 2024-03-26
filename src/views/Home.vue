@@ -51,7 +51,7 @@ const weather = ref(null);
 const activeIndex = ref(0);
 const dataLength = 8;
 
-function assignWeather(data) {
+const assignWeather = function (data) {
   const remainingArray = dataLength - data[0].length;
 
   if (remainingArray > 0) {
@@ -60,7 +60,7 @@ function assignWeather(data) {
   }
 
   weather.value = data[0].slice(0, dataLength);
-}
+};
 
 function setActive(index) {
   activeIndex.value = index;
@@ -71,9 +71,14 @@ function scrollToTop() {
 }
 
 const { location } = useDataHandling(
-  "hourlyWeather",
-  "lastHourlyApiTimeStmp",
-  "hourly/getHourlyWeather",
+  "hourly",
+  "hourly_time_stmp",
+  "weather/getWeather",
+  {
+    endpoint: "hourly",
+    commitName_1: "separateDays",
+    commitName_2: "setHourlyTimeStamp",
+  },
   assignWeather
 );
 </script>
