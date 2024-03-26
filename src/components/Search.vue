@@ -33,6 +33,7 @@
               Use current location
             </button>
           </div>
+          <Loader v-if="loading"></Loader>
           <ul v-if="locationArr.length">
             <li
               v-for="item in locationArr"
@@ -62,6 +63,7 @@ import { useStore } from "vuex";
 
 const store = useStore();
 const selectedLocation = ref(null);
+const loading = ref(false);
 
 // Generating Locations List from user input START----------------------------
 const locationInput = ref(null);
@@ -97,6 +99,9 @@ async function getLocationList() {
         });
       });
     })
+    .then(() => {
+      loading.value = false;
+    })
     .catch((error) => {
       console.log(error);
     });
@@ -105,6 +110,8 @@ async function getLocationList() {
 const timer = ref(null);
 
 function renderLocationList() {
+  loading.value = true;
+
   if (timer.value) {
     clearTimeout(timer.value);
     timer.value = null;
@@ -284,9 +291,13 @@ function clearInput() {
 <script>
 import "@/assets/scss/components/_search.scss";
 
-import Popup from "@/components/Popup.vue";
+// import Popup from "@/components/Popup.vue";
+import Loader from "@/components/Loader.vue";
 
 export default {
-  components: { Popup },
+  components: {
+    // Popup
+    Loader,
+  },
 };
 </script>
