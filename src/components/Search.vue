@@ -1,163 +1,292 @@
 <template>
-  <div :class="classes" v-click-out="hide">
-    <div class="search__trigger" @click="show()">
+  <div class="search" :class="activeClass" @click="show()" v-click-out="clear">
+    <div class="search__trigger">
       <form @submit.prevent="sendData()">
         <div class="search__inner">
           <button
-            :type="active ? 'submit' : 'button'"
-            :aria-label="active ? 'Open Search' : 'Submit'"
+            :type="validSubmit ? 'submit' : 'button'"
+            :aria-label="validSubmit ? 'Search' : 'Open Search'"
           >
             <img src="/assets/icons/search.svg" alt="search icon" />
           </button>
           <input
             type="text"
             title="Search for location"
-            placeholder="Location"
+            placeholder="Search for location"
             v-model="locationInput"
-            @keyup="renderLocationList()"
             aria-errormessage="err"
           />
+          <button
+            class="search__clear"
+            type="button"
+            @click.prevent="clearInput()"
+            aria-label="Clear input"
+            v-show="trimmedInput && active"
+          ></button>
         </div>
-        <p v-if="error" id="err" class="search__error">
+        <p v-if="inputError" id="err" class="search__error">
           Please use only alphabetical or numerical values in Location search.
         </p>
-
-        <div
-          v-else
-          class="search__dropdown"
-          :class="dropdownClass"
-          v-show="active != false && locationArr"
-        >
-          <fieldset>
-            <legend>Locations</legend>
-            <div v-for="item in locationArr" class="search__dropdown-item">
-              <input
-                type="radio"
-                :id="item.place_id"
-                :value="item"
-                v-model="selectedLocation"
-                @change.prevent="sendData()"
-                :aria-label="item.name"
-              />
-
-              <label :for="item.place_id">{{ item.name }}</label>
-            </div>
-          </fieldset>
+        <div v-else class="search__dropdown" v-show="active">
+          <div class="search__current-location">
+            <button @click.prevent="useCurrentLocation()">
+              Use current location
+            </button>
+          </div>
+          <ul v-if="locationArr.length">
+            <li
+              v-for="item in locationArr"
+              class="search__dropdown-item"
+              :key="item.place_id"
+            >
+              <button type="button" @click.prevent="selectLocation(item)">
+                {{ item.name }}
+              </button>
+            </li>
+          </ul>
         </div>
       </form>
     </div>
+    <!-- <Popup
+      v-show="activePopup && !!currentLocationError"
+      :message="currentLocationError"
+      @popupAction="closePopup()"
+    >
+    </Popup> -->
   </div>
 </template>
+
+<script setup>
+import { ref, computed, watch } from "vue";
+import { useStore } from "vuex";
+
+const store = useStore();
+const selectedLocation = ref(null);
+
+// Generating Locations List from user input START----------------------------
+const locationInput = ref(null);
+const locationArr = ref([]);
+
+// remove whitespace around locationInput
+const trimmedInput = computed(() => {
+  if (locationInput.value) return locationInput.value.trim();
+});
+
+// computed property for changing form button properties
+const validSubmit = computed(() => {
+  return active.value && trimmedInput.value && !inputError.value;
+});
+
+async function getLocationList() {
+  if (!trimmedInput.value) return;
+
+  const params = new URLSearchParams({
+    endpoint: "find_places_prefix",
+    text: locationInput.value.toString(),
+    language: "en",
+  });
+
+  return await fetch(`/.netlify/functions/weather?${params.toString()}`)
+    .then((response) => response.json())
+    .then((response) => {
+      response.forEach((item) => {
+        locationArr.value.push({
+          name: item.name,
+          admin_area: item.adm_area1,
+          place_id: item.place_id,
+        });
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+const timer = ref(null);
+
+function renderLocationList() {
+  if (timer.value) {
+    clearTimeout(timer.value);
+    timer.value = null;
+  }
+  timer.value = setTimeout(getLocationList, 1000);
+}
+
+// Generating Locations List from user input END----------------------------
+
+// Location Input validation START----------------------------
+const regex = /[-’/`~!#*$@_%+=.,^&(){}[\]|;:”<>?\\]/;
+const inputError = ref(false);
+
+function testingRegex(arg) {
+  return regex.test(arg);
+}
+
+// Check and return a boolena if trimmed input value contains provided regex
+const invalidInput = computed(() => {
+  return testingRegex(trimmedInput.value);
+});
+
+// watch if invalidInput computed property changes and assign returned value to input error state
+watch(invalidInput, (newValue) => {
+  inputError.value = newValue;
+});
+
+watch(trimmedInput, (newValue, oldValue) => {
+  if (trimmedInput.value) {
+    // variable for checking if oldValue exists AND if it starts with a newValue
+    let oldValueStartsWithNewValue = oldValue && oldValue.startsWith(newValue);
+
+    // variable for checking if oldValue does have spaecial characters
+    let oldValueContainsRegex = testingRegex(oldValue);
+
+    // comparison variable for:
+    let passCondition_1 =
+      // checking IF oldValue exists AND
+      oldValue &&
+      // oldValue starts with newValue AND
+      oldValueStartsWithNewValue &&
+      // olValue has special characters AND
+      oldValueContainsRegex &&
+      // if there is no special charakters in current input value
+      !inputError.value;
+
+    let passCondition_2 =
+      oldValue && !oldValueStartsWithNewValue && !inputError.value;
+
+    let passCondition_3 =
+      oldValue &&
+      // oldValue starts with newValue AND
+      oldValueStartsWithNewValue &&
+      // there is no input error AND
+      !inputError.value &&
+      // there are no available locations
+      !locationArr.value.length;
+
+    if (
+      // there is no oldValue and input value doesn't contain error OR
+      (!oldValue && !inputError.value) ||
+      // there is no oldValue and input value doesn't contain error OR
+      passCondition_1 ||
+      passCondition_2 ||
+      passCondition_3
+    ) {
+      locationArr.value = [];
+      renderLocationList();
+    }
+  } else {
+    locationArr.value = [];
+  }
+});
+
+// Location Input validation END----------------------------
+
+// Current location START ----------------------------------
+// const currentLocationPermission = ref(false);
+// const activePopup = ref(true);
+
+// function geolocationStateHandler(state) {
+//   currentLocationPermission.value = state === "granted";
+// }
+
+// Event listener for permissions change
+// navigator.permissions
+//   .query({ name: "geolocation" })
+//   .then((permissionStatus) => {
+//     geolocationStateHandler(permissionStatus.state);
+
+//     permissionStatus.onchange = () => {
+//       console.log(permissionStatus.state);
+//       geolocationStateHandler(permissionStatus.state);
+//     };
+//   });
+
+// const currentLocationError = computed(() => {
+//   return store.state.location.error;
+// });
+
+async function useCurrentLocation() {
+  await store
+    .dispatch("location/getUserLocation", "getIpUserLocation")
+    .catch(() => {
+      // activePopup.value = true;
+      console.error(error);
+    });
+}
+
+// function closePopup() {
+//   if (activePopup.value) {
+//     activePopup.value = false;
+//   } else {
+//     return;
+//   }
+// }
+
+// Current location END ----------------------------------
+
+function clear() {
+  selectedLocation.value = null;
+  locationArr.value = [];
+  locationInput.value = null;
+  active.value = false;
+}
+
+function selectLocation(data) {
+  selectedLocation.value = data;
+  sendData();
+}
+
+function sendData() {
+  if (
+    // there is a value in the input AND
+    trimmedInput.value &&
+    // there are no errors AND
+    !inputError.value &&
+    // there are generated locations
+    locationArr.value.length
+  ) {
+    // define location ID
+    let place_id = selectedLocation.value
+      ? selectedLocation.value.place_id
+      : locationArr.value[0].place_id;
+
+    // define location name
+    let place_name = selectedLocation.value
+      ? selectedLocation.value.name
+      : locationArr.value[0].name;
+
+    if (place_id && place_name) {
+      store.dispatch("location/assignLocationId", place_id);
+      store.dispatch("location/assignLocationName", place_name);
+
+      clear();
+    }
+  }
+}
+
+const active = ref(false);
+
+const activeClass = computed(() => {
+  return {
+    active: active.value,
+  };
+});
+
+function show() {
+  active.value = true;
+}
+
+function clearInput() {
+  locationInput.value = null;
+}
+</script>
 
 <script>
 import "@/assets/scss/components/_search.scss";
 
+import Popup from "@/components/Popup.vue";
+
 export default {
-  data() {
-    return {
-      active: false,
-      locationInput: null,
-      locationArr: null,
-      selectedLocation: null,
-      timer: null,
-      place_id: null,
-      place_name: null,
-      error: false,
-    };
-  },
-
-  methods: {
-    show() {
-      return (this.active = true);
-    },
-
-    hide() {
-      this.active = false;
-      this.locationInput = null;
-      this.locationArr = null;
-      this.active = false;
-      this.error = false;
-    },
-
-    async getLocationList() {
-      if (this.locationInput) {
-        this.locationArr = [];
-        const regex = /[-’/`~!#*$@_%+=.,^&(){}[\]|;:”<>?\\]/g;
-
-        if (regex.test(this.locationInput)) {
-          return (this.error = true);
-        }
-
-        this.error = false;
-
-        try {
-          const params = new URLSearchParams({
-            endpoint: "find_places_prefix",
-            text: this.locationInput.toString(),
-            language: "en",
-          });
-
-          const resp = await fetch(
-            `/.netlify/functions/weather?${params.toString()}`
-          );
-
-          const data = await resp.json();
-
-          data.forEach((item) => {
-            this.locationArr.push({
-              name: item.name,
-              admin_area: item.adm_area1,
-              place_id: item.place_id,
-            });
-          });
-        } catch (error) {
-          console.error(error);
-        }
-      } else {
-        this.locationArr = null;
-        this.error = false;
-      }
-    },
-
-    renderLocationList() {
-      if (this.timer) {
-        clearTimeout(this.timer);
-        this.timer = null;
-      }
-
-      this.timer = setTimeout(this.getLocationList, 1000);
-    },
-
-    sendData() {
-      if (this.locationInput && this.locationArr && !this.error) {
-        this.place_id = this.selectedLocation
-          ? this.selectedLocation.place_id
-          : this.locationArr[0].place_id;
-        this.place_name = this.selectedLocation
-          ? this.selectedLocation.name
-          : this.locationArr[0].name;
-
-        this.$store.dispatch("location/setUserLocationId", this.place_id);
-        this.$store.dispatch("location/setUserLocationName", this.place_name);
-
-        this.hide();
-      }
-    },
-  },
-
-  computed: {
-    classes() {
-      return {
-        search: true,
-        "search--active": this.active,
-      };
-    },
-
-    dropdownClass() {
-      return {
-        active: this.active && this.locationArr,
-      };
-    },
-  },
+  components: { Popup },
 };
 </script>

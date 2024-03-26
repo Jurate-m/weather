@@ -43,6 +43,46 @@
   </div>
 </template>
 
+<script setup>
+import { ref } from "vue";
+import useDataHandling from "@/composables/dataHandling.js";
+
+const weather = ref(null);
+const activeIndex = ref(0);
+const dataLength = 8;
+
+const assignWeather = function (data) {
+  const remainingArray = dataLength - data[0].length;
+
+  if (remainingArray > 0) {
+    weather.value = data[0].concat(data[1].slice(0, remainingArray));
+    return;
+  }
+
+  weather.value = data[0].slice(0, dataLength);
+};
+
+function setActive(index) {
+  activeIndex.value = index;
+}
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+const { location } = useDataHandling(
+  "hourly",
+  "hourly_time_stmp",
+  "weather/getWeather",
+  {
+    endpoint: "hourly",
+    commitName_1: "separateDays",
+    commitName_2: "setHourlyTimeStamp",
+  },
+  assignWeather
+);
+</script>
+
 <script>
 import "@/assets/scss/views/_home.scss";
 import FeaturedCard from "@/components/FeaturedCard.vue";
@@ -60,97 +100,6 @@ export default {
     FeaturedListCard,
     SingleLink,
     Loader,
-  },
-
-  data() {
-    return {
-      weather: null,
-      activeIndex: 0,
-      dataLength: 8,
-      location: sessionStorage.getItem("LocationName"),
-    };
-  },
-
-  watch: {
-    locationId() {
-      sessionStorage.removeItem("DailyWeather");
-      sessionStorage.removeItem("HourlyWeather");
-      this.assignData();
-    },
-
-    locationName() {
-      this.location = sessionStorage.getItem("LocationName");
-    },
-  },
-
-  computed: {
-    locationId() {
-      return this.$store.state.location.locationId;
-    },
-
-    locationName() {
-      return this.$store.state.location.locationName;
-    },
-  },
-
-  methods: {
-    fetchData() {
-      return this.$store.dispatch("hourly/getHourlyWeather");
-    },
-
-    async assignData() {
-      try {
-        await this.fetchData();
-      } catch (error) {
-        console.error(error);
-      }
-
-      let weather = JSON.parse(sessionStorage.getItem("HourlyWeather"));
-      this.assignWeather(weather);
-    },
-
-    assignWeather(data) {
-      const remainingArray = this.dataLength - data[0].length;
-
-      if (remainingArray > 0) {
-        this.weather = data[0].concat(data[1].slice(0, remainingArray));
-        return;
-      }
-
-      this.weather = data[0].slice(0, this.dataLength);
-    },
-
-    setActive(index) {
-      this.activeIndex = index;
-    },
-
-    scrollToTop() {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    },
-  },
-
-  beforeMount() {
-    if (sessionStorage.getItem("lastHourlyApiTimeStmp")) {
-      let sessionTime = new Date(
-        sessionStorage.getItem("lastHourlyApiTimeStmp")
-      );
-      let current = new Date();
-      if (
-        sessionTime.getHours() != current.getHours() ||
-        sessionTime.getDate() != current.getDate()
-      ) {
-        sessionStorage.removeItem("HourlyWeather");
-      }
-    }
-  },
-
-  created() {
-    if (sessionStorage.getItem("HourlyWeather")) {
-      let weather = JSON.parse(sessionStorage.getItem("HourlyWeather"));
-      this.assignWeather(weather);
-    } else {
-      this.assignData();
-    }
   },
 };
 </script>

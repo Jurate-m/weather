@@ -1,12 +1,12 @@
 <template>
-  <div v-if="dailyWeather">
+  <div v-if="weather">
     <h1 class="mb-60">{{ location }}, <br />Daily Weather</h1>
 
     <Listing full_width class="mb-30">
-      <ListingSingle v-for="item in dailyWeather">
+      <ListingSingle v-for="item in weather">
         <template #button
           ><WeatherSummaryCard
-            :date="formatDateTime(new Date(item.day))"
+            :date="formatTime(new Date(item.day))"
             :icon="item.icon"
             :weather_summary="item.weather"
             :temperature="item.temperature"
@@ -56,13 +56,35 @@
   </div>
 </template>
 
+<script setup>
+import { formatDateTime } from "@/utils";
+import useDataHandling from "@/composables/dataHandling.js";
+
+const { weather, location } = useDataHandling(
+  "daily",
+  "daily_time_stmp",
+  "weather/getWeather",
+  {
+    endpoint: "daily",
+    commitName_1: "assignDailyWeather",
+    commitName_2: "setDailyTimeStamp",
+  }
+);
+
+function formatTime(date) {
+  return formatDateTime(date, {
+    weekday: "short",
+    day: "numeric",
+  });
+}
+</script>
+
 <script>
 import WeatherDetailsCard from "@/components/WeatherDetailsCard.vue";
 import WeatherSummaryCard from "@/components/WeatherSummaryCard.vue";
 import Listing from "@/components/Listing.vue";
 import ListingSingle from "@/components/ListingSingle.vue";
 import Loader from "@/components/Loader.vue";
-import { formatDateTime } from "@/utils";
 
 export default {
   components: {
@@ -71,82 +93,6 @@ export default {
     WeatherSummaryCard,
     WeatherDetailsCard,
     Loader,
-  },
-
-  data() {
-    return {
-      dailyWeather: null,
-      details: null,
-      location: sessionStorage.getItem("LocationName"),
-    };
-  },
-
-  watch: {
-    locationId() {
-      sessionStorage.removeItem("DailyWeather");
-      sessionStorage.removeItem("HourlyWeather");
-      this.assignData();
-    },
-
-    locationName() {
-      this.location = sessionStorage.getItem("LocationName");
-    },
-  },
-
-  computed: {
-    locationId() {
-      return this.$store.state.location.locationId;
-    },
-
-    locationName() {
-      return this.$store.state.location.locationName;
-    },
-  },
-
-  methods: {
-    fetchData() {
-      return this.$store.dispatch("daily/getDailyWeather");
-    },
-
-    async assignData() {
-      try {
-        await this.fetchData();
-      } catch (error) {
-        console.error(error);
-      }
-
-      this.dailyWeather = JSON.parse(sessionStorage.getItem("DailyWeather"));
-    },
-
-    formatDateTime(date) {
-      return formatDateTime(date, {
-        weekday: "short",
-        day: "numeric",
-      });
-    },
-  },
-
-  beforeMount() {
-    if (sessionStorage.getItem("lastDailyApiTimeStmp")) {
-      let sessionTime = new Date(
-        sessionStorage.getItem("lastDailyApiTimeStmp")
-      );
-      let current = new Date();
-      if (
-        sessionTime.getHours() != current.getHours() ||
-        sessionTime.getDate() != current.getDate()
-      ) {
-        sessionStorage.removeItem("DailyWeather");
-      }
-    }
-  },
-
-  created() {
-    if (sessionStorage.getItem("DailyWeather")) {
-      this.dailyWeather = JSON.parse(sessionStorage.getItem("DailyWeather"));
-    } else {
-      this.assignData();
-    }
   },
 };
 </script>
