@@ -61,9 +61,14 @@ import { formatDateTime } from "@/utils";
 import useDataHandling from "@/composables/dataHandling.js";
 
 const { weather, location } = useDataHandling(
-  "dailyWeather",
-  "lastDailyApiTimeStmp",
-  "daily/getDailyWeather"
+  "daily",
+  "daily_time_stmp",
+  "weather/getWeather",
+  {
+    endpoint: "daily",
+    commitName_1: "assignDailyWeather",
+    commitName_2: "setDailyTimeStamp",
+  }
 );
 
 function formatTime(date) {

@@ -89,9 +89,14 @@ function assignHourlyWeather(data) {
 }
 
 const { location } = useDataHandling(
-  "hourlyWeather",
-  "lastHourlyApiTimeStmp",
-  "hourly/getHourlyWeather",
+  "hourly",
+  "hourly_time_stmp",
+  "weather/getWeather",
+  {
+    endpoint: "hourly",
+    commitName_1: "separateDays",
+    commitName_2: "setHourlyTimeStamp",
+  },
   assignHourlyWeather
 );
 </script>

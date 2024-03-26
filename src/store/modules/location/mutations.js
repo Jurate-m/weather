@@ -11,12 +11,12 @@ export default {
 
   setLocationId(state, payload) {
     state.locationId = payload;
-    sessionStorage.setItem("locationId", payload);
+    sessionStorage.setItem("location_id", payload);
   },
 
   setLocationName(state, payload) {
     state.locationName = payload;
-    sessionStorage.setItem("locationName", payload);
+    sessionStorage.setItem("location", payload);
   },
 
   setError(state, payload) {
