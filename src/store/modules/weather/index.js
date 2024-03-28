@@ -6,7 +6,6 @@ export default {
 
   state() {
     return {
-      place_id: null,
       hourlyTimeStmp: null,
       dailyTimeStmp: null,
       dailyWeather: [],
