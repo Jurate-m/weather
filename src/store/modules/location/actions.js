@@ -78,7 +78,7 @@ export default {
   async getLocationId({ state, dispatch }) {
     // Check if locationId exists either in state or is assigned to a sessionStorage
     const location_id =
-      state.location.locationId || sessionStorage.getItem("location_id");
+      state.locationId || sessionStorage.getItem("location_id");
     // return location_id if it exists
     if (location_id) return location_id;
 
@@ -88,6 +88,6 @@ export default {
     });
 
     // return location id retrieved either from state or sessionStorage or null
-    return state.location.locationId || sessionStorage.getItem("location_id");
+    return state.locationId || sessionStorage.getItem("location_id");
   },
 };

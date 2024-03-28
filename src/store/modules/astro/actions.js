@@ -24,8 +24,6 @@ export default {
 
       const data = await resp.json();
 
-      console.log("passdasd");
-
       commit(commitName_1, data[endpoint].data);
       commit(commitName_2, new Date());
     } catch (error) {
