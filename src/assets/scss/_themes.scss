@@ -1,0 +1,37 @@
+@mixin theme($background_1, $background_2) {
+  background: #{$background_1};
+
+  background: linear-gradient(
+    45deg,
+    #{$background_1} 0%,
+    #{$background_2} 100%
+  );
+
+  background: -moz-linear-gradient(
+    45deg,
+    #{$background_1} 0%,
+    #{$background_2} 100%
+  );
+
+  background: -webkit-linear-gradient(
+    45deg,
+    #{$background_1} 0%,
+    #{$background_2} 100%
+  );
+}
+
+.theme--morning {
+  @include theme(#0061ff, #60efff);
+}
+
+.theme--daytime {
+  @include theme(#ff930f, #fff95b);
+}
+
+.theme--evening {
+  @include theme(#000328, #ff930f);
+}
+
+.theme--night {
+  @include theme(#000328, #00458e);
+}
