@@ -1,8 +1,11 @@
 <template>
   <ThemeWrapper>
-    <Header> </Header>
     <Container>
-      <router-view></router-view>
+      <Header> </Header>
+      <Container>
+        <Search></Search>
+        <router-view></router-view>
+      </Container>
     </Container>
   </ThemeWrapper>
 </template>
@@ -11,12 +14,14 @@
 import ThemeWrapper from "@/components/ThemeWrapper.vue";
 import Container from "@/layouts/Container.vue";
 import Header from "@/components/Header.vue";
+import Search from "./components/Search.vue";
 
 export default {
   components: {
     ThemeWrapper,
     Container,
     Header,
+    Search,
   },
 };
 </script>
