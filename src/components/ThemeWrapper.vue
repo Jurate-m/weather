@@ -13,15 +13,15 @@ if (!sessionStorage.getItem("astro_today")) {
   store.dispatch("astro/getAstro");
 }
 
-if (storeAstro.value) {
-  checkDayTime();
-}
-
 const storeAstro = computed(() => {
   return (
     store.state.astro.astro || JSON.parse(sessionStorage.getItem("astro_today"))
   );
 });
+
+if (storeAstro.value) {
+  checkDayTime();
+}
 
 function checkDayTime() {
   const currentDate = new Date();
