@@ -8,9 +8,9 @@ import notFound from "./views/404.vue";
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { path: "/", name: "Current weather", component: Home },
-    { path: "/hourly", name: "Hourly weather", component: Hourly },
-    { path: "/daily", name: "Daily weather", component: Daily },
+    { path: "/", name: "Current", component: Home },
+    { path: "/hourly", name: "Hourly", component: Hourly },
+    { path: "/daily", name: "Daily", component: Daily },
     { path: "/:catchAll(.*)", component: notFound },
   ],
   scrollBehavior() {
