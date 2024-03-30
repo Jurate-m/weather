@@ -18,7 +18,7 @@
       </Listing>
       <SingleLink
         class="mb-30"
-        routeName="Hourly weather"
+        routeName="Hourly"
         text="View Hourly weather"
         alignRight
       ></SingleLink>

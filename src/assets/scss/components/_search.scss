@@ -1,37 +1,27 @@
 .search {
-  width: 20px;
-  max-width: 220px;
-  transition: all 0.5s ease;
+  width: 100%;
 
   &.active {
-    width: 60%;
-
-    .search__trigger {
-      input[type="text"] {
-        opacity: 1;
-        width: 100%;
-        max-width: 100%;
-      }
-    }
+    position: relative;
   }
 
-  &__trigger {
-    position: relative;
-    padding: 10px 0;
+  button.search__submit {
+    margin-right: 20px;
   }
 
   input[type="text"] {
-    opacity: 0;
-    width: 0;
-
-    padding: 0 0 0 20px;
-    transition: all 0.5s ease;
+    width: 100%;
+    max-width: 100%;
+    color: #000;
   }
 
   &__inner {
     display: flex;
+    align-items: center;
     position: relative;
-    padding-right: 15px;
+    background-color: rgba(var(--background-1), 0.5);
+    background-color: #fff;
+    padding: 10px 20px;
   }
 
   button {
@@ -42,26 +32,22 @@
   }
 
   &__current-location {
-    padding-bottom: 10px;
-    padding-top: 10px;
+    padding: 10px 20px;
+
     button {
-      padding: 10px;
-      display: block;
-      width: 100%;
-      background-color: $light-2;
+      padding: 5px 20px;
+      display: inline-block;
       font-size: 14px;
+      border: 1px solid #000;
+      font-weight: 600;
+      border-radius: 8px;
     }
   }
 
   &__clear {
-    position: absolute;
-    top: 50%;
-    right: 0;
+    position: relative;
     height: 12px;
     width: 12px;
-    background-color: $light;
-    border-radius: 50%;
-    transform: translateY(-50%);
 
     &::before,
     &::after {
@@ -88,26 +74,25 @@
   &__dropdown {
     position: absolute;
     left: 0;
-    top: 100%;
     width: 100%;
-    padding: 10px 10px;
-    background-color: $light;
+    background-color: white;
     color: $dark;
+    z-index: 1;
+
+    ul {
+      padding: 0 0 10px;
+    }
 
     &-item {
       position: relative;
 
-      &:not(:last-child) {
-        border-bottom: 1px solid $dark;
-      }
-
       button {
-        padding: 10px 0;
+        padding: 10px 20px;
         width: 100%;
         text-align: left;
 
         &:hover {
-          background-color: darken($light, 5%);
+          text-decoration: underline;
         }
       }
     }
@@ -120,7 +105,7 @@
     width: 100%;
     padding: 10px;
     color: #cc0000;
-    background-color: $light;
+    background-color: white;
     font-weight: 500;
     font-size: 14px;
   }

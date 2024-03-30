@@ -1,52 +1,51 @@
 <template>
   <div class="search" :class="activeClass" @click="show()" v-click-out="clear">
-    <div class="search__trigger">
-      <form @submit.prevent="sendData()">
-        <div class="search__inner">
-          <button
-            :type="validSubmit ? 'submit' : 'button'"
-            :aria-label="validSubmit ? 'Search' : 'Open Search'"
-          >
-            <img src="/assets/icons/search.svg" alt="search icon" />
+    <form @submit.prevent="sendData()">
+      <div class="search__inner">
+        <button
+          class="search__submit"
+          :type="validSubmit ? 'submit' : 'button'"
+          :aria-label="validSubmit ? 'Search' : 'Open Search'"
+        >
+          <img src="/assets/icons/search.svg" alt="search icon" />
+        </button>
+        <input
+          type="text"
+          title="Search for location"
+          placeholder="Search for location"
+          v-model="locationInput"
+          aria-errormessage="err"
+        />
+        <button
+          class="search__clear"
+          type="button"
+          @click.prevent="clearInput()"
+          aria-label="Clear input"
+          v-show="trimmedInput && active"
+        ></button>
+      </div>
+      <p v-if="inputError" id="err" class="search__error">
+        Please use only alphabetical or numerical values in Location search.
+      </p>
+      <div v-else class="search__dropdown" v-show="active">
+        <div class="search__current-location">
+          <button @click.prevent="useCurrentLocation()">
+            Use current location
           </button>
-          <input
-            type="text"
-            title="Search for location"
-            placeholder="Search for location"
-            v-model="locationInput"
-            aria-errormessage="err"
-          />
-          <button
-            class="search__clear"
-            type="button"
-            @click.prevent="clearInput()"
-            aria-label="Clear input"
-            v-show="trimmedInput && active"
-          ></button>
         </div>
-        <p v-if="inputError" id="err" class="search__error">
-          Please use only alphabetical or numerical values in Location search.
-        </p>
-        <div v-else class="search__dropdown" v-show="active">
-          <div class="search__current-location">
-            <button @click.prevent="useCurrentLocation()">
-              Use current location
+        <ul v-if="locationArr.length">
+          <li
+            v-for="item in locationArr"
+            class="search__dropdown-item"
+            :key="item.place_id"
+          >
+            <button type="button" @click.prevent="selectLocation(item)">
+              {{ item.name }}
             </button>
-          </div>
-          <ul v-if="locationArr.length">
-            <li
-              v-for="item in locationArr"
-              class="search__dropdown-item"
-              :key="item.place_id"
-            >
-              <button type="button" @click.prevent="selectLocation(item)">
-                {{ item.name }}
-              </button>
-            </li>
-          </ul>
-        </div>
-      </form>
-    </div>
+          </li>
+        </ul>
+      </div>
+    </form>
     <!-- <Popup
       v-show="activePopup && !!currentLocationError"
       :message="currentLocationError"
@@ -212,6 +211,8 @@ async function useCurrentLocation() {
       // activePopup.value = true;
       console.error(error);
     });
+
+  clear();
 }
 
 // function closePopup() {
