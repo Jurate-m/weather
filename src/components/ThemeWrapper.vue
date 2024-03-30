@@ -37,7 +37,7 @@ function checkDayTime() {
   } else if (current.hours >= sunrise.hours && current.hours < 12) {
     return (timeOfDay.value = "morning");
   } else if (current.hours >= 12 && current.hours < sunset.hours) {
-    return (timeOfDay.value = "day");
+    return (timeOfDay.value = "daytime");
   } else if (current.hours >= sunset.hours && current.hours < 21) {
     return (timeOfDay.value = "evening");
   }
