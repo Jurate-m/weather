@@ -1,41 +1,57 @@
 <template>
   <div v-if="weather" class="home">
-    <h1 v-if="location" class="mb-20">{{ location }}, <br />Current Weather</h1>
     <div class="home__lists">
-      <Listing>
-        <TransitionGroup name="fade-in">
-          <ListingSingle
-            v-for="(item, index) in weather"
-            featured
-            v-show="index === activeIndex"
-            :key="new Date()"
-          >
-            <template #featured>
-              <FeaturedCard :data="item"></FeaturedCard>
-            </template>
-          </ListingSingle>
-        </TransitionGroup>
-      </Listing>
+      <Card>
+        <Listing>
+          <TransitionGroup name="fade-in">
+            <ListingSingle
+              v-for="(item, index) in weather"
+              v-show="index === activeIndex"
+              :key="new Date()"
+            >
+              <FeaturedCard :data="item" :location="location"></FeaturedCard>
+            </ListingSingle>
+          </TransitionGroup>
+        </Listing>
+      </Card>
+      <Card>
+        <Listing>
+          <TransitionGroup name="fade-in">
+            <ListingSingle
+              v-for="(item, index) in weather"
+              v-show="index === activeIndex"
+              :key="new Date()"
+            >
+              <FeaturedDetailsCard :data="item"></FeaturedDetailsCard>
+            </ListingSingle>
+          </TransitionGroup>
+        </Listing>
+      </Card>
+
       <SingleLink
         class="mb-30"
         routeName="Hourly"
         text="View Hourly weather"
         alignRight
       ></SingleLink>
-      <Listing>
-        <ListingSingle
-          v-for="(item, index) in weather"
-          customEvent
-          @set-active="
-            setActive(index);
-            scrollToTop();
-          "
-          :class="{ active: index === activeIndex }"
-        >
-          <template #button
-            ><FeaturedListCard :data="item"></FeaturedListCard></template
-        ></ListingSingle>
-      </Listing>
+      <Card>
+        <Listing flex>
+          <ListingSingle
+            v-for="(item, index) in weather"
+            :class="{ active: index === activeIndex }"
+          >
+            <button
+              type="button"
+              @click="
+                setActive(index);
+                scrollToTop();
+              "
+            >
+              <FeaturedListCard :data="item"></FeaturedListCard>
+            </button>
+          </ListingSingle>
+        </Listing>
+      </Card>
     </div>
   </div>
   <div v-else>
@@ -92,6 +108,11 @@ import ListingSingle from "@/components/ListingSingle.vue";
 import SingleLink from "@/components/SingleLink.vue";
 import Loader from "@/components/Loader.vue";
 
+import { formatDateTime } from "@/utils.js";
+
+import FeaturedDetailsCard from "@/components/FeaturedDetailsCard.vue";
+import Card from "@/layouts/Card.vue";
+
 export default {
   components: {
     FeaturedCard,
@@ -100,6 +121,14 @@ export default {
     FeaturedListCard,
     SingleLink,
     Loader,
+    FeaturedDetailsCard,
+    Card,
+  },
+
+  methods: {
+    formatDate(arg, options) {
+      return formatDateTime(arg, options);
+    },
   },
 };
 </script>
