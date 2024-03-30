@@ -15,3 +15,9 @@ $spacing: 0, 5, 10, 15, 20, 30, 60;
 }
 
 @include mb-x;
+
+@mixin mt-x {
+  @include spacing("mt", "margin", "top");
+}
+
+@include mt-x;
