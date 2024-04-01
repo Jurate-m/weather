@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card" :class="{ 'card--transparent': transparent }">
     <div class="card__inner">
       <slot></slot>
     </div>
@@ -9,5 +9,12 @@
 <script>
 import "@/assets/scss/layouts/_card.scss";
 
-export default {};
+export default {
+  props: {
+    transparent: {
+      type: Boolean,
+      default: false,
+    },
+  },
+};
 </script>

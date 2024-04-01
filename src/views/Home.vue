@@ -1,7 +1,7 @@
 <template>
   <div v-if="weather" class="home">
     <div class="home__lists">
-      <Card>
+      <Card transparent>
         <Listing>
           <TransitionGroup name="fade-in">
             <ListingSingle
@@ -28,13 +28,13 @@
         </Listing>
       </Card>
 
-      <SingleLink
-        class="mb-30"
-        routeName="Hourly"
-        text="View Hourly weather"
-        alignRight
-      ></SingleLink>
       <Card>
+        <SingleLink
+          class="mt--20"
+          routeName="Hourly"
+          text="Hourly weather"
+          alignRight
+        ></SingleLink>
         <Listing flex>
           <ListingSingle
             v-for="(item, index) in weather"
@@ -65,7 +65,7 @@ import useDataHandling from "@/composables/dataHandling.js";
 
 const weather = ref(null);
 const activeIndex = ref(0);
-const dataLength = 8;
+const dataLength = 6;
 
 const assignWeather = function (data) {
   const remainingArray = dataLength - data[0].length;

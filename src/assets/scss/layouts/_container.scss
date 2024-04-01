@@ -1,5 +1,5 @@
 .container {
-  max-width: 800px;
+  max-width: 1024px;
   margin: 0 auto;
 
   @media only screen and (min-width: 768px) {
@@ -11,7 +11,7 @@
   & > .container {
     display: block;
     flex: 3;
-    padding: 0 20px;
+    padding: 0 20px 60px;
 
     @media only screen and (min-width: 768px) {
       padding: 60px 20px;

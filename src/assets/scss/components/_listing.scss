@@ -5,30 +5,77 @@
     align-content: flex-start;
 
     .listing-single {
-      &:not(:last-child) {
-        border-right: 1px solid white;
+      position: relative;
+      width: calc(100% / 3);
+      border-left: 1px solid transparent;
+      border-right: 1px solid transparent;
+      transition: all 0.1s ease-in;
+      padding: 20px 0;
+
+      &:nth-child(-n + 3) {
+        margin-bottom: 30px;
+      }
+
+      &:nth-child(2),
+      &:nth-child(5) {
+        &::before,
+        &:after {
+          content: "";
+          position: absolute;
+          top: 0;
+          width: 1px;
+          height: 100%;
+          background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        &::before {
+          right: 100%;
+        }
+
+        &::after {
+          left: 100%;
+        }
+        // border-left-color: rgba(255, 255, 255, 0.1);
+        // border-right-color: rgba(255, 255, 255, 0.1);
+      }
+
+      &:hover {
+        background-color: rgba(var(--bg-primary), 0.2);
+        border-radius: 8px;
+      }
+
+      &.active {
+        background-color: rgba(var(--bg-primary), 0.5);
+        border-radius: 8px;
+        border-right: none;
+      }
+
+      button {
+        width: 100%;
+      }
+
+      @media only screen and (min-width: 768px) {
+        width: calc(100% / 6);
+
+        &:nth-child(-n + 3) {
+          margin-bottom: 0;
+        }
+
+        &:not(:last-child) {
+          &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 100%;
+            width: 1px;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.2);
+          }
+          // border-right-color: rgba(255, 255, 255, 0.2);
+        }
       }
     }
   }
-
-  // &.listing--full-w {
-  //   display: block;
-
-  //   @media only screen and (min-width: 768px) {
-  //     width: 100%;
-  //   }
-
-  //   .listing-single {
-  //     width: 100%;
-  //     margin-bottom: 20px;
-
-  //     & button {
-  //       text-align: initial;
-  //       height: 100%;
-  //       padding: 0;
-  //     }
-  //   }
-  // }
 
   .listing-single {
     display: block;

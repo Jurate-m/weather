@@ -1,11 +1,14 @@
 <template>
   <div class="featured-card">
-    <!-- <div class="featured-card__col"> -->
     <div class="featured-card__col" style="margin-right: 20px">
-      <h1 v-if="location" style="font-weight: 700; letter-spacing: 1px">
+      <h1
+        v-if="location"
+        style="font-weight: 700; letter-spacing: 1px"
+        class="mb-10"
+      >
         {{ location }}
       </h1>
-      <p v-if="data.date" class="mb-20" style="text-wrap: nowrap">
+      <p v-if="data.date" class="mb-20 c-secondary" style="text-wrap: nowrap">
         {{ formatDate(new Date(data.date), { weekday: "long" }) }},
         {{
           formatDate(new Date(data.date), {

@@ -1,15 +1,6 @@
 <template>
   <li :class="class">
-    <div>
-      <!-- <slot name="featured"></slot>
-      <div v-if="!featured" class="listing-single__inner">
-        <button @click="setActive()" type="button">
-          <slot name="button"></slot>
-        </button>
-        <slot name="details" v-if="activeItem"></slot>
-      </div> -->
-      <slot></slot>
-    </div>
+    <slot></slot>
   </li>
 </template>
 
