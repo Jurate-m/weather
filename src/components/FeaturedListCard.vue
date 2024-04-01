@@ -1,6 +1,6 @@
 <template>
   <div class="featured-list-card">
-    <p class="mb-10">
+    <p class="mb-10 c-secondary">
       {{
         formatTime(new Date(data.date), {
           hour: "numeric",
@@ -14,7 +14,7 @@
         :alt="'Weather icon - ' + data.summary"
       />
     </div>
-    <p>{{ Math.round(data.temperature) }}°C</p>
+    <p class="lg">{{ Math.round(data.temperature) }}°C</p>
   </div>
 </template>
 

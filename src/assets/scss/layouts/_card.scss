@@ -1,0 +1,15 @@
+.card {
+  padding: 40px 0 0;
+
+  &__inner {
+    background-color: rgba(var(--bg-primary), 0.1);
+    border-radius: 12px;
+    padding: 40px 20px;
+  }
+
+  &--transparent {
+    .card__inner {
+      background-color: transparent;
+    }
+  }
+}

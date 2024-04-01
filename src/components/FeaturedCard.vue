@@ -1,7 +1,14 @@
 <template>
-  <div :class="classes">
-    <div class="featured-card__col">
-      <h2 style="text-align: center" v-if="data.date" class="mb-30">
+  <div class="featured-card">
+    <div class="featured-card__col" style="margin-right: 20px">
+      <h1
+        v-if="location"
+        style="font-weight: 700; letter-spacing: 1px"
+        class="mb-10"
+      >
+        {{ location }}
+      </h1>
+      <p v-if="data.date" class="mb-20 c-secondary" style="text-wrap: nowrap">
         {{ formatDate(new Date(data.date), { weekday: "long" }) }},
         {{
           formatDate(new Date(data.date), {
@@ -9,43 +16,22 @@
             minute: "numeric",
           })
         }}
-      </h2>
-      <div class="mb-30">
-        <img
-          style="display: block; margin: 0 auto"
-          :src="`/assets/icons/weather/${data.icon}.svg`"
-          :alt="'Weather icon - ' + data.summary"
-        />
-      </div>
-      <div class="mb-30">
-        <h3 style="text-align: center" class="mb-10">{{ data.summary }}</h3>
-        <h4 style="text-align: center">{{ Math.round(data.temperature) }}°C</h4>
+      </p>
+
+      <div style="margin-top: auto">
+        <h2 style="font-weight: 700; letter-spacing: 1px">
+          {{ Math.round(data.temperature) }}°C
+        </h2>
       </div>
     </div>
-    <div class="featured-card__col featured-card__details mb-30">
-      <ul>
-        <li>
-          <p>Feels like:</p>
-          <p>{{ Math.round(data.feels_like) }}°C</p>
-        </li>
-        <li>
-          <p>Humidity:</p>
-          <p>{{ data.humidity }}%</p>
-        </li>
-        <li>
-          <p>Pressure:</p>
-          <p>{{ data.pressure }}hPa</p>
-        </li>
-
-        <li>
-          <p>Wind:</p>
-          <p>{{ data.wind.dir }} {{ data.wind.speed }}m/s</p>
-        </li>
-        <li>
-          <p>Wind gust:</p>
-          <p>{{ data.wind.gusts }} m/s</p>
-        </li>
-      </ul>
+    <div class="featured-card__col">
+      <div class="mt-20 mb-20">
+        <img
+          style="display: block; margin-left: auto"
+          :src="`/assets/icons/weather/${data.icon}.svg`"
+          :alt="'Weather - ' + data.summary"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -54,19 +40,19 @@
 import "@/assets/scss/components/_featuredCard.scss";
 import { formatDateTime } from "@/utils.js";
 
+import FeaturedDetailsCard from "@/components/FeaturedDetailsCard.vue";
+
 export default {
+  components: { FeaturedDetailsCard },
   props: {
+    location: {
+      type: String,
+      required: true,
+    },
+
     data: {
       type: Object,
       required: true,
-    },
-  },
-
-  computed: {
-    classes() {
-      return {
-        "featured-card": true,
-      };
     },
   },
 

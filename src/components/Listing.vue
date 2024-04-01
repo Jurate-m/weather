@@ -1,5 +1,5 @@
 <template>
-  <ul :class="class">
+  <ul class="listing" :class="{ 'listing--flex': flex }">
     <slot></slot>
   </ul>
 </template>
@@ -9,18 +9,13 @@ import "@/assets/scss/components/_listing.scss";
 
 export default {
   props: {
-    full_width: {
+    flex: {
       type: Boolean,
       default: false,
     },
-  },
-
-  computed: {
-    class() {
-      return {
-        listing: true,
-        "listing--full-w": this.full_width,
-      };
+    full_width: {
+      type: Boolean,
+      default: false,
     },
   },
 };
