@@ -1,7 +1,7 @@
 <template>
   <div v-if="weather" class="home">
     <div class="home__lists">
-      <Card transparent>
+      <Card transparent padded>
         <Listing>
           <TransitionGroup name="fade-in">
             <ListingSingle
@@ -14,7 +14,7 @@
           </TransitionGroup>
         </Listing>
       </Card>
-      <Card>
+      <Card pt padded>
         <Listing>
           <TransitionGroup name="fade-in">
             <ListingSingle
@@ -22,13 +22,13 @@
               v-show="index === activeIndex"
               :key="new Date()"
             >
-              <FeaturedDetailsCard :data="item"></FeaturedDetailsCard>
+              <DetailsCard :data="item"></DetailsCard>
             </ListingSingle>
           </TransitionGroup>
         </Listing>
       </Card>
 
-      <Card>
+      <Card pt padded>
         <SingleLink
           class="mt--20"
           routeName="Hourly"
@@ -107,10 +107,10 @@ import Listing from "@/components/Listing.vue";
 import ListingSingle from "@/components/ListingSingle.vue";
 import SingleLink from "@/components/SingleLink.vue";
 import Loader from "@/components/Loader.vue";
+import DetailsCard from "@/components/DetailsCard.vue";
 
 import { formatDateTime } from "@/utils.js";
 
-import FeaturedDetailsCard from "@/components/FeaturedDetailsCard.vue";
 import Card from "@/layouts/Card.vue";
 
 export default {
@@ -121,7 +121,7 @@ export default {
     FeaturedListCard,
     SingleLink,
     Loader,
-    FeaturedDetailsCard,
+    DetailsCard,
     Card,
   },
 

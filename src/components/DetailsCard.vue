@@ -1,36 +1,36 @@
 <template>
-  <div class="featured-details">
+  <div class="details-card">
     <ul>
       <li class="mb-30">
         <h3 class="mb-10 c-secondary">Feels like:</h3>
-        <p class="lg">{{ Math.round(data.feels_like) }}°C</p>
+        <p>{{ Math.round(data.feels_like) }}°C</p>
       </li>
       <li class="mb-30">
         <h3 class="mb-10 c-secondary">Precipitation</h3>
-        <p class="lg">{{ data.probability.precipitation }}%</p>
+        <p>{{ data.probability.precipitation }}%</p>
       </li>
       <li class="mb-30">
         <h3 class="mb-10 c-secondary">Humidity:</h3>
-        <p class="lg">{{ data.humidity }}%</p>
+        <p>{{ data.humidity }}%</p>
       </li>
       <li class="mb-30">
         <h3 class="mb-10 c-secondary">Wind:</h3>
-        <p class="lg">{{ data.wind.dir }} {{ data.wind.speed }}m/s</p>
+        <p>{{ data.wind.dir }} {{ data.wind.speed }}m/s</p>
       </li>
       <li class="mb-30">
         <h3 class="mb-10 c-secondary">UV index:</h3>
-        <p class="lg">{{ data.uv_index }} of 11</p>
+        <p>{{ data.uv_index }} of 11</p>
       </li>
       <li class="mb-30">
         <h3 class="mb-10 c-secondary">Pressure:</h3>
-        <p class="lg">{{ data.pressure }}hPa</p>
+        <p>{{ data.pressure }}hPa</p>
       </li>
     </ul>
   </div>
 </template>
 
 <script>
-import "@/assets/scss/components/_featuredDetails.scss";
+import "@/assets/scss/components/_detailsCard.scss";
 
 export default {
   props: {

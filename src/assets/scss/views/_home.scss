@@ -1,35 +1,43 @@
-// .home {
-//   .listing {
-//     &:first-child {
-//       position: relative;
-//       // height: 600px;
+.home {
+  .details-card {
+    margin-bottom: -30px;
 
-//       @media only screen and (min-width: 600px) {
-//         // height: 350px;
-//       }
-//     }
+    p {
+      font-size: 2.2rem;
+      font-weight: 600;
+    }
+  }
+  // .listing {
+  //   &:first-child {
+  //     position: relative;
+  //     // height: 600px;
 
-//     .listing-single {
-//       position: relative;
-//       width: calc((100% / 2) - 5px);
+  //     @media only screen and (min-width: 600px) {
+  //       // height: 350px;
+  //     }
+  //   }
 
-//       // &--featured {
-//       //   position: absolute;
-//       // }
-//     }
+  //   .listing-single {
+  //     position: relative;
+  //     width: calc((100% / 2) - 5px);
 
-//     &:last-child {
-//       gap: 10px;
+  //     // &--featured {
+  //     //   position: absolute;
+  //     // }
+  //   }
 
-//       .listing-single {
-//         @media only screen and (min-width: 600px) {
-//           width: calc((100% - 30px) / 4);
-//         }
+  //   &:last-child {
+  //     gap: 10px;
 
-//         @media only screen and (min-width: 768px) {
-//           width: calc((100% - 70px) / 8);
-//         }
-//       }
-//     }
-//   }
-// }
+  //     .listing-single {
+  //       @media only screen and (min-width: 600px) {
+  //         width: calc((100% - 30px) / 4);
+  //       }
+
+  //       @media only screen and (min-width: 768px) {
+  //         width: calc((100% - 70px) / 8);
+  //       }
+  //     }
+  //   }
+  // }
+}

@@ -1,5 +1,12 @@
 <template>
   <li :class="class">
+    <div v-if="accordion">
+      <button type="button" @click="setActive()">
+        <slot name="button"></slot>
+      </button>
+      <slot name="details" v-if="activeItem"></slot>
+    </div>
+
     <slot></slot>
   </li>
 </template>
@@ -7,7 +14,15 @@
 <script>
 export default {
   props: {
+    index: {
+      type: Number,
+      required: false,
+    },
     featured: {
+      type: Boolean,
+      default: false,
+    },
+    accordion: {
       type: Boolean,
       default: false,
     },
@@ -19,7 +34,7 @@ export default {
 
   data() {
     return {
-      activeItem: false,
+      activeItem: this.index == 0,
     };
   },
 
@@ -28,7 +43,8 @@ export default {
       return {
         "listing-single": true,
         "listing-single--featured": this.featured,
-        active: this.activeItem,
+        "listing-single--acordion": this.accordion,
+        active: this.activeItem || this.index == 0,
       };
     },
   },

@@ -40,10 +40,7 @@
 import "@/assets/scss/components/_featuredCard.scss";
 import { formatDateTime } from "@/utils.js";
 
-import FeaturedDetailsCard from "@/components/FeaturedDetailsCard.vue";
-
 export default {
-  components: { FeaturedDetailsCard },
   props: {
     location: {
       type: String,
