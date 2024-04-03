@@ -8,7 +8,7 @@
       {{ location }}
     </h1>
     <div v-for="(day, index) in weather" class="mb-60">
-      <h3 class="mb-10">
+      <h3 class="mb-10 c-secondary">
         {{
           formatDate(new Date(day[0].date), {
             weekday: "long",
@@ -29,11 +29,41 @@
                 :date="formatTime(new Date(item.date))"
                 :icon="item.icon"
                 :weather_summary="item.weather"
-                :temperature="item.temperature"
+                :temperature="Math.round(item.temperature)"
               ></WeatherSummaryCard>
             </template>
             <template #details>
-              <DetailsCard :data="item"></DetailsCard>
+              <Card>
+                <DetailsCard
+                  separator
+                  :details="[
+                    {
+                      title: 'Feels like',
+                      value: `${Math.round(item.feels_like)}°C`,
+                    },
+                    {
+                      title: 'Precipitation',
+                      value: `${item.probability.precipitation}%`,
+                    },
+                    {
+                      title: 'Humidity',
+                      value: `${item.humidity}%`,
+                    },
+                    {
+                      title: 'Wind',
+                      value: `${item.wind.dir} ${item.wind.speed}m/s`,
+                    },
+                    {
+                      title: 'UV index',
+                      value: `${item.uv_index} of 11`,
+                    },
+                    {
+                      title: 'Pressure',
+                      value: `${item.pressure}hPa`,
+                    },
+                  ]"
+                ></DetailsCard>
+              </Card>
             </template>
           </ListingSingle>
         </Listing>

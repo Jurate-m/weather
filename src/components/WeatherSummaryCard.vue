@@ -10,19 +10,8 @@
       />
     </div>
     <div class="weather-summary-card__item temp">
-      <p>{{ Math.round(temperature) }}°C</p>
+      <p>{{ temperature }}°C</p>
     </div>
-    <!-- <div class="weather-summary-card__item hum">
-      <img src="/assets/icons/drop.svg" aria-hidden="true" alt="null" />
-      <p>{{ humidity }}%</p>
-    </div> -->
-    <!-- <div class="weather-summary-card__item wind">
-      <img src="/assets/icons/wind.svg" aria-hidden="true" alt="null" />
-      <p>{{ wind_dir }} {{ wind_speed }}m/s</p>
-    </div> -->
-    <!-- :humidity="item.humidity"
-                :wind_dir="item.wind.dir"
-                :wind_speed="item.wind.speed" -->
     <div class="weather-summary-card__item arrow"></div>
   </div>
 </template>
@@ -45,7 +34,6 @@ export default {
       required: true,
     },
     temperature: {
-      type: Number,
       required: true,
     },
   },

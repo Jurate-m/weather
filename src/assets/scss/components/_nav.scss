@@ -50,7 +50,7 @@
       }
     }
 
-    @media only screen and (min-width: 764px) {
+    @media only screen and (min-width: 768px) {
       display: none;
     }
   }
@@ -78,12 +78,12 @@
       box-shadow: 0px 0px 2px -1px #000;
       z-index: -1;
 
-      @media only screen and (min-width: 764px) {
+      @media only screen and (min-width: 768px) {
         width: 50vw;
       }
     }
 
-    @media only screen and (min-width: 764px) {
+    @media only screen and (min-width: 768px) {
       width: 100%;
       position: relative;
       visibility: visible;
@@ -110,7 +110,7 @@
         margin-bottom: 20px;
       }
 
-      @media only screen and (min-width: 764px) {
+      @media only screen and (min-width: 768px) {
         text-align: right;
       }
     }
@@ -121,7 +121,7 @@
     border: 1px solid rgba(var(--bg-primary), 0.5);
   }
 
-  @media only screen and (min-width: 764px) {
+  @media only screen and (min-width: 768px) {
     width: 100%;
   }
 }

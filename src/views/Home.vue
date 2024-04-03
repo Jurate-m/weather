@@ -22,7 +22,35 @@
               v-show="index === activeIndex"
               :key="new Date()"
             >
-              <DetailsCard :data="item"></DetailsCard>
+              <!-- <DetailsCard :data="item"></DetailsCard> -->
+              <DetailsCard
+                :details="[
+                  {
+                    title: 'Feels like',
+                    value: `${Math.round(item.feels_like)}°C`,
+                  },
+                  {
+                    title: 'Precipitation',
+                    value: `${item.probability.precipitation}%`,
+                  },
+                  {
+                    title: 'Humidity',
+                    value: `${item.humidity}%`,
+                  },
+                  {
+                    title: 'Wind',
+                    value: `${item.wind.dir} ${item.wind.speed}m/s`,
+                  },
+                  {
+                    title: 'UV index',
+                    value: `${item.uv_index} of 11`,
+                  },
+                  {
+                    title: 'Pressure',
+                    value: `${item.pressure}hPa`,
+                  },
+                ]"
+              ></DetailsCard>
             </ListingSingle>
           </TransitionGroup>
         </Listing>

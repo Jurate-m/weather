@@ -30,6 +30,11 @@ export default {
       type: Boolean,
       default: false,
     },
+
+    bordered: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   computed: {
@@ -39,6 +44,7 @@ export default {
         pb: this.pb,
         pt: this.pt,
         "card--padded": this.padded,
+        "card--border": this.bordered,
       };
     },
   },
