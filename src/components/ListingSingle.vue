@@ -1,10 +1,12 @@
 <template>
   <li :class="class">
-    <div v-if="accordion">
-      <button type="button" @click="setActive()">
-        <slot name="button"></slot>
-      </button>
-      <slot name="details" v-if="activeItem"></slot>
+    <button v-if="$slots.button" type="button" @click="setActive()">
+      <slot name="button"></slot>
+    </button>
+    <div v-if="$slots.details">
+      <Transition name="slide-down">
+        <slot name="details" v-if="activeItem"></slot>
+      </Transition>
     </div>
 
     <slot></slot>
@@ -44,7 +46,7 @@ export default {
         "listing-single": true,
         "listing-single--featured": this.featured,
         "listing-single--acordion": this.accordion,
-        active: this.activeItem || this.index == 0,
+        active: this.activeItem,
       };
     },
   },

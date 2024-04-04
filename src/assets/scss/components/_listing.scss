@@ -1,21 +1,19 @@
 .listing {
+  position: relative;
+  overflow: hidden;
+
   .listing-single {
     display: block;
+    width: 100%;
 
     &.listing-single--featured {
       width: 100%;
     }
 
     &.active {
-      .listing-single__inner {
-        & > button {
-          background-color: rgba($dark-2, 0.4);
-
-          .weather-summary-card__item.arrow {
-            &:before {
-              transform: rotate(180deg);
-            }
-          }
+      .weather-summary-card__item.arrow {
+        &:before {
+          transform: scale(0.5) rotate(180deg);
         }
       }
     }

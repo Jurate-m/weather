@@ -21,41 +21,43 @@
             ></WeatherSummaryCard>
           </template>
           <template #details>
-            <div style="padding: 20px">
-              <p style="font-size: 1.4rem">{{ item.summary }}</p>
-            </div>
-            <Card bordered>
-              <DetailsCard
-                separator
-                :details="[
-                  {
-                    title: 'Feels like (Day)',
-                    value: `${Math.round(item.feels_like_max)}°C`,
-                  },
-                  {
-                    title: 'Feels like (Night)',
-                    value: `${Math.round(item.feels_like_min)}°C`,
-                  },
+            <div>
+              <div style="padding: 20px">
+                <p style="font-size: 1.4rem">{{ item.summary }}</p>
+              </div>
+              <Card bordered>
+                <DetailsCard
+                  separator
+                  :details="[
+                    {
+                      title: 'Feels like (Day)',
+                      value: `${Math.round(item.feels_like_max)}°C`,
+                    },
+                    {
+                      title: 'Feels like (Night)',
+                      value: `${Math.round(item.feels_like_min)}°C`,
+                    },
 
-                  {
-                    title: 'Precipitation',
-                    value: `${item.precipitation.total}%`,
-                  },
-                  {
-                    title: 'Humidity',
-                    value: `${item.humidity}%`,
-                  },
-                  {
-                    title: 'Wind',
-                    value: `${item.wind.dir} ${item.wind.speed}m/s`,
-                  },
-                  {
-                    title: 'Pressure',
-                    value: `${item.pressure}hPa`,
-                  },
-                ]"
-              ></DetailsCard>
-            </Card>
+                    {
+                      title: 'Precipitation',
+                      value: `${item.precipitation.total}%`,
+                    },
+                    {
+                      title: 'Humidity',
+                      value: `${item.humidity}%`,
+                    },
+                    {
+                      title: 'Wind',
+                      value: `${item.wind.dir} ${item.wind.speed}m/s`,
+                    },
+                    {
+                      title: 'Pressure',
+                      value: `${item.pressure}hPa`,
+                    },
+                  ]"
+                ></DetailsCard>
+              </Card>
+            </div>
           </template>
         </ListingSingle>
       </Listing>
