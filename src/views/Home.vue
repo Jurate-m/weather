@@ -14,15 +14,15 @@
           </TransitionGroup>
         </Listing>
       </Card>
-      <Card pt padded>
-        <Listing>
-          <TransitionGroup name="fade-in">
-            <ListingSingle
-              v-for="(item, index) in weather"
-              v-show="index === activeIndex"
-              :key="new Date()"
-            >
-              <!-- <DetailsCard :data="item"></DetailsCard> -->
+      <Listing>
+        {{ transitionName }}
+        <TransitionGroup name="fade-in">
+          <ListingSingle
+            v-for="(item, index) in weather"
+            v-show="index === activeIndex"
+            :key="new Date()"
+          >
+            <Card pt padded>
               <DetailsCard
                 :details="[
                   {
@@ -51,10 +51,10 @@
                   },
                 ]"
               ></DetailsCard>
-            </ListingSingle>
-          </TransitionGroup>
-        </Listing>
-      </Card>
+            </Card>
+          </ListingSingle>
+        </TransitionGroup>
+      </Listing>
 
       <Card pt padded>
         <SingleLink
@@ -68,13 +68,7 @@
             v-for="(item, index) in weather"
             :class="{ active: index === activeIndex }"
           >
-            <button
-              type="button"
-              @click="
-                setActive(index);
-                scrollToTop();
-              "
-            >
+            <button type="button" @click="setActive(index)">
               <FeaturedListCard :data="item"></FeaturedListCard>
             </button>
           </ListingSingle>
@@ -110,9 +104,11 @@ function setActive(index) {
   activeIndex.value = index;
 }
 
-function scrollToTop() {
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
+// function scrollToTop() {
+//   setTimeout(() => {
+//     window.scrollTo({ top: 0, behavior: "smooth" });
+//   }, 500);
+// }
 
 const { location } = useDataHandling(
   "hourly",
