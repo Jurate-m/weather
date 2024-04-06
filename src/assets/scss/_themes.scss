@@ -38,26 +38,15 @@
 }
 
 .theme--morning {
-  // --background-1: #0061ff;
-  // --background-2: #60efff;
-
   --background-1: 0, 97, 255;
   --background-2: 96, 239, 255;
-  // --c-secondary: ;
-  // --bg-primary: rgba(var(--background-2), 0.2);
 
   @include theme(rgb(var(--background-1)), rgb(var(--background-2)));
 }
 
 .theme--daytime {
-  // --background-1: #ff930f;
-  // --background-2: #fff95b;
-
   --background-1: 255, 147, 15;
   --background-2: 255, 249, 91;
-
-  // --c-secondary: ;
-  // --bg-primary: rgba(var(--background-2), 0.2);
 
   @include theme(rgb(var(--background-1)), rgb(var(--background-2)));
 }
@@ -73,9 +62,6 @@
 }
 
 .theme--evening {
-  // --background-1: #000328;
-  // --background-2: #ff930f;
-
   --background-1: 0, 3, 40;
   --background-2: 255, 147, 15;
 
@@ -83,9 +69,6 @@
 }
 
 .theme--night {
-  // --background-1: #000328;
-  // --background-2:#00458e;
-
   --background-1: 0, 3, 40;
   --background-2: 0, 69, 142;
 
