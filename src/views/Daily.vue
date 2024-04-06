@@ -22,7 +22,7 @@
           </template>
           <template #details>
             <div>
-              <div style="padding: 20px">
+              <div style="padding: 20px 30px 0">
                 <p style="font-size: 1.4rem">{{ item.summary }}</p>
               </div>
               <Card bordered>
@@ -40,7 +40,7 @@
 
                     {
                       title: 'Precipitation',
-                      value: `${item.precipitation.total}%`,
+                      value: `${Math.round(item.precipitation.total)}mm`,
                     },
                     {
                       title: 'Humidity',
@@ -48,7 +48,9 @@
                     },
                     {
                       title: 'Wind',
-                      value: `${item.wind.dir} ${item.wind.speed}m/s`,
+                      value: `${item.wind.dir} ${Math.round(
+                        item.wind.speed
+                      )}m/s`,
                     },
                     {
                       title: 'Pressure',

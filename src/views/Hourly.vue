@@ -43,7 +43,7 @@
                     },
                     {
                       title: 'Precipitation',
-                      value: `${item.probability.precipitation}%`,
+                      value: `${Math.round(item.probability.precipitation)}mm`,
                     },
                     {
                       title: 'Humidity',
@@ -51,7 +51,9 @@
                     },
                     {
                       title: 'Wind',
-                      value: `${item.wind.dir} ${item.wind.speed}m/s`,
+                      value: `${item.wind.dir} ${Math.round(
+                        item.wind.speed
+                      )}m/s`,
                     },
                     {
                       title: 'UV index',
