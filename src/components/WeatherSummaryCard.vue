@@ -1,6 +1,6 @@
 <template>
   <div class="weather-summary-card">
-    <div class="weather-summary-card__item">
+    <div class="weather-summary-card__item date">
       <p>{{ date }}</p>
     </div>
     <div class="weather-summary-card__item icon">
