@@ -1,28 +1,25 @@
 <template>
   <div v-if="weather" class="home">
     <div class="home__lists">
-      <Card transparent padded>
-        <Listing>
-          <TransitionGroup name="fade-in">
-            <ListingSingle
-              v-for="(item, index) in weather"
-              v-show="index === activeIndex"
-              :key="new Date()"
-            >
-              <FeaturedCard :data="item" :location="location"></FeaturedCard>
-            </ListingSingle>
-          </TransitionGroup>
-        </Listing>
-      </Card>
       <Listing>
-        {{ transitionName }}
         <TransitionGroup name="fade-in">
           <ListingSingle
             v-for="(item, index) in weather"
             v-show="index === activeIndex"
             :key="new Date()"
           >
-            <Card pt padded>
+            <FeaturedCard :data="item" :location="location"></FeaturedCard>
+          </ListingSingle>
+        </TransitionGroup>
+      </Listing>
+      <Listing>
+        <TransitionGroup name="fade-in">
+          <ListingSingle
+            v-for="(item, index) in weather"
+            v-show="index === activeIndex"
+            :key="new Date()"
+          >
+            <Card pt padded bordered transparent>
               <DetailsCard
                 :details="[
                   {
