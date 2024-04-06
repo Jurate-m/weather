@@ -1,8 +1,6 @@
 <template>
   <header class="header">
-    <div class="header__inner">
-      <Nav></Nav>
-    </div>
+    <Nav></Nav>
   </header>
 </template>
 
