@@ -1,5 +1,5 @@
 <template>
-  <div v-if="weather">
+  <div v-if="weather" class="wrapper">
     <h1 class="mb-30" style="font-weight: 700; letter-spacing: 1px">
       {{ location }}
     </h1>

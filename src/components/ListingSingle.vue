@@ -28,10 +28,6 @@ export default {
       type: Boolean,
       default: false,
     },
-    customEvent: {
-      type: Boolean,
-      required: false,
-    },
   },
 
   data() {
@@ -53,11 +49,7 @@ export default {
 
   methods: {
     setActive() {
-      if (this.customEvent) {
-        this.$emit("set-active");
-      } else {
-        this.activeItem = !this.activeItem;
-      }
+      this.activeItem = !this.activeItem;
     },
   },
 };

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="weather">
+  <div v-if="weather" class="wrapper">
     <h1
       v-if="location"
       style="font-weight: 700; letter-spacing: 1px"
