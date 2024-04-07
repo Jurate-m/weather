@@ -5,6 +5,8 @@
     </div>
     <div class="weather-summary-card__item icon">
       <img
+        width="50"
+        height="50"
         :src="`/assets/icons/weather/${icon}.svg`"
         :alt="'Weather summary - ' + weather_summary"
       />
