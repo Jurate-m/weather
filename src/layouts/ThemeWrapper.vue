@@ -25,10 +25,12 @@ if (storeAstro.value) {
 
 function checkDayTime() {
   const currentDate = new Date();
+
   const current = {
     hours: currentDate.getHours(),
     minutes: currentDate.getMinutes(),
   };
+
   const sunrise = storeAstro.value.sunrise;
   const sunset = storeAstro.value.sunset;
 
