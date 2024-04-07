@@ -1,5 +1,5 @@
 <template>
-  <div v-if="weather">
+  <div v-if="weather" class="wrapper">
     <h1
       v-if="location"
       style="font-weight: 700; letter-spacing: 1px"
@@ -38,12 +38,12 @@
                   separator
                   :details="[
                     {
-                      title: 'Feels like',
-                      value: `${Math.round(item.feels_like)}°C`,
+                      title: 'Summary',
+                      value: item.summary,
                     },
                     {
-                      title: 'Precipitation',
-                      value: `${item.probability.precipitation}%`,
+                      title: 'Feels like',
+                      value: `${Math.round(item.feels_like)}°C`,
                     },
                     {
                       title: 'Humidity',
@@ -51,7 +51,9 @@
                     },
                     {
                       title: 'Wind',
-                      value: `${item.wind.dir} ${item.wind.speed}m/s`,
+                      value: `${item.wind.dir} ${Math.round(
+                        item.wind.speed
+                      )}m/s`,
                     },
                     {
                       title: 'UV index',

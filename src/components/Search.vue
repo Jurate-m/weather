@@ -179,52 +179,15 @@ watch(trimmedInput, (newValue, oldValue) => {
   }
 });
 
-// Location Input validation END----------------------------
-
-// Current location START ----------------------------------
-// const currentLocationPermission = ref(false);
-// const activePopup = ref(true);
-
-// function geolocationStateHandler(state) {
-//   currentLocationPermission.value = state === "granted";
-// }
-
-// Event listener for permissions change
-// navigator.permissions
-//   .query({ name: "geolocation" })
-//   .then((permissionStatus) => {
-//     geolocationStateHandler(permissionStatus.state);
-
-//     permissionStatus.onchange = () => {
-//       console.log(permissionStatus.state);
-//       geolocationStateHandler(permissionStatus.state);
-//     };
-//   });
-
-// const currentLocationError = computed(() => {
-//   return store.state.location.error;
-// });
-
 async function useCurrentLocation() {
   await store
     .dispatch("location/getUserLocation", "getIpUserLocation")
     .catch(() => {
-      // activePopup.value = true;
       console.error(error);
     });
 
   clear();
 }
-
-// function closePopup() {
-//   if (activePopup.value) {
-//     activePopup.value = false;
-//   } else {
-//     return;
-//   }
-// }
-
-// Current location END ----------------------------------
 
 function clear() {
   selectedLocation.value = null;

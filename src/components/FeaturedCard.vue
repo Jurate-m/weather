@@ -28,6 +28,7 @@
       <div class="mt-20 mb-20">
         <img
           style="display: block; margin-left: auto"
+          height="150"
           :src="`/assets/icons/weather/${data.icon}.svg`"
           :alt="'Weather - ' + data.summary"
         />

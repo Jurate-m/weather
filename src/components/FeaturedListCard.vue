@@ -10,6 +10,8 @@
     </p>
     <div class="mb-10">
       <img
+        height="50"
+        width="50"
         :src="`/assets/icons/weather/${data.icon}.svg`"
         :alt="'Weather icon - ' + data.summary"
       />

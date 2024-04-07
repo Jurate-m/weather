@@ -1,5 +1,5 @@
 <template>
-  <div v-if="weather" class="home">
+  <div v-if="weather" class="home wrapper" ref="scrollToView">
     <div class="home__lists">
       <Listing>
         <TransitionGroup name="fade-in">
@@ -23,12 +23,12 @@
               <DetailsCard
                 :details="[
                   {
-                    title: 'Feels like',
-                    value: `${Math.round(item.feels_like)}°C`,
+                    title: 'Summary',
+                    value: item.summary,
                   },
                   {
-                    title: 'Precipitation',
-                    value: `${item.probability.precipitation}%`,
+                    title: 'Feels like',
+                    value: `${Math.round(item.feels_like)}°C`,
                   },
                   {
                     title: 'Humidity',
@@ -36,7 +36,7 @@
                   },
                   {
                     title: 'Wind',
-                    value: `${item.wind.dir} ${item.wind.speed}m/s`,
+                    value: `${item.wind.dir} ${Math.round(item.wind.speed)}m/s`,
                   },
                   {
                     title: 'UV index',
@@ -65,7 +65,13 @@
             v-for="(item, index) in weather"
             :class="{ active: index === activeIndex }"
           >
-            <button type="button" @click="setActive(index)">
+            <button
+              type="button"
+              @click="
+                setActive(index);
+                scrollToTop();
+              "
+            >
               <FeaturedListCard :data="item"></FeaturedListCard>
             </button>
           </ListingSingle>
@@ -85,6 +91,7 @@ import useDataHandling from "@/composables/dataHandling.js";
 const weather = ref(null);
 const activeIndex = ref(0);
 const dataLength = 6;
+let scrollToView = ref(null);
 
 const assignWeather = function (data) {
   const remainingArray = dataLength - data[0].length;
@@ -101,11 +108,14 @@ function setActive(index) {
   activeIndex.value = index;
 }
 
-// function scrollToTop() {
-//   setTimeout(() => {
-//     window.scrollTo({ top: 0, behavior: "smooth" });
-//   }, 500);
-// }
+function scrollToTop() {
+  setTimeout(() => {
+    window.scrollTo({
+      top: scrollToView.value?.offsetTop ?? 0,
+      behavior: "smooth",
+    });
+  }, 200);
+}
 
 const { location } = useDataHandling(
   "hourly",

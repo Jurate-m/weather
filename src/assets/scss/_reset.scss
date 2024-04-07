@@ -64,8 +64,7 @@ span {
 }
 
 p.lg {
-  font-size: 2.2rem;
-  // letter-spacing: 1.8px;
+  font-size: 1.8rem;
   font-weight: 600;
 }
 
@@ -89,4 +88,8 @@ input {
 button,
 input[type="radio"] {
   cursor: pointer;
+}
+
+.wrapper {
+  padding-top: 40px;
 }
