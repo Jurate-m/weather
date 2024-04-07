@@ -10,7 +10,7 @@ const store = useStore();
 const timeOfDay = ref(null);
 
 if (!sessionStorage.getItem("astro_today")) {
-  // store.dispatch("astro/getAstro");
+  store.dispatch("astro/getAstro");
 }
 
 const storeAstro = computed(() => {
