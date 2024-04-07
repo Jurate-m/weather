@@ -40,7 +40,7 @@
 
                     {
                       title: 'Precipitation',
-                      value: `${Math.round(item.precipitation.total)}mm`,
+                      value: `${Math.round(item.precipitation.total)}mm/h`,
                     },
                     {
                       title: 'Humidity',

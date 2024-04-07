@@ -23,12 +23,12 @@
               <DetailsCard
                 :details="[
                   {
-                    title: 'Feels like',
-                    value: `${Math.round(item.feels_like)}°C`,
+                    title: 'Summary',
+                    value: item.summary,
                   },
                   {
-                    title: 'Precipitation',
-                    value: `${Math.round(item.precipitation.total)}mm`,
+                    title: 'Feels like',
+                    value: `${Math.round(item.feels_like)}°C`,
                   },
                   {
                     title: 'Humidity',

@@ -38,12 +38,12 @@
                   separator
                   :details="[
                     {
-                      title: 'Feels like',
-                      value: `${Math.round(item.feels_like)}°C`,
+                      title: 'Summary',
+                      value: item.summary,
                     },
                     {
-                      title: 'Precipitation',
-                      value: `${Math.round(item.probability.precipitation)}mm`,
+                      title: 'Feels like',
+                      value: `${Math.round(item.feels_like)}°C`,
                     },
                     {
                       title: 'Humidity',
