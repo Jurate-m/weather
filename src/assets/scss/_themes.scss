@@ -18,10 +18,12 @@
     #{$background_1} 0%,
     #{$background_2} 100%
   );
+
+  background-attachment: fixed;
 }
 
 .theme {
-  // height: 100%;
+  height: 100%;
 }
 
 .theme--morning,

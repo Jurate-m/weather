@@ -1,9 +1,7 @@
 .header {
-  // position: fixed;
-  position: sticky;
+  position: fixed;
   padding: 20px;
-  top: 0;
-  // bottom: 0;
+  bottom: 0;
   z-index: 10;
   transition: background-color 0.3s ease-in-out;
   width: 100%;
