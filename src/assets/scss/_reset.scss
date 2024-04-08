@@ -55,12 +55,15 @@ h5,
 h6,
 p,
 label,
-input,
 textarea,
 button,
 a,
 span {
   font-size: 1.4rem;
+}
+
+input {
+  font-size: 1.6rem;
 }
 
 p.lg {
