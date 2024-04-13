@@ -37,11 +37,13 @@ export default {
   },
 
   created() {
-    for (let i = 0; i < this.$router.options.routes.length; i++) {
-      if (this.$router.options.routes[i].name) {
-        this.routes.push(this.$router.options.routes[i]);
+    for (const route of this.$router.options.routes) {
+      if (route.name) {
+        this.routes.push(route);
       }
     }
+
+    return this.routes;
   },
 };
 </script>
