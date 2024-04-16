@@ -1,5 +1,10 @@
 <template>
-  <div class="search" :class="activeClass" @click="show()" v-click-out="clear">
+  <div
+    class="search"
+    :class="activeClass"
+    @click="setActive"
+    v-click-out="clearAll"
+  >
     <form @submit.prevent="sendData()">
       <div class="search__inner">
         <button
@@ -19,32 +24,35 @@
         <button
           class="search__clear"
           type="button"
-          @click.prevent="clearInput()"
+          @click="clearInput()"
           aria-label="Clear input"
           v-show="trimmedInput && active"
         ></button>
       </div>
-      <p v-if="inputError" id="err" class="search__error">
-        Please use only alphabetical or numerical values in Location search.
-      </p>
-      <div v-else class="search__dropdown" v-show="active">
+      <div class="search__dropdown" v-show="active">
         <div class="search__current-location">
-          <button @click.prevent="useCurrentLocation()">
+          <button type="button" @click="useCurrentLocation()">
             Use current location
           </button>
         </div>
-        <Loader v-if="loading"></Loader>
-        <ul v-if="locationArr.length">
-          <li
-            v-for="item in locationArr"
-            class="search__dropdown-item"
-            :key="item.place_id"
-          >
-            <button type="button" @click.prevent="selectLocation(item)">
-              {{ item.name }}
-            </button>
-          </li>
-        </ul>
+        <p v-if="inputErr.invalid" id="err" class="search__error">
+          {{ inputErr.message }}
+        </p>
+        <div v-else>
+          <Loader v-if="loading"></Loader>
+
+          <ul v-if="locationArr.length">
+            <li
+              v-for="item in locationArr"
+              class="search__dropdown-item"
+              :key="item.place_id"
+            >
+              <button type="button" @click="selectLocation(item)">
+                {{ item.name }}
+              </button>
+            </li>
+          </ul>
+        </div>
       </div>
     </form>
   </div>
@@ -57,23 +65,69 @@ import { useStore } from "vuex";
 const store = useStore();
 const selectedLocation = ref(null);
 const loading = ref(false);
+const inputErr = ref({
+  invalid: false,
+  message: "",
+});
 
-// Generating Locations List from user input START----------------------------
+const clearInputErr = () => {
+  inputErr.value = {
+    invalid: false,
+    message: "",
+  };
+
+  return inputErr;
+};
+
+function clearInput() {
+  locationInput.value = null;
+}
+
+function clearAll() {
+  selectedLocation.value = null;
+  locationArr.value = [];
+  clearInput();
+  clearInputErr();
+  active.value = false;
+}
+
 const locationInput = ref(null);
-const locationArr = ref([]);
-
 // remove whitespace around locationInput
 const trimmedInput = computed(() => {
   if (locationInput.value) return locationInput.value.trim();
 });
 
+function testingRegex(arg) {
+  return /[-’/`~!#*$@_%+=.,^&(){}[\]|;:”<>?\\]/.test(arg);
+}
+
+// Check and return a boolena if trimmed input value contains provided regex
+const invalidInput = computed(() => {
+  return testingRegex(trimmedInput.value);
+});
+
+watch(invalidInput, (newVal) => {
+  if (newVal === true) {
+    return (inputErr.value = {
+      invalid: newVal,
+      message:
+        "Please use only alphabetical or numerical values in Location search.",
+    });
+  }
+  clearInputErr();
+});
+
+// Generating Locations List from user input START----------------------------
+
+const locationArr = ref([]);
+
 // computed property for changing form button properties
 const validSubmit = computed(() => {
-  return active.value && trimmedInput.value && !inputError.value;
+  return active.value && trimmedInput.value && !inputErr.value.invalid;
 });
 
 async function getLocationList() {
-  if (!trimmedInput.value) return;
+  if (!trimmedInput.value || invalidInput.value) return (loading.value = false);
 
   const params = new URLSearchParams({
     endpoint: "find_places_prefix",
@@ -84,6 +138,14 @@ async function getLocationList() {
   return await fetch(`/.netlify/functions/weather?${params.toString()}`)
     .then((response) => response.json())
     .then((response) => {
+      loading.value = false;
+      if (!response.length) {
+        return (inputErr.value = {
+          invalid: true,
+          message: "No results were found. Please check your spelling",
+        });
+      }
+
       response.forEach((item) => {
         locationArr.value.push({
           name: item.name,
@@ -92,91 +154,44 @@ async function getLocationList() {
         });
       });
     })
-    .then(() => {
-      loading.value = false;
-    })
     .catch((error) => {
-      console.log(error);
+      loading.value = false;
+      return (inputErr.value = {
+        invalid: true,
+        message: "Something went wrong... Please try again later",
+      });
     });
-}
-
-const timer = ref(null);
-
-function renderLocationList() {
-  loading.value = true;
-
-  if (timer.value) {
-    clearTimeout(timer.value);
-    timer.value = null;
-  }
-  timer.value = setTimeout(getLocationList, 1000);
 }
 
 // Generating Locations List from user input END----------------------------
 
 // Location Input validation START----------------------------
-const regex = /[-’/`~!#*$@_%+=.,^&(){}[\]|;:”<>?\\]/;
-const inputError = ref(false);
 
-function testingRegex(arg) {
-  return regex.test(arg);
-}
+let timer = null;
 
-// Check and return a boolena if trimmed input value contains provided regex
-const invalidInput = computed(() => {
-  return testingRegex(trimmedInput.value);
-});
-
-// watch if invalidInput computed property changes and assign returned value to input error state
-watch(invalidInput, (newValue) => {
-  inputError.value = newValue;
-});
-
-watch(trimmedInput, (newValue, oldValue) => {
+watch(trimmedInput, (newVal, oldVal) => {
   if (trimmedInput.value) {
-    // variable for checking if oldValue exists AND if it starts with a newValue
-    let oldValueStartsWithNewValue = oldValue && oldValue.startsWith(newValue);
-
-    // variable for checking if oldValue does have spaecial characters
-    let oldValueContainsRegex = testingRegex(oldValue);
-
-    // comparison variable for:
-    let passCondition_1 =
-      // checking IF oldValue exists AND
-      oldValue &&
-      // oldValue starts with newValue AND
-      oldValueStartsWithNewValue &&
-      // olValue has special characters AND
-      oldValueContainsRegex &&
-      // if there is no special charakters in current input value
-      !inputError.value;
-
-    let passCondition_2 =
-      oldValue && !oldValueStartsWithNewValue && !inputError.value;
-
-    let passCondition_3 =
-      oldValue &&
-      // oldValue starts with newValue AND
-      oldValueStartsWithNewValue &&
-      // there is no input error AND
-      !inputError.value &&
-      // there are no available locations
-      !locationArr.value.length;
+    // variable for checking if values don't have special characters
+    let oldValueContainsRegex = testingRegex(oldVal);
+    let newValContainsRegex = testingRegex(newVal);
 
     if (
-      // there is no oldValue and input value doesn't contain error OR
-      (!oldValue && !inputError.value) ||
-      // there is no oldValue and input value doesn't contain error OR
-      passCondition_1 ||
-      passCondition_2 ||
-      passCondition_3
+      (!oldVal && !newValContainsRegex) ||
+      (oldVal && !newValContainsRegex) ||
+      (oldVal && oldValueContainsRegex && !newValContainsRegex)
     ) {
+      clearInputErr();
       locationArr.value = [];
-      renderLocationList();
+      loading.value = true;
+      clearTimeout(timer);
+      timer = setTimeout(getLocationList, 1500);
     }
-  } else {
-    locationArr.value = [];
+
+    return;
   }
+  clearInputErr();
+  locationArr.value = [];
+  loading.value = false;
 });
 
 async function useCurrentLocation() {
@@ -186,14 +201,7 @@ async function useCurrentLocation() {
       console.error(error);
     });
 
-  clear();
-}
-
-function clear() {
-  selectedLocation.value = null;
-  locationArr.value = [];
-  locationInput.value = null;
-  active.value = false;
+  clearAll();
 }
 
 function selectLocation(data) {
@@ -203,29 +211,28 @@ function selectLocation(data) {
 
 function sendData() {
   if (
-    // there is a value in the input AND
-    trimmedInput.value &&
     // there are no errors AND
-    !inputError.value &&
+    !invalidInput.value &&
     // there are generated locations
-    locationArr.value.length
+    locationArr.value.length &&
+    // there is no input error
+    !inputErr.value.invalid
   ) {
     // define location ID
-    let place_id = selectedLocation.value
-      ? selectedLocation.value.place_id
-      : locationArr.value[0].place_id;
+    let place_id =
+      selectedLocation.value?.place_id || locationArr.value[0].place_id;
 
     // define location name
-    let place_name = selectedLocation.value
-      ? selectedLocation.value.name
-      : locationArr.value[0].name;
+    let place_name = selectedLocation.value?.name || locationArr.value[0].name;
 
     if (place_id && place_name) {
       store.dispatch("location/assignLocationId", place_id);
       store.dispatch("location/assignLocationName", place_name);
 
-      clear();
+      clearAll();
     }
+  } else {
+    return false;
   }
 }
 
@@ -237,12 +244,9 @@ const activeClass = computed(() => {
   };
 });
 
-function show() {
+function setActive() {
   active.value = true;
-}
-
-function clearInput() {
-  locationInput.value = null;
+  document.querySelector("input[type='text']").focus();
 }
 </script>
 
