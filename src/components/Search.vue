@@ -1,5 +1,14 @@
 <template>
-  <div class="search" :class="activeClass" @click="show()" v-click-out="clear">
+  <div
+    class="search"
+    :class="activeClass"
+    @click="
+      {
+        active = true;
+      }
+    "
+    v-click-out="clear"
+  >
     <form @submit.prevent="sendData()">
       <div class="search__inner">
         <button
@@ -19,32 +28,34 @@
         <button
           class="search__clear"
           type="button"
-          @click.prevent="clearInput()"
+          @click="clearInput()"
           aria-label="Clear input"
           v-show="trimmedInput && active"
         ></button>
       </div>
-      <p v-if="inputErr.invalid" id="err" class="search__error">
-        {{ inputErr.message }}
-      </p>
-      <div v-else class="search__dropdown" v-show="active">
+      <div class="search__dropdown" v-show="active">
         <div class="search__current-location">
-          <button @click.prevent="useCurrentLocation()">
+          <button type="button" @click="useCurrentLocation()">
             Use current location
           </button>
         </div>
-        <Loader v-if="loading"></Loader>
-        <ul v-if="locationArr.length">
-          <li
-            v-for="item in locationArr"
-            class="search__dropdown-item"
-            :key="item.place_id"
-          >
-            <button type="button" @click.prevent="selectLocation(item)">
-              {{ item.name }}
-            </button>
-          </li>
-        </ul>
+        <p v-if="inputErr.invalid" id="err" class="search__error">
+          {{ inputErr.message }}
+        </p>
+        <div v-else>
+          <Loader v-if="loading"></Loader>
+          <ul v-if="locationArr.length">
+            <li
+              v-for="item in locationArr"
+              class="search__dropdown-item"
+              :key="item.place_id"
+            >
+              <button type="button" @click="selectLocation(item)">
+                {{ item.name }}
+              </button>
+            </li>
+          </ul>
+        </div>
       </div>
     </form>
   </div>
@@ -113,6 +124,7 @@ async function getLocationList() {
   return await fetch(`/.netlify/functions/weather?${params.toString()}`)
     .then((response) => response.json())
     .then((response) => {
+      loading.value = false;
       if (!response.length) {
         return (inputErr.value = {
           invalid: true,
@@ -133,11 +145,11 @@ async function getLocationList() {
         message: "",
       };
     })
-    .then(() => {
-      loading.value = false;
-    })
     .catch((error) => {
-      console.log(error);
+      return (inputErr.value = {
+        invalid: true,
+        message: "Something went wrong... Please try again later",
+      });
     });
 }
 
@@ -145,10 +157,21 @@ async function getLocationList() {
 
 // Location Input validation START----------------------------
 
+function clear() {
+  selectedLocation.value = null;
+  locationArr.value = [];
+  locationInput.value = null;
+  inputErr.value = {
+    invalid: false,
+    message: "",
+  };
+  active.value = false;
+}
+
 let timer = null;
 
 watch(trimmedInput, (newVal, oldVal) => {
-  if (trimmedInput.value) {
+  if (newVal) {
     // variable for checking if values don't have spaecial characters
     let oldValueContainsRegex = testingRegex(oldVal);
     let newValContainsRegex = testingRegex(newVal);
@@ -178,17 +201,6 @@ async function useCurrentLocation() {
   clear();
 }
 
-function clear() {
-  selectedLocation.value = null;
-  locationArr.value = [];
-  locationInput.value = null;
-  active.value = false;
-  inputErr.value = {
-    invalid: false,
-    message: "",
-  };
-}
-
 function selectLocation(data) {
   selectedLocation.value = data;
   sendData();
@@ -199,7 +211,9 @@ function sendData() {
     // there are no errors AND
     !invalidInput.value &&
     // there are generated locations
-    locationArr.value.length
+    locationArr.value.length &&
+    // there is no input error
+    !inputErr.value.invalid
   ) {
     // define location ID
     let place_id =
@@ -214,6 +228,8 @@ function sendData() {
 
       clear();
     }
+  } else {
+    return false;
   }
 }
 
@@ -224,10 +240,6 @@ const activeClass = computed(() => {
     active: active.value,
   };
 });
-
-function show() {
-  active.value = true;
-}
 
 function clearInput() {
   locationInput.value = null;
