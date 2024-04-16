@@ -2,11 +2,7 @@
   <div
     class="search"
     :class="activeClass"
-    @click="
-      {
-        active = true;
-      }
-    "
+    @click="setActive"
     v-click-out="clear"
   >
     <form @submit.prevent="sendData()">
@@ -240,6 +236,11 @@ const activeClass = computed(() => {
     active: active.value,
   };
 });
+
+function setActive(e) {
+  active.value = true;
+  document.querySelector("input[type='text']").focus();
+}
 
 function clearInput() {
   locationInput.value = null;
