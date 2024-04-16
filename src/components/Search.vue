@@ -113,20 +113,12 @@ async function getLocationList() {
   return await fetch(`/.netlify/functions/weather?${params.toString()}`)
     .then((response) => response.json())
     .then((response) => {
-      loading.value = false;
-
       if (!response.length) {
-        console.log("no data");
         return (inputErr.value = {
           invalid: true,
           message: "No results were found. Please check your spelling",
         });
       }
-
-      inputErr.value = {
-        invalid: false,
-        message: "",
-      };
 
       response.forEach((item) => {
         locationArr.value.push({
@@ -135,6 +127,14 @@ async function getLocationList() {
           place_id: item.place_id,
         });
       });
+
+      inputErr.value = {
+        invalid: false,
+        message: "",
+      };
+    })
+    .then(() => {
+      loading.value = false;
     })
     .catch((error) => {
       console.log(error);
@@ -149,39 +149,14 @@ let timer = null;
 
 watch(trimmedInput, (newVal, oldVal) => {
   if (trimmedInput.value) {
-    // variable for checking if oldValue exists AND if it starts with a newValue
-    let oldValueStartsWithNewValue = oldVal && oldVal.startsWith(newVal);
-
-    // variable for checking if oldValue does have spaecial characters
+    // variable for checking if values don't have spaecial characters
     let oldValueContainsRegex = testingRegex(oldVal);
     let newValContainsRegex = testingRegex(newVal);
 
-    // comparison variable for:
-    let passCondition_1 =
-      // checking IF oldValue exists AND
-      oldVal &&
-      // olValue has special characters AND
-      oldValueContainsRegex &&
-      // if there is no special charakters in current input value
-      !newValContainsRegex;
-
-    let passCondition_2 = oldVal && !newValContainsRegex;
-
-    let passCondition_3 = oldVal && !newValContainsRegex;
-    // &&
-    // inputErr.value.invalid;
-
     if (
-      // there is no oldValue and input value doesn't contain error OR
-      (!oldVal &&
-        // !inputError.value
-        !newValContainsRegex) ||
-      // there is no oldValue and input value doesn't contain error OR
-      passCondition_1 ||
-      passCondition_2 ||
-      passCondition_3
-      // ||
-      // passCondition_3
+      (!oldVal && !newValContainsRegex) ||
+      (oldVal && !newValContainsRegex) ||
+      (oldVal && oldValueContainsRegex && !newValContainsRegex)
     ) {
       locationArr.value = [];
       loading.value = true;
@@ -189,7 +164,7 @@ watch(trimmedInput, (newVal, oldVal) => {
       timer = setTimeout(getLocationList, 1500);
     }
   } else {
-    locationArr.value = [];
+    clear();
   }
 });
 
@@ -208,6 +183,10 @@ function clear() {
   locationArr.value = [];
   locationInput.value = null;
   active.value = false;
+  inputErr.value = {
+    invalid: false,
+    message: "",
+  };
 }
 
 function selectLocation(data) {
