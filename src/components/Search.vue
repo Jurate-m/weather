@@ -3,7 +3,7 @@
     class="search"
     :class="activeClass"
     @click="setActive"
-    v-click-out="clear"
+    v-click-out="clearAll"
   >
     <form @submit.prevent="sendData()">
       <div class="search__inner">
@@ -40,6 +40,7 @@
         </p>
         <div v-else>
           <Loader v-if="loading"></Loader>
+
           <ul v-if="locationArr.length">
             <li
               v-for="item in locationArr"
@@ -64,11 +65,31 @@ import { useStore } from "vuex";
 const store = useStore();
 const selectedLocation = ref(null);
 const loading = ref(false);
-
 const inputErr = ref({
   invalid: false,
   message: "",
 });
+
+const clearInputErr = () => {
+  inputErr.value = {
+    invalid: false,
+    message: "",
+  };
+
+  return inputErr;
+};
+
+function clearInput() {
+  locationInput.value = null;
+}
+
+function clearAll() {
+  selectedLocation.value = null;
+  locationArr.value = [];
+  clearInput();
+  clearInputErr();
+  active.value = false;
+}
 
 const locationInput = ref(null);
 // remove whitespace around locationInput
@@ -93,10 +114,7 @@ watch(invalidInput, (newVal) => {
         "Please use only alphabetical or numerical values in Location search.",
     });
   }
-  return (inputErr.value = {
-    invalid: newVal,
-    message: "",
-  });
+  clearInputErr();
 });
 
 // Generating Locations List from user input START----------------------------
@@ -135,13 +153,9 @@ async function getLocationList() {
           place_id: item.place_id,
         });
       });
-
-      inputErr.value = {
-        invalid: false,
-        message: "",
-      };
     })
     .catch((error) => {
+      loading.value = false;
       return (inputErr.value = {
         invalid: true,
         message: "Something went wrong... Please try again later",
@@ -153,22 +167,11 @@ async function getLocationList() {
 
 // Location Input validation START----------------------------
 
-function clear() {
-  selectedLocation.value = null;
-  locationArr.value = [];
-  locationInput.value = null;
-  inputErr.value = {
-    invalid: false,
-    message: "",
-  };
-  active.value = false;
-}
-
 let timer = null;
 
 watch(trimmedInput, (newVal, oldVal) => {
-  if (newVal) {
-    // variable for checking if values don't have spaecial characters
+  if (trimmedInput.value) {
+    // variable for checking if values don't have special characters
     let oldValueContainsRegex = testingRegex(oldVal);
     let newValContainsRegex = testingRegex(newVal);
 
@@ -177,14 +180,18 @@ watch(trimmedInput, (newVal, oldVal) => {
       (oldVal && !newValContainsRegex) ||
       (oldVal && oldValueContainsRegex && !newValContainsRegex)
     ) {
+      clearInputErr();
       locationArr.value = [];
       loading.value = true;
       clearTimeout(timer);
       timer = setTimeout(getLocationList, 1500);
     }
-  } else {
-    clear();
+
+    return;
   }
+  clearInputErr();
+  locationArr.value = [];
+  loading.value = false;
 });
 
 async function useCurrentLocation() {
@@ -194,7 +201,7 @@ async function useCurrentLocation() {
       console.error(error);
     });
 
-  clear();
+  clearAll();
 }
 
 function selectLocation(data) {
@@ -222,7 +229,7 @@ function sendData() {
       store.dispatch("location/assignLocationId", place_id);
       store.dispatch("location/assignLocationName", place_name);
 
-      clear();
+      clearAll();
     }
   } else {
     return false;
@@ -237,13 +244,9 @@ const activeClass = computed(() => {
   };
 });
 
-function setActive(e) {
+function setActive() {
   active.value = true;
   document.querySelector("input[type='text']").focus();
-}
-
-function clearInput() {
-  locationInput.value = null;
 }
 </script>
 
