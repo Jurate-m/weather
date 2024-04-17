@@ -1,9 +1,10 @@
 <template>
+  <Overlay :active="active"></Overlay>
   <div
     class="search"
     :class="activeClass"
     @click="setActive"
-    v-click-out="clearAll"
+    v-click-out="updateUI"
   >
     <form @submit.prevent="sendData()">
       <div class="search__inner">
@@ -83,12 +84,17 @@ function clearInput() {
   locationInput.value = null;
 }
 
+function updateUI() {
+  active.value = false;
+  document.querySelector("body").style.overflow = "visible";
+}
+
 function clearAll() {
   selectedLocation.value = null;
   locationArr.value = [];
   clearInput();
   clearInputErr();
-  active.value = false;
+  updateUI();
 }
 
 const locationInput = ref(null);
@@ -247,17 +253,20 @@ const activeClass = computed(() => {
 function setActive() {
   active.value = true;
   document.querySelector("input[type='text']").focus();
+  document.querySelector("body").style.overflow = "hidden";
 }
 </script>
 
 <script>
 import "@/assets/scss/components/_search.scss";
 
+import Overlay from "@/components/Overlay.vue";
 import Loader from "@/components/Loader.vue";
 
 export default {
   components: {
     Loader,
+    Overlay,
   },
 };
 </script>
