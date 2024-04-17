@@ -6,6 +6,11 @@
     position: relative;
   }
 
+  form {
+    position: relative;
+    z-index: 1;
+  }
+
   button.search__submit {
     margin-right: 20px;
   }
@@ -76,8 +81,10 @@
   &__dropdown {
     position: absolute;
     left: 0;
+    max-height: calc(100vh - 80px - 82px);
     width: 100%;
     background-color: white;
+    overflow: scroll;
     z-index: 1;
 
     ul {
@@ -97,13 +104,13 @@
         }
       }
     }
+
+    @media only screen and (min-width: 768px) {
+      max-height: calc(100vh - 80px - 72px);
+    }
   }
 
   &__error {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
     padding: 10px;
     color: #cc0000;
     background-color: white;
