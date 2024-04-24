@@ -84,7 +84,7 @@
     max-height: calc(100vh - 80px - 82px);
     width: 100%;
     background-color: white;
-    overflow: scroll;
+    overflow: auto;
     z-index: 1;
 
     ul {

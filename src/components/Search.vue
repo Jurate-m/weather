@@ -144,7 +144,6 @@ async function getLocationList() {
   return await fetch(`/.netlify/functions/weather?${params.toString()}`)
     .then((response) => response.json())
     .then((response) => {
-      loading.value = false;
       if (!response.length) {
         return (inputErr.value = {
           invalid: true,
@@ -161,11 +160,13 @@ async function getLocationList() {
       });
     })
     .catch((error) => {
-      loading.value = false;
       return (inputErr.value = {
         invalid: true,
         message: "Something went wrong... Please try again later",
       });
+    })
+    .finally(() => {
+      loading.value = false;
     });
 }
 
