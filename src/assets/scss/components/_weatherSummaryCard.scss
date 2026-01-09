@@ -5,53 +5,27 @@
   justify-content: space-between;
 
   &__item {
-    display: flex;
-    align-items: center;
-
-    @media only screen and (min-width: 768px) {
-      flex: 1;
-      flex-basis: 20%;
+    &.date {
+      text-align: left;
+      padding-left: 10px;
     }
 
     p {
+      font-weight: 500;
       margin-bottom: 0;
     }
 
     img {
-      height: 50px;
-      width: 50px;
       object-fit: contain;
     }
 
-    &.hum,
-    &.wind {
-      display: none;
-
-      @media only screen and (min-width: 768px) {
-        display: flex;
-      }
-    }
-
-    &.hum img,
-    &.wind img {
-      height: 20px;
-      width: 30px;
-    }
-
-    &.hum img {
-      width: 20px;
-    }
-
-    &.wind {
-      flex-basis: 150px;
-      justify-content: space-between;
-      p {
-        text-wrap: nowrap;
-      }
+    &.temp {
+      text-align: right;
+      padding-right: 10px;
     }
 
     &.arrow {
-      flex-basis: 50px;
+      flex-basis: 20px;
       position: relative;
       justify-content: flex-end;
       align-items: center;
@@ -62,7 +36,14 @@
         display: block;
         width: 20px;
         margin-left: auto;
+        transform: scale(0.5);
+        transition: all 0.2s ease-in-out;
       }
+    }
+
+    @media only screen and (min-width: 768px) {
+      flex: 1;
+      flex-basis: calc(100% / 3);
     }
   }
 }

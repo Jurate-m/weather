@@ -1,33 +1,38 @@
 <template>
   <li :class="class">
-    <div>
-      <slot name="featured"></slot>
-      <div v-if="!featured" class="listing-single__inner">
-        <button @click="setActive()" type="button">
-          <slot name="button"></slot>
-        </button>
+    <button v-if="$slots.button" type="button" @click="setActive()">
+      <slot name="button"></slot>
+    </button>
+    <div v-if="$slots.details">
+      <Transition name="slide-down">
         <slot name="details" v-if="activeItem"></slot>
-      </div>
+      </Transition>
     </div>
+
+    <slot></slot>
   </li>
 </template>
 
 <script>
 export default {
   props: {
+    index: {
+      type: Number,
+      required: false,
+    },
     featured: {
       type: Boolean,
       default: false,
     },
-    customEvent: {
+    accordion: {
       type: Boolean,
-      required: false,
+      default: false,
     },
   },
 
   data() {
     return {
-      activeItem: false,
+      activeItem: this.index == 0,
     };
   },
 
@@ -36,6 +41,7 @@ export default {
       return {
         "listing-single": true,
         "listing-single--featured": this.featured,
+        "listing-single--acordion": this.accordion,
         active: this.activeItem,
       };
     },
@@ -43,11 +49,7 @@ export default {
 
   methods: {
     setActive() {
-      if (this.customEvent) {
-        this.$emit("set-active");
-      } else {
-        this.activeItem = !this.activeItem;
-      }
+      this.activeItem = !this.activeItem;
     },
   },
 };

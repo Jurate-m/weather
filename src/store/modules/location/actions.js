@@ -74,4 +74,20 @@ export default {
     // ^ else - dispacth setLocation action
     await dispatch("setLocation");
   },
+
+  async getLocationId({ state, dispatch }) {
+    // Check if locationId exists either in state or is assigned to a sessionStorage
+    const location_id =
+      state.locationId || sessionStorage.getItem("location_id");
+    // return location_id if it exists
+    if (location_id) return location_id;
+
+    // dispatch location action if location_id doesn't exists
+    await dispatch("location/getUserLocation", "getIpUserLocation", {
+      root: true,
+    });
+
+    // return location id retrieved either from state or sessionStorage or null
+    return state.locationId || sessionStorage.getItem("location_id");
+  },
 };

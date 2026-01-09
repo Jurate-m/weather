@@ -6,9 +6,9 @@
   box-sizing: border-box;
 }
 
-#app {
+html,
+body {
   height: 100%;
-  min-height: 100%;
 }
 
 html {
@@ -20,8 +20,7 @@ body {
   padding: 0;
   width: 100%;
   font-family: "Montserrat Alternates", sans-serif;
-  background-color: $dark;
-  color: $light;
+  background-color: #dbdbdb;
 }
 
 h1,
@@ -44,6 +43,7 @@ li {
   padding: 0;
   font: inherit;
   color: inherit;
+  letter-spacing: 1.2px;
 }
 
 h1 {
@@ -54,24 +54,26 @@ h2 {
   font-size: 2.4rem;
 }
 
-h3 {
-  font-size: 2rem;
-}
-
-h4 {
-  font-size: 1.8rem;
-}
-
+h3,
+h4,
 h5,
 h6,
 p,
 label,
-input,
 textarea,
 button,
 a,
 span {
+  font-size: 1.4rem;
+}
+
+input {
   font-size: 1.6rem;
+}
+
+p.lg {
+  font-size: 1.8rem;
+  font-weight: 600;
 }
 
 a {
@@ -94,4 +96,12 @@ input {
 button,
 input[type="radio"] {
   cursor: pointer;
+}
+
+.wrapper {
+  padding-top: 40px;
+}
+
+#app {
+  min-height: 100vh;
 }

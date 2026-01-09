@@ -1,8 +1,5 @@
 export default {
-  async getWeather({ dispatch, commit }, payload) {
-    //exctract commit names form payload object
-    const { endpoint, commitName_1, commitName_2 } = payload;
-
+  async getAstro({ dispatch, commit }) {
     // assign location_id to returned value from getLocationId action;
     const location_id = await dispatch("location/getLocationId", "", {
       root: true,
@@ -15,7 +12,7 @@ export default {
     try {
       // and pass it as one of the params for the request
       const params = new URLSearchParams({
-        endpoint: endpoint,
+        endpoint: "astro",
         place_id: location_id,
         units: "metric",
       });
@@ -26,8 +23,7 @@ export default {
 
       const data = await resp.json();
 
-      commit(commitName_1, data[endpoint].data);
-      commit(commitName_2, new Date());
+      commit("setAstro", data.astro.data[0]);
     } catch (error) {
       console.error(error);
     }

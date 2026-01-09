@@ -1,28 +1,20 @@
 <template>
-  <div>
-    <div class="weather-summary-card">
-      <div class="weather-summary-card__item">
-        <p>{{ date }}</p>
-      </div>
-      <div class="weather-summary-card__item icon">
-        <img
-          :src="`/assets/icons/weather/${icon}.svg`"
-          :alt="'Weather summary - ' + weather_summary"
-        />
-      </div>
-      <div class="weather-summary-card__item temp">
-        <p>{{ Math.round(temperature) }}°C</p>
-      </div>
-      <div class="weather-summary-card__item hum">
-        <img src="/assets/icons/drop.svg" aria-hidden="true" alt="null" />
-        <p>{{ humidity }}%</p>
-      </div>
-      <div class="weather-summary-card__item wind">
-        <img src="/assets/icons/wind.svg" aria-hidden="true" alt="null" />
-        <p>{{ wind_dir }} {{ wind_speed }}m/s</p>
-      </div>
-      <div class="weather-summary-card__item arrow"></div>
+  <div class="weather-summary-card">
+    <div class="weather-summary-card__item date">
+      <p>{{ date }}</p>
     </div>
+    <div class="weather-summary-card__item icon">
+      <img
+        width="50"
+        height="50"
+        :src="`/assets/icons/weather/${icon}.svg`"
+        :alt="'Weather summary - ' + weather_summary"
+      />
+    </div>
+    <div class="weather-summary-card__item temp">
+      <p>{{ temperature }}°C</p>
+    </div>
+    <div class="weather-summary-card__item arrow"></div>
   </div>
 </template>
 
@@ -44,19 +36,6 @@ export default {
       required: true,
     },
     temperature: {
-      type: Number,
-      required: true,
-    },
-    humidity: {
-      type: Number,
-      required: true,
-    },
-    wind_dir: {
-      type: String,
-      required: true,
-    },
-    wind_speed: {
-      type: Number,
       required: true,
     },
   },

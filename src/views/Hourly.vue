@@ -1,8 +1,14 @@
 <template>
-  <div v-if="weather">
-    <h1 class="mb-60">{{ location }}, <br />Hourly Weather</h1>
-    <div v-for="day in weather">
-      <h2 class="mb-30">
+  <div v-if="weather" class="wrapper">
+    <h1
+      v-if="location"
+      style="font-weight: 700; letter-spacing: 1px"
+      class="mb-30"
+    >
+      {{ location }}
+    </h1>
+    <div v-for="(day, index) in weather" class="mb-60">
+      <h3 class="mb-10 c-secondary">
         {{
           formatDate(new Date(day[0].date), {
             weekday: "long",
@@ -10,53 +16,60 @@
             month: "long",
           })
         }}
-      </h2>
-      <Listing full_width class="mb-60">
-        <ListingSingle v-for="item in day">
-          <template #button
-            ><WeatherSummaryCard
-              :date="formatTime(new Date(item.date))"
-              :icon="item.icon"
-              :weather_summary="item.weather"
-              :temperature="item.temperature"
-              :humidity="item.humidity"
-              :wind_dir="item.wind.dir"
-              :wind_speed="item.wind.speed"
-            ></WeatherSummaryCard
-          ></template>
-          <template #details>
-            <WeatherDetailsCard
-              :details="[
-                {
-                  image: 'termometer',
-                  title: 'Feels like',
-                  description: `${Math.round(item.feels_like)}°C`,
-                },
-                {
-                  image: 'wind',
-                  title: 'Wind',
-                  description: `${item.wind.dir} ${item.wind.speed}m/s`,
-                },
-                {
-                  image: 'drop',
-                  title: 'Humidity',
-                  description: `${item.humidity}%`,
-                },
-                {
-                  image: '.',
-                  title: 'Cloud Cover',
-                  description: `${item.cloud_cover}%`,
-                },
-                {
-                  image: `drop`,
-                  title: 'Precipitation',
-                  description: `${item.precipitation.total}%`,
-                },
-              ]"
-            ></WeatherDetailsCard>
-          </template>
-        </ListingSingle>
-      </Listing>
+      </h3>
+      <Card>
+        <Listing>
+          <ListingSingle
+            v-for="(item, itemIndex) in day"
+            accordion
+            :index="index + itemIndex"
+          >
+            <template #button>
+              <WeatherSummaryCard
+                :date="formatTime(new Date(item.date))"
+                :icon="item.icon"
+                :weather_summary="item.weather"
+                :temperature="Math.round(item.temperature)"
+              ></WeatherSummaryCard>
+            </template>
+            <template #details>
+              <Card>
+                <DetailsCard
+                  separator
+                  :details="[
+                    {
+                      title: 'Summary',
+                      value: item.summary,
+                    },
+                    {
+                      title: 'Feels like',
+                      value: `${Math.round(item.feels_like)}°C`,
+                    },
+                    {
+                      title: 'Humidity',
+                      value: `${item.humidity}%`,
+                    },
+                    {
+                      title: 'Wind',
+                      value: `${item.wind.dir} ${Math.round(
+                        item.wind.speed
+                      )}m/s`,
+                    },
+                    {
+                      title: 'UV index',
+                      value: `${item.uv_index} of 11`,
+                    },
+                    {
+                      title: 'Pressure',
+                      value: `${item.pressure}hPa`,
+                    },
+                  ]"
+                ></DetailsCard>
+              </Card>
+            </template>
+          </ListingSingle>
+        </Listing>
+      </Card>
     </div>
   </div>
   <div v-else>
@@ -104,17 +117,19 @@ const { location } = useDataHandling(
 <script>
 import Listing from "@/components/Listing.vue";
 import ListingSingle from "@/components/ListingSingle.vue";
-import WeatherDetailsCard from "@/components/WeatherDetailsCard.vue";
 import WeatherSummaryCard from "@/components/WeatherSummaryCard.vue";
 import Loader from "@/components/Loader.vue";
+import Card from "@/layouts/Card.vue";
+import DetailsCard from "@/components/DetailsCard.vue";
 
 export default {
   components: {
     Listing,
     ListingSingle,
-    WeatherDetailsCard,
     WeatherSummaryCard,
     Loader,
+    Card,
+    DetailsCard,
   },
 };
 </script>

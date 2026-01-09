@@ -1,9 +1,7 @@
 <template>
-  <span
-    class="loader"
-    :class="{ 'loader--light': light }"
-    aria-label="loading"
-  ></span>
+  <div class="loader" :class="{ 'loader--light': light }">
+    <span aria-label="loading"></span>
+  </div>
 </template>
 
 <script>

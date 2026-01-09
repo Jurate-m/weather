@@ -1,41 +1,82 @@
 <template>
-  <div v-if="weather" class="home">
-    <h1 v-if="location" class="mb-20">{{ location }}, <br />Current Weather</h1>
+  <div v-if="weather" class="home wrapper" ref="scrollToView">
     <div class="home__lists">
       <Listing>
         <TransitionGroup name="fade-in">
           <ListingSingle
             v-for="(item, index) in weather"
-            featured
             v-show="index === activeIndex"
             :key="new Date()"
           >
-            <template #featured>
-              <FeaturedCard :data="item"></FeaturedCard>
-            </template>
+            <FeaturedCard :data="item" :location="location"></FeaturedCard>
           </ListingSingle>
         </TransitionGroup>
       </Listing>
-      <SingleLink
-        class="mb-30"
-        routeName="Hourly weather"
-        text="View Hourly weather"
-        alignRight
-      ></SingleLink>
       <Listing>
-        <ListingSingle
-          v-for="(item, index) in weather"
-          customEvent
-          @set-active="
-            setActive(index);
-            scrollToTop();
-          "
-          :class="{ active: index === activeIndex }"
-        >
-          <template #button
-            ><FeaturedListCard :data="item"></FeaturedListCard></template
-        ></ListingSingle>
+        <TransitionGroup name="fade-in">
+          <ListingSingle
+            v-for="(item, index) in weather"
+            v-show="index === activeIndex"
+            :key="new Date()"
+          >
+            <Card pt padded bordered transparent>
+              <DetailsCard
+                :details="[
+                  {
+                    title: 'Summary',
+                    value: item.summary,
+                  },
+                  {
+                    title: 'Feels like',
+                    value: `${Math.round(item.feels_like)}°C`,
+                  },
+                  {
+                    title: 'Humidity',
+                    value: `${item.humidity}%`,
+                  },
+                  {
+                    title: 'Wind',
+                    value: `${item.wind.dir} ${Math.round(item.wind.speed)}m/s`,
+                  },
+                  {
+                    title: 'UV index',
+                    value: `${item.uv_index} of 11`,
+                  },
+                  {
+                    title: 'Pressure',
+                    value: `${item.pressure}hPa`,
+                  },
+                ]"
+              ></DetailsCard>
+            </Card>
+          </ListingSingle>
+        </TransitionGroup>
       </Listing>
+
+      <Card pt padded>
+        <SingleLink
+          class="mt--20"
+          routeName="Hourly"
+          text="Hourly weather"
+          alignRight
+        ></SingleLink>
+        <Listing flex>
+          <ListingSingle
+            v-for="(item, index) in weather"
+            :class="{ active: index === activeIndex }"
+          >
+            <button
+              type="button"
+              @click="
+                setActive(index);
+                scrollToTop();
+              "
+            >
+              <FeaturedListCard :data="item"></FeaturedListCard>
+            </button>
+          </ListingSingle>
+        </Listing>
+      </Card>
     </div>
   </div>
   <div v-else>
@@ -49,7 +90,8 @@ import useDataHandling from "@/composables/dataHandling.js";
 
 const weather = ref(null);
 const activeIndex = ref(0);
-const dataLength = 8;
+const dataLength = 6;
+let scrollToView = ref(null);
 
 const assignWeather = function (data) {
   const remainingArray = dataLength - data[0].length;
@@ -67,7 +109,12 @@ function setActive(index) {
 }
 
 function scrollToTop() {
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  setTimeout(() => {
+    window.scrollTo({
+      top: scrollToView.value?.offsetTop ?? 0,
+      behavior: "smooth",
+    });
+  }, 200);
 }
 
 const { location } = useDataHandling(
@@ -91,6 +138,11 @@ import Listing from "@/components/Listing.vue";
 import ListingSingle from "@/components/ListingSingle.vue";
 import SingleLink from "@/components/SingleLink.vue";
 import Loader from "@/components/Loader.vue";
+import DetailsCard from "@/components/DetailsCard.vue";
+
+import { formatDateTime } from "@/utils.js";
+
+import Card from "@/layouts/Card.vue";
 
 export default {
   components: {
@@ -100,6 +152,14 @@ export default {
     FeaturedListCard,
     SingleLink,
     Loader,
+    DetailsCard,
+    Card,
+  },
+
+  methods: {
+    formatDate(arg, options) {
+      return formatDateTime(arg, options);
+    },
   },
 };
 </script>

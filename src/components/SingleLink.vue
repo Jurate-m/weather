@@ -1,5 +1,5 @@
 <template>
-  <div :class="class">
+  <div class="single-link" :class="{ 'single-link--right': this.alignRight }">
     <router-link :to="{ name: routeName }">{{ text }}</router-link>
   </div>
 </template>
@@ -20,15 +20,6 @@ export default {
     alignRight: {
       type: Boolean,
       default: false,
-    },
-  },
-
-  computed: {
-    class() {
-      return {
-        "single-link": true,
-        "single-link--right": this.alignRight,
-      };
     },
   },
 };

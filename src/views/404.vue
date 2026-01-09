@@ -6,7 +6,7 @@
     </h1>
 
     <SingleLink
-      routeName="Current weather"
+      routeName="Current"
       text="Get back to Current weather"
     ></SingleLink>
   </div>
