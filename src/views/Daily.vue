@@ -98,7 +98,7 @@ import WeatherSummaryCard from "@/components/WeatherSummaryCard.vue";
 import Listing from "@/components/Listing.vue";
 import ListingSingle from "@/components/ListingSingle.vue";
 import Loader from "@/components/Loader.vue";
-import Card from "@/layouts/Card.vue";
+import Card from "@/components/layouts/Card.vue";
 import DetailsCard from "@/components/DetailsCard.vue";
 
 export default {

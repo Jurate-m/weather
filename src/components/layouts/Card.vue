@@ -50,6 +50,10 @@ export default {
 </script>
 
 <style>
+.card {
+  padding-bottom: 1rem;
+}
+
 .card .card {
   padding-top: 20px;
   padding-bottom: 20px;

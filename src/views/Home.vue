@@ -141,7 +141,7 @@ import DetailsCard from "@/components/DetailsCard.vue";
 
 import { formatDateTime } from "@/utils.js";
 
-import Card from "@/layouts/Card.vue";
+import Card from "@/components/layouts/Card.vue";
 
 export default {
   components: {
