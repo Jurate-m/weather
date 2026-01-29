@@ -1,6 +1,6 @@
 <template>
   <div v-if="weather" class="wrapper">
-    <h1 class="mb-30" style="font-weight: 700; letter-spacing: 1px">
+    <h1 style="font-weight: 700; letter-spacing: 1px">
       {{ location }}
     </h1>
     <Card>
@@ -16,7 +16,7 @@
               :icon="item.icon"
               :weather_summary="item.weather"
               :temperature="`${Math.round(item.temperature_max)} / ${Math.round(
-                item.temperature_min
+                item.temperature_min,
               )}`"
             ></WeatherSummaryCard>
           </template>
@@ -49,7 +49,7 @@
                     {
                       title: 'Wind',
                       value: `${item.wind.dir} ${Math.round(
-                        item.wind.speed
+                        item.wind.speed,
                       )}m/s`,
                     },
                     {
@@ -82,7 +82,7 @@ const { weather, location } = useDataHandling(
     endpoint: "daily",
     commitName_1: "assignDailyWeather",
     commitName_2: "setDailyTimeStamp",
-  }
+  },
 );
 
 function formatTime(date) {
@@ -112,3 +112,5 @@ export default {
   },
 };
 </script>
+
+<style></style>

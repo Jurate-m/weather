@@ -38,7 +38,6 @@
 </template>
 
 <script>
-import "@/assets/scss/components/_featuredCard.scss";
 import { formatDateTime } from "@/utils.js";
 
 export default {
@@ -61,3 +60,33 @@ export default {
   },
 };
 </script>
+
+<style>
+.featured-card {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 20px;
+
+  img {
+    width: 100%;
+    min-width: 150px;
+    object-fit: contain;
+  }
+
+  .featured-card__col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .featured-card__col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+  }
+}
+</style>

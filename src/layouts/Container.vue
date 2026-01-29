@@ -5,8 +5,28 @@
 </template>
 
 <script>
-import "../assets/scss/main.scss";
-import "../assets/scss/layouts/_container.scss";
-
 export default {};
 </script>
+
+<style>
+.container {
+  max-width: 1024px;
+  margin: 0 auto;
+
+  @media only screen and (min-width: 768px) {
+    display: flex;
+    align-items: flex-start;
+    padding: 0 20px;
+  }
+
+  & > .container {
+    display: block;
+    flex: 3;
+    padding: 40px 20px 100px;
+
+    @media only screen and (min-width: 768px) {
+      padding: 60px 20px;
+    }
+  }
+}
+</style>

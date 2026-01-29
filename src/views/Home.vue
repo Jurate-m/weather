@@ -126,12 +126,11 @@ const { location } = useDataHandling(
     commitName_1: "separateDays",
     commitName_2: "setHourlyTimeStamp",
   },
-  assignWeather
+  assignWeather,
 );
 </script>
 
 <script>
-import "@/assets/scss/views/_home.scss";
 import FeaturedCard from "@/components/FeaturedCard.vue";
 import FeaturedListCard from "@/components/FeaturedListCard.vue";
 import Listing from "@/components/Listing.vue";
@@ -163,3 +162,14 @@ export default {
   },
 };
 </script>
+
+<style>
+.home {
+  .details-card {
+    p {
+      font-size: 2rem;
+      font-weight: 600;
+    }
+  }
+}
+</style>

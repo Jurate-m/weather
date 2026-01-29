@@ -1,5 +1,5 @@
 <template>
-  <div :class="`theme theme--${timeOfDay}`"><slot></slot></div>
+  <div :class="`theme--${timeOfDay} theme`"><slot></slot></div>
 </template>
 
 <script setup>
@@ -52,6 +52,58 @@ watch(storeAstro, (newVal, oldVal) => {
 });
 </script>
 
-<script>
-import "@/assets/scss/_themes.scss";
-</script>
+<style>
+.theme {
+  height: 100%;
+
+  background: var(--bg-1);
+
+  background: linear-gradient(45deg, var(--bg-1) 0%, var(--bg-2) 100%);
+
+  background: -moz-linear-gradient(45deg, var(--bg-1) 0%, var(--bg-2) 100%);
+
+  background: -webkit-linear-gradient(45deg, var(--bg-1) 0%, var(--bg-2) 100%);
+
+  background-attachment: fixed;
+}
+.theme--morning,
+.theme--theme {
+  --bg-primary: 255, 255, 255;
+
+  color: black;
+
+  .c-secondary {
+    color: #252424;
+  }
+}
+
+.theme--morning {
+  --bg-1: rgb(0, 97, 255);
+  --bg-2: rgb(96, 239, 255);
+}
+
+.theme--daytime {
+  --bg-1: rgb(255, 147, 15);
+  --bg-2: rgb(255, 249, 91);
+}
+
+.theme--evening,
+.theme--night {
+  --bg-primary: 0, 0, 0;
+  color: #fff;
+
+  .c-secondary {
+    color: #cfcfcf;
+  }
+}
+
+.theme--evening {
+  --bg-1: rgb(0, 3, 40);
+  --bg-2: rgb(255, 147, 15);
+}
+
+.theme--night {
+  --bg-1: rgb(0, 3, 40);
+  --bg-2: rgb(0, 69, 142);
+}
+</style>

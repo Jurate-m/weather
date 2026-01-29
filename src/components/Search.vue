@@ -259,8 +259,6 @@ function setActive() {
 </script>
 
 <script>
-import "@/assets/scss/components/_search.scss";
-
 import Overlay from "@/components/Overlay.vue";
 import Loader from "@/components/Loader.vue";
 
@@ -271,3 +269,126 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.search {
+  width: 100%;
+  color: #000;
+
+  form {
+    position: relative;
+    z-index: 1;
+  }
+
+  button.search__submit {
+    margin-right: 20px;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    max-width: 100%;
+    color: #000;
+  }
+
+  button {
+    img {
+      display: block;
+      height: 20px;
+      width: 20px;
+    }
+  }
+}
+
+.search__inner {
+  display: flex;
+  align-items: center;
+  position: relative;
+  background-color: rgba(var(--background-1), 0.5);
+  background-color: #fff;
+  padding: 10px 20px;
+}
+
+.search__current-location {
+  padding: 10px 20px;
+
+  button {
+    padding: 5px 20px;
+    display: inline-block;
+    font-size: 14px;
+    border: 2px solid #000;
+    font-weight: 600;
+    border-radius: 8px;
+  }
+}
+
+.search__clear {
+  position: relative;
+  height: 12px;
+  width: 12px;
+}
+
+.search__clear::before,
+.search__clear::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  width: 10px;
+  height: 2px;
+  border-radius: 8px;
+  background-color: var(--c-dark);
+}
+
+.search__clear::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.search__clear::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.search__dropdown {
+  position: absolute;
+  left: 0;
+  max-height: calc(100vh - 80px - 82px);
+  width: 100%;
+  background-color: white;
+  overflow: auto;
+  z-index: 1;
+
+  ul {
+    padding: 0 0 10px;
+  }
+
+  @media only screen and (min-width: 768px) {
+    max-height: calc(100vh - 80px - 72px);
+  }
+}
+
+.search__dropdown-item {
+  position: relative;
+
+  button {
+    padding: 10px 20px;
+    width: 100%;
+    text-align: left;
+  }
+
+  button:hover {
+    text-decoration: underline;
+  }
+}
+
+.search__error {
+  padding: 10px;
+  color: #cc0000;
+  background-color: white;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.active {
+  position: relative;
+}
+</style>

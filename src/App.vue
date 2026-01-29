@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import "@/assets/main.css";
 import ThemeWrapper from "@/layouts/ThemeWrapper.vue";
 import Container from "@/layouts/Container.vue";
 import Header from "@/components/Header.vue";

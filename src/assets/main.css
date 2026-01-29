@@ -1,5 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@200;400;500;600;700&display=swap");
 
+:root {
+  --c-dark: #040b1c;
+  --c-dark-2: #0d3b66;
+  --c-light: #f1e9db;
+  --c-light-2: #846c5b;
+}
+
 *,
 *::before,
 *::after {
@@ -104,4 +111,34 @@ input[type="radio"] {
 
 #app {
   min-height: 100vh;
+}
+
+.fade-in-move,
+.fade-in-enter-active,
+.fade-in-leave-active {
+  transform-origin: top center;
+  transition: all 0.3s ease-in-out;
+}
+
+.fade-in-enter-from,
+.fade-in-leave-to {
+  opacity: 0;
+  position: absolute;
+}
+
+.fade-in-leave-active {
+  opacity: 0;
+}
+
+.slide-down-move,
+.slide-down-enter-active,
+.slide-down-leave-active {
+  transform-origin: top center;
+  transition: all 0.3s ease-in-out;
+}
+
+.slide-down-enter-from,
+.slide-down-leave-to {
+  opacity: 0;
+  transform: translateY(-30px);
 }
