@@ -7,6 +7,7 @@
         <router-view></router-view>
       </Container>
     </Container>
+    <NoticeBanner />
   </ThemeWrapper>
 </template>
 
@@ -15,6 +16,7 @@ import ThemeWrapper from "@/layouts/ThemeWrapper.vue";
 import Container from "@/layouts/Container.vue";
 import Header from "@/components/Header.vue";
 import Search from "./components/Search.vue";
+import NoticeBanner from "@/components/NoticeBanner.vue";
 
 export default {
   components: {
@@ -22,6 +24,7 @@ export default {
     Container,
     Header,
     Search,
+    NoticeBanner,
   },
 };
 </script>
