@@ -2,6 +2,21 @@
   <div :class="classes"></div>
 </template>
 
+<script>
+export default {
+  props: ["active"],
+
+  computed: {
+    classes() {
+      return {
+        overlay: true,
+        "overlay--active": this.active,
+      };
+    },
+  },
+};
+</script>
+
 <style scoped>
 .overlay {
   display: none;
@@ -19,18 +34,3 @@
   display: block;
 }
 </style>
-
-<script>
-export default {
-  props: ["active"],
-
-  computed: {
-    classes() {
-      return {
-        overlay: true,
-        "overlay--active": this.active,
-      };
-    },
-  },
-};
-</script>

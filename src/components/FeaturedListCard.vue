@@ -21,7 +21,6 @@
 </template>
 
 <script>
-import "@/assets/scss/components/_featuredListCard.scss";
 import { formatDateTime } from "@/utils.js";
 
 export default {
@@ -47,3 +46,19 @@ export default {
   },
 };
 </script>
+
+<style>
+.featured-list-card {
+  img {
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+  }
+
+  p {
+    &:first-child {
+      font-weight: 500;
+    }
+  }
+}
+</style>

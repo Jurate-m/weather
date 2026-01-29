@@ -12,8 +12,9 @@
 </template>
 
 <script>
-import ThemeWrapper from "@/layouts/ThemeWrapper.vue";
-import Container from "@/layouts/Container.vue";
+import "@/assets/main.css";
+import ThemeWrapper from "@/components/layouts/ThemeWrapper.vue";
+import Container from "@/components/layouts/Container.vue";
 import Header from "@/components/Header.vue";
 import Search from "./components/Search.vue";
 import NoticeBanner from "@/components/NoticeBanner.vue";

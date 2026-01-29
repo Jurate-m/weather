@@ -7,8 +7,6 @@
 </template>
 
 <script>
-import "@/assets/scss/layouts/_card.scss";
-
 export default {
   props: {
     transparent: {
@@ -50,3 +48,47 @@ export default {
   },
 };
 </script>
+
+<style>
+.card {
+  padding-bottom: 1rem;
+}
+
+.card .card {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.card.pb {
+  padding-bottom: 40px;
+}
+
+.card.pt {
+  padding-top: 40px;
+}
+
+.card__inner {
+  background-color: rgba(var(--bg-primary), 0.1);
+  border-radius: 12px;
+}
+
+.card--transparent {
+  .card__inner {
+    background-color: transparent;
+  }
+}
+
+.card--padded {
+  .card__inner {
+    padding: 40px 20px;
+  }
+}
+
+.card--border {
+  .card__inner {
+    border: 2px solid rgba(255, 255, 255, 0.2);
+  }
+}
+</style>

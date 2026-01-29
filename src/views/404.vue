@@ -13,11 +13,15 @@
 </template>
 
 <script>
-import "@/assets/scss/views/_404.scss";
-
 import SingleLink from "@/components/SingleLink.vue";
 
 export default {
   components: { SingleLink },
 };
 </script>
+
+<style>
+.not-found {
+  padding: 100px 0;
+}
+</style>

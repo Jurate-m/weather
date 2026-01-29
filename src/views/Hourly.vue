@@ -52,7 +52,7 @@
                     {
                       title: 'Wind',
                       value: `${item.wind.dir} ${Math.round(
-                        item.wind.speed
+                        item.wind.speed,
                       )}m/s`,
                     },
                     {
@@ -110,7 +110,7 @@ const { location } = useDataHandling(
     commitName_1: "separateDays",
     commitName_2: "setHourlyTimeStamp",
   },
-  assignHourlyWeather
+  assignHourlyWeather,
 );
 </script>
 
@@ -119,7 +119,7 @@ import Listing from "@/components/Listing.vue";
 import ListingSingle from "@/components/ListingSingle.vue";
 import WeatherSummaryCard from "@/components/WeatherSummaryCard.vue";
 import Loader from "@/components/Loader.vue";
-import Card from "@/layouts/Card.vue";
+import Card from "@/components/layouts/Card.vue";
 import DetailsCard from "@/components/DetailsCard.vue";
 
 export default {
